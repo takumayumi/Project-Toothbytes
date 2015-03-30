@@ -44,6 +44,22 @@ public class DBAccess {
                 System.out.println(String.format("%d, %s", rs.getInt(1), rs.getString(2)));
             }
     }
+    
+    public static boolean dbQuery(String s){
+        try{
+            Class.forName("org.hsqldb.jdbcDriver");
+            String dbConn = "jdbc:hsqldb:file:"+dir+";user=root";
+            conn = (JDBCConnection) JDBCDriver.getConnection(dbConn, null);
+            stmt = (JDBCStatement) conn.createStatement();
+            rs = (JDBCResultSet) stmt.executeQuery(s);
+            //ALTER TABLE Dental_Records ADD COLUMN toothStatus VARCHAR(45) NULL;
+        } catch(Exception e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * This method initializes a patient list from the Database
      * @return ArrayList<Patient>
