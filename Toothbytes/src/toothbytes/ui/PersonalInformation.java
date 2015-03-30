@@ -3,10 +3,15 @@ package toothbytes.ui;
 import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import toothbytes.database.AdditionalInfo;
+import toothbytes.database.MedicalCond;
 import toothbytes.database.PersonalInfo;
 
 public class PersonalInformation extends javax.swing.JPanel {
     public JFrame ctb;
+    public PersonalInfo pi;
+    public AdditionalInfo ai;
+    public MedicalCond mc;
     
     public PersonalInformation(JFrame ctb) {
         initComponents();
@@ -22,6 +27,16 @@ public class PersonalInformation extends javax.swing.JPanel {
         }
         this.ctb = ctb;
         this.setVisible(true);
+    }
+    
+    public PersonalInformation(JFrame ctb, PersonalInfo pi, AdditionalInfo ai, MedicalCond mc){
+        initComponents();
+        this.ctb = ctb;
+        this.pi = pi;
+        this.ai = ai;
+        this.mc = mc;
+        
+        insertData();
     }
 
     /**
@@ -182,6 +197,11 @@ public class PersonalInformation extends javax.swing.JPanel {
         });
 
         cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -325,9 +345,9 @@ public class PersonalInformation extends javax.swing.JPanel {
             if(birthYear.isEmpty())
                 birthYear = "0";
             
-            PersonalInfo pi = new PersonalInfo(surname, givenName, mi, Integer.parseInt(birthYear), nationality, religion, occupation, homeAddress);
+            pi = new PersonalInfo(surname, givenName, mi, Integer.parseInt(birthYear), nationality, religion, occupation, homeAddress);
             
-            launchAdditionalInfo(pi);
+            launchAdditionalInfo();
         }else{
             if(miTF.getText().isEmpty() || hasNumbers(miTF.getText()) || miTF.getText().length() < -1 || miTF.getText().length() > 2){miTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(yearTF.getText().isEmpty() || hasLetters(yearTF.getText()) || hasSpecialCharacters(yearTF.getText())){yearTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
@@ -345,18 +365,27 @@ public class PersonalInformation extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"One or more fields are invalid. Please recheck inputs.");
         }
     }//GEN-LAST:event_nextButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        ctb.dispose();
+    }//GEN-LAST:event_cancelButtonActionPerformed
     
-    private void launchAdditionalInfo(PersonalInfo pi){
+    private void launchAdditionalInfo(){
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame tb = new JFrame();
-                AdditionalInformation ai = new AdditionalInformation(tb, pi);
-                tb.setSize(ai.getPreferredSize());
-                System.out.println(ai.isVisible());
-                tb.add(ai);
+                AdditionalInformation adi;
+                if(ai.getReason().isEmpty()){
+                    adi = new AdditionalInformation(tb, pi);
+                } else {
+                    adi = new AdditionalInformation(tb, pi, ai, mc);
+                }
+                tb.setSize(adi.getPreferredSize());
+                System.out.println(adi.isVisible());
+                tb.add(adi);
                 tb.pack();
                 tb.setVisible(true);
-                tb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                tb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 }
             }
         );
@@ -439,6 +468,17 @@ public class PersonalInformation extends javax.swing.JPanel {
         }   
     }
 
+    private void insertData(){
+        surnameTF.setText(pi.getSurname());
+        givenNameTF.setText(pi.getGivenName());
+        miTF.setText(pi.getMI());
+        yearTF.setText(String.valueOf(pi.getBirthYear()));
+        nationalityTF.setText(pi.getNationality());
+        religionTF.setText(pi.getReligion());
+        occupationTF.setText(pi.getOccupation());
+        homeAddressTF.setText(pi.getHomeAddress());
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ageTF;
     private javax.swing.JButton cancelButton;

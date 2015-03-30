@@ -22,12 +22,7 @@ public class AdditionalInfo {
     public String officeAddress;            
     public String specialization;             
     public String officeNumber;                
-    
-    public AdditionalInfo(){
-        
-    }
-    
-    
+
     public AdditionalInfo(String dentalInsurance, String effectiveDateYear, String guardianName, String occupation, String referer, String reason,
                         String previousDentist, String lastDentalVisitYear, String physicianName, String officeAddress, String specialization, String officeNumber){
         this.dentalInsurance = dentalInsurance;
@@ -97,8 +92,3 @@ public class AdditionalInfo {
         return officeNumber;
     }
 }
-/*
-    officeAddress = officeAddress;
-        this.specialization = specialization;
-        this.officeNumber
-*/

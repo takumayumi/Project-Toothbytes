@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import toothbytes.database.AdditionalInfo;
+import toothbytes.database.MedicalCond;
 import toothbytes.database.PersonalInfo;
 
 /**
@@ -18,12 +19,35 @@ import toothbytes.database.PersonalInfo;
  */
 public class AdditionalInformation extends javax.swing.JPanel {
     private PersonalInfo pi;
+    private AdditionalInfo ai;
+    private MedicalCond mc;
     private JFrame tb;
        
     public AdditionalInformation(JFrame tb, PersonalInfo pi){
         initComponents();
         this.pi = pi;
         this.tb = tb;
+    }
+    
+    public AdditionalInformation(JFrame tb, PersonalInfo pi, AdditionalInfo ai, MedicalCond mc){
+        initComponents();
+        this.tb = tb;
+        this.pi = pi;
+        this.ai = ai;
+        this.mc = mc;
+        
+        dentalInsuranceTF.setText(ai.getDentalInsurance());
+        effectiveDateYearTF.setText(ai.getEffectiveDateYear());
+        guardiansNameTF.setText(ai.getGuardianName());
+        occupationTF.setText(ai.getOccupation());
+        reffererTF.setText(ai.getReferer());
+        reasonTF.setText(ai.getReason());
+        previousDentistTF.setText(ai.getPreviousDentist());
+        lastDentalVisitYearTF.setText(ai.getLastDentalVisitYear());
+        nameOfPhysicianTF.setText(ai.getPhysicianName());
+        officeAddressTF.setText(ai.getOfficeNumber());
+        specializationTF.setText(ai.getSpecialization());
+        officeNumberTF.setText(ai.getOfficeNumber());
     }
     
     public boolean hasNumbers(String numberlessString){
@@ -183,8 +207,18 @@ public class AdditionalInformation extends javax.swing.JPanel {
         });
 
         backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
 
         cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -370,10 +404,10 @@ public class AdditionalInformation extends javax.swing.JPanel {
             String specialization = specializationTF.getText();           
             String officeNumber = officeNumberTF.getText();    
             
-            AdditionalInfo ai = new AdditionalInfo(dentalInsurance, effectiveDateYear, guardiansName, occupation, refferer, reason, previousDentist,
+            ai = new AdditionalInfo(dentalInsurance, effectiveDateYear, guardiansName, occupation, refferer, reason, previousDentist,
                                                 lastDentalVisitYear, nameOfPhysician, officeAddress, specialization, officeNumber);
             
-            launchMedicalCondition(pi, ai);
+            launchMedicalCondition();
         }else{
             if(reasonTF.getText().isEmpty()){reasonTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(!dentalInsuranceTF.getText().isEmpty()){
@@ -384,7 +418,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_nextButtonActionPerformed
 
-    private void launchMedicalCondition(PersonalInfo pi, AdditionalInfo ai){
+    private void launchMedicalCondition(){
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame tb = new JFrame();
@@ -416,6 +450,32 @@ public class AdditionalInformation extends javax.swing.JPanel {
             effectiveDateYearTF.setEnabled(false);
         }
     }//GEN-LAST:event_dentalInsuranceTFFocusLost
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        launchPersonalInformation();
+    }//GEN-LAST:event_backButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        tb.dispose();
+    }//GEN-LAST:event_cancelButtonActionPerformed
+    
+    private void launchPersonalInformation(){
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                JFrame tb = new JFrame();
+                PersonalInformation psi = new PersonalInformation(tb, pi, ai, mc);
+                System.out.println(psi.isVisible());
+                tb.setSize(psi.getPreferredSize());
+                tb.add(psi);
+                tb.pack();
+                tb.setVisible(true);
+                tb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                }
+            }
+        );
+        tb.dispose();
+    }
     
     public boolean entriesValid(){
         //get values from fields

@@ -54,7 +54,7 @@ public class TBMenuBar extends JMenuBar{
                         ctb.add(pi);
                         ctb.pack();
                         ctb.setVisible(true);
-                        ctb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        ctb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                         }
                     }
                 );

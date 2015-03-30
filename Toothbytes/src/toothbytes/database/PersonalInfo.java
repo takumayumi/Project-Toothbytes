@@ -6,8 +6,6 @@
 
 package toothbytes.database;
 
-import java.util.Calendar;
-
 /**
  *
  * @author EcchiPowa
@@ -76,7 +74,8 @@ public class PersonalInfo {
         return occupation;
     }
     
-    public String homeAddress(){
+    public String getHomeAddress(){
         return homeAddress;
     }
+    
 }

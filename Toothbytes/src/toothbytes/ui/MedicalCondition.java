@@ -13,9 +13,10 @@ import toothbytes.database.MedicalCond;
  * @author Kimwell Tandoc
  */
 public class MedicalCondition extends javax.swing.JPanel {
-    JFrame tb;
-    PersonalInfo pi;
-    AdditionalInfo ai;
+    public JFrame tb;
+    public PersonalInfo pi;
+    public AdditionalInfo ai;
+    public MedicalCond mc;
     
     public MedicalCondition(JFrame tb, PersonalInfo pi, AdditionalInfo ai) {
         initComponents();
@@ -44,7 +45,6 @@ public class MedicalCondition extends javax.swing.JPanel {
         this.pi = pi;
         this.ai = ai;
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -287,6 +287,11 @@ public class MedicalCondition extends javax.swing.JPanel {
         jButton2.setText("Back");
 
         jButton3.setText("Cancel");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         q1.add(q1No);
         q1No.setText("No");
@@ -726,8 +731,12 @@ public class MedicalCondition extends javax.swing.JPanel {
             boolean q12opt14ans = q12opt14.isSelected();
             boolean q12opt15ans = q12opt15.isSelected();
             
-            MedicalCond mc = new MedicalCond(q1ans, q2ans, q2ansTF, q3ans, q3ansTF, q5ans, q5ansTF, q6ans, q7ans, q8ans, q9ans, q10ans, q11CB1ans, q11CB2ans, q11CB3ans, q11CB4ans, q11CB4ansTF, q12opt1ans, q12opt2ans, q12opt3ans, q12opt4ans, q12opt5ans, q12opt6ans, q12opt7ans, q12opt8ans, q12opt9ans, q12opt10ans, q12opt11ans, q12opt12ans, q12opt13ans, q12opt14ans, q12opt15ans);
+            mc = new MedicalCond(q1ans, q2ans, q2ansTF, q3ans, q3ansTF, q5ans, q5ansTF, q6ans, q7ans, q8ans, q9ans, q10ans,
+                    q11CB1ans, q11CB2ans, q11CB3ans, q11CB4ans, q11CB4ansTF, q12opt1ans, q12opt2ans, q12opt3ans, q12opt4ans,
+                    q12opt5ans, q12opt6ans, q12opt7ans, q12opt8ans, q12opt9ans, q12opt10ans, q12opt11ans, q12opt12ans, q12opt13ans,
+                    q12opt14ans, q12opt15ans);
             
+            updateDatabase();
         }else{
             if(!hasAnswer(q1)){q1Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(!hasAnswer(q2)){q2Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
@@ -744,6 +753,11 @@ public class MedicalCondition extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"One or more fields are invalid. Please recheck inputs.");
         }
     }//GEN-LAST:event_finishButtonActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        tb.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
     
     public boolean entriesValid(){ 
         if(hasAnswer(q1) &&
@@ -813,6 +827,9 @@ public class MedicalCondition extends javax.swing.JPanel {
         }
     }
 
+    public void updateDatabase(){
+        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField bloodPressureTF;
     private javax.swing.JComboBox bloodTypeCB;
