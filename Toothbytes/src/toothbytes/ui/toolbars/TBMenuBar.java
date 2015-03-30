@@ -12,10 +12,12 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import toothbytes.ui.PersonalInformation;
 
 /**
  *
@@ -38,6 +40,27 @@ public class TBMenuBar extends JMenuBar{
         addPatientFileItem = new JMenuItem("New Patient", new ImageIcon("images/middle.gif"));
         addPatientFileItem.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_ENTER, ActionEvent.CTRL_MASK));
+        addPatientFileItem.addActionListener(new java.awt.event.ActionListener(){
+            
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    
+                    public void run() {
+                        JFrame ctb = new JFrame();
+                        PersonalInformation pi = new PersonalInformation(ctb);
+                        System.out.println(pi.isVisible());
+                        ctb.setSize(pi.getPreferredSize());
+                        ctb.add(pi);
+                        ctb.pack();
+                        ctb.setVisible(true);
+                        ctb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        }
+                    }
+                );
+            }
+        });
+        
         fileMenu.add(addPatientFileItem);
         //View Menu
         viewMenu = new JMenu("View");
