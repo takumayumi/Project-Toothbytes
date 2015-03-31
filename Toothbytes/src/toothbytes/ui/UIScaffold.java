@@ -98,6 +98,7 @@ public class UIScaffold extends JFrame {
         //modulePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         modulePanel.setLayout(new MigLayout("fill"));
         mainPanel.add(modulePanel, "span 10 2");
+        modulePanel.add(new Cover(), "grow");
         
         //side panel(right)
         sidePanel = new JPanel();
