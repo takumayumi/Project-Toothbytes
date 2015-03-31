@@ -85,7 +85,7 @@ public class RecordsWindow extends ModuleWindow {
         if(f.exists()) {
             photo.setIcon(new ImageIcon(f.getAbsolutePath()));
         } else {
-            photo.setIcon(new ImageIcon("src/toothbytes/res/photos/default_img_1.jpg"));
+            photo.setIcon(new ImageIcon("src/toothbytes/res/photos/patient.png"));
         }
         patientViewer.add(photo, "span 2");
         patientViewer.add(lName, "span 4");

@@ -133,7 +133,7 @@ public class PatientListViewer extends JPanel {
                         "src/toothbytes/res/photos/"+p.getId()+".jpg"));
             } else {
                 map.put(p.getFullName()+"", new ImageIcon(
-                        "src/toothbytes/res/photos/default_img_1.jpg"));
+                        "src/toothbytes/res/photos/patient.png"));
             }
         }
         return map;
