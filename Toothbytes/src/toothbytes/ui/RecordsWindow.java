@@ -8,6 +8,7 @@ package toothbytes.ui;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -44,9 +45,13 @@ public class RecordsWindow extends ModuleWindow {
         );
         formLayout = new MigLayout(
                 "wrap 12",
+                "10px[fill]push[fill]push[fill]20px[fill]push"
+                + "[fill]push[fill]push[fill]push[fill]push"
+                + "[fill]push[fill]push[fill]push[fill]", //12 columns
                 "[fill]push[fill]push[fill]push[fill]push"
                 + "[fill]push[fill]push[fill]push[fill]push"
-                + "[fill]push[fill]push[fill]push[fill]" //12 columns
+                + "[fill]push[fill]push[fill]push[fill]push"
+                + "[fill]push[fill]" //14 rows
         );
         
         super.setMainPaneLayout(layout);
@@ -73,26 +78,97 @@ public class RecordsWindow extends ModuleWindow {
         
         File f = new File("src/toothbytes/res/photos/" + p.getId() + ".jpg");
         JLabel photo = new JLabel();
-        JTextField lName = new JTextField(p.getLastName().toUpperCase());
-        JTextField fName = new JTextField(p.getFirstName());
-        JTextField mName = new JTextField(p.getMidName());
+        JLabel lName = new JLabel(p.getLastName());
+        JLabel lblLname = new JLabel("Last Name:");
+        JLabel fName = new JLabel(p.getFirstName());
+        JLabel lblFname = new JLabel("First Name:");
+        JLabel mName = new JLabel(p.getMidName());
+        JLabel lblMname = new JLabel("Middle Initial:");
+        JLabel age = new JLabel(DataMan.getAge(p.getBdate())+"");
+        JLabel lblAge = new JLabel("Age:");
+        SimpleDateFormat format1 = new SimpleDateFormat("MM-dd-yyyy");
+        String bday = format1.format(p.getBdate().getTime());
+        JLabel bdate = new JLabel(bday);
+        JLabel lblBdate = new JLabel("Birthdate:");
+        JLabel occupation = new JLabel(p.getOccupation());
+        JLabel lblOccupation = new JLabel("Occupation:");
+        JLabel civstat = new JLabel(p.getCivilStatus());
+        JLabel lblCivstat = new JLabel("Civil Status:");
+        JLabel gender = new JLabel(p.getGender()+"");
+        JLabel lblGender = new JLabel("Gender:");
+        JLabel nName = new JLabel(p.getNickname());
+        JLabel lblNname = new JLabel("Nickname:");
+        JLabel homeadd = new JLabel(p.getHomeAddress());
+        JLabel lblHomeadd = new JLabel("Home Address:");
+        JLabel homeno = new JLabel(p.getHomeNo());
+        JLabel lblHomeno = new JLabel("Home Number:");
+        JLabel officeno = new JLabel(p.getOfficeNo());
+        JLabel lblOfficeno = new JLabel("Office Number:");
+        JLabel faxno = new JLabel(p.getFaxNo());
+        JLabel lblFaxno = new JLabel("Fax Number:");
+        JLabel cellno = new JLabel(p.getCellNo());
+        JLabel lblCellno = new JLabel("Cellphone Number:");
+        JLabel eAdd = new JLabel(p.getEmailAdd());
+        JLabel lblEadd = new JLabel("Email Address:");
         
-        JTextField age = new JTextField(DataMan.getAge(p.getBdate())+"");
-        
-        lName.setFont(new Font("Calibri", Font.PLAIN, 18));
-        lName.setEditable(false);
+        //lName.setFont(new Font("Calibri", Font.PLAIN, 12));
+        //lName.setEditable(false);
         
         if(f.exists()) {
             photo.setIcon(new ImageIcon(f.getAbsolutePath()));
         } else {
             photo.setIcon(new ImageIcon("src/toothbytes/res/photos/patient.png"));
         }
-        patientViewer.add(photo, "span 2");
-        patientViewer.add(lName, "span 4");
-        patientViewer.add(fName, "span 4");
-        patientViewer.add(mName, "span 1");
-        patientViewer.add(age, "span 1");
         
+        patientViewer.add(photo, "span 3");
+        
+        patientViewer.add(lblLname, "skip 12, span 2");
+        patientViewer.add(lName, "span 7");
+        
+        patientViewer.add(lblFname, "skip 3, span 2");
+        patientViewer.add(fName, "span 7");
+        
+        patientViewer.add(lblMname, "skip 3, span 2");
+        patientViewer.add(mName, "span 7");
+        
+        patientViewer.add(lblAge, "skip 3, span 2");
+        patientViewer.add(age, "span 7");
+        
+        patientViewer.add(lblBdate, "skip 3, span 2");
+        patientViewer.add(bdate, "span 7");
+        
+        patientViewer.add(lblOccupation, "skip 3, span 2");
+        patientViewer.add(occupation, "span 7");
+        
+        patientViewer.add(lblCivstat, "skip 3, span 2");
+        patientViewer.add(civstat, "span 7");
+        
+        patientViewer.add(lblGender, "skip 3, span 2");
+        patientViewer.add(gender, "span 7");
+        
+        patientViewer.add(lblNname, "skip 3, span 2");
+        patientViewer.add(nName, "span 7");
+        
+        patientViewer.add(lblHomeadd, "skip 3, span 2");
+        patientViewer.add(homeadd, "span 7");
+        
+        patientViewer.add(lblHomeno, "skip 3, span 2");
+        patientViewer.add(homeno, "span 7");
+        
+        patientViewer.add(lblOfficeno, "skip 3, span 2");
+        patientViewer.add(officeno, "span 7");
+        
+        patientViewer.add(lblFaxno, "skip 3, span 2");
+        patientViewer.add(faxno, "span 7");
+        
+        patientViewer.add(lblFaxno, "skip 3, span 2");
+        patientViewer.add(faxno, "span 7");
+        
+        patientViewer.add(lblCellno, "skip 3, span 2");
+        patientViewer.add(cellno, "span 7");
+        
+        patientViewer.add(lblEadd, "skip 3, span 2");
+        patientViewer.add(eAdd, "span 7");
         
         SwingUtilities.updateComponentTreeUI(patientViewer);
     }
