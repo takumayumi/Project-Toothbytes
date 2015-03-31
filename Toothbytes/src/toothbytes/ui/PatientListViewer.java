@@ -42,10 +42,8 @@ public class PatientListViewer extends JPanel {
         this.setLayout(new BorderLayout());
         
         iMap = mapImages(pList);
-        PatientListListener plv = new PatientListListener();
         viewer = new JList(new TBListModel(pList));
         viewer.setCellRenderer(new PatientCellRenderer());
-        viewer.addListSelectionListener(plv);
         
         JScrollPane scroll = new JScrollPane(viewer);
         
@@ -135,7 +133,7 @@ public class PatientListViewer extends JPanel {
                         "src/toothbytes/res/photos/"+p.getId()+".jpg"));
             } else {
                 map.put(p.getFullName()+"", new ImageIcon(
-                        "src/toothbytes/res/photos/default_img_1.jpg"));
+                        "src/toothbytes/res/photos/patient.png"));
             }
         }
         return map;
@@ -186,15 +184,11 @@ public class PatientListViewer extends JPanel {
 // Setting the model to the list again
         viewer.setModel(filteredModel);
     }
-    public class PatientListListener implements ListSelectionListener {
-
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                  Patient p = (Patient)viewer.getSelectedValue();
-                  System.out.println(DBAccess.getData(p.getId()));
-                }
-        }
-        
+    
+    public void setListListener(ListSelectionListener lsl) {
+        viewer.addListSelectionListener(lsl);
+    }
+    public Patient getSelectedPatient() {
+        return (Patient)viewer.getSelectedValue();
     }
 }

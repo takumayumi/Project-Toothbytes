@@ -64,5 +64,4 @@ public class Patient implements Comparable<Patient>{
     public String toString() {
         return this.firstName+" "+this.midName+". "+this.lastName;
     }
-    
 }

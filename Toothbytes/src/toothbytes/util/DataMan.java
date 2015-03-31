@@ -5,6 +5,8 @@
  */
 package toothbytes.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -12,7 +14,8 @@ import java.util.Date;
  * @author Jolas
  */
 public class DataMan {
-    public static Date getAge(Date bday) {
-        return new Date(System.currentTimeMillis() - bday.getTime());
+    public static int getAge(Calendar bday) {
+        long milis = System.currentTimeMillis() - bday.getTime().getTime();
+        return (int) (milis/1000/31536000);
     }
 }
