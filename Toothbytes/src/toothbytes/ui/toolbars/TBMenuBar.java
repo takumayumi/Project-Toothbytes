@@ -16,16 +16,18 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import toothbytes.ui.HelpContents;
 import toothbytes.ui.PersonalInformation;
 
 /**
  *
  * @author Jolas
  */
-public class TBMenuBar extends JMenuBar{
+public class TBMenuBar extends JMenuBar implements ActionListener{
     JMenu viewMenu, fileMenu, settingsMenu, helpMenu;
-    JMenuItem addPatientFileItem;
+    JMenuItem addPatientFileItem, helpContents, aboutContents;
     JCheckBoxMenuItem fullScreenViewItem;
     ArrayList<JMenuItem> menuItems = new ArrayList<JMenuItem>();
     
@@ -76,16 +78,31 @@ public class TBMenuBar extends JMenuBar{
         //Settings menu
         settingsMenu = new JMenu("Settings");
         this.add(settingsMenu);
-        //Help menu
+                //helpMenu - jheraldinetbugtong, integrated on 03/29/15
         helpMenu = new JMenu("Help");
         this.add(helpMenu);
+        helpMenu.add(helpContents = new JMenuItem("Help Contents"));
+        helpContents.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        helpMenu.add(aboutContents = new JMenuItem("About"));
+        aboutContents.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
+
         //add items to array
         menuItems.add(addPatientFileItem); //0
         menuItems.add(fullScreenViewItem); //1
+        
+        helpContents.addActionListener(this);
+        aboutContents.addActionListener(this);
     }
     
     public void bindListenerToMenu(ActionListener al, int menuIndex) {
         menuItems.get(menuIndex).addActionListener(al);
+    }
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == helpContents) {
+            HelpContents hc = new HelpContents();
+        } else if (e.getSource() == aboutContents) {
+            JOptionPane.showMessageDialog(null, "©  Project Toothbytes 2014-2015\n\n Bringas | Bugtong | Burayag | Gonzales \n\n Fabian | Maglaya | Takuma | Tandoc", "About", JOptionPane.PLAIN_MESSAGE, new ImageIcon("i/diary.gif"));
+        }
     }
     public void setAllFont(Font f){
         viewMenu.setFont(f);
