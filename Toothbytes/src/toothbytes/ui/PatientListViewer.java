@@ -42,10 +42,8 @@ public class PatientListViewer extends JPanel {
         this.setLayout(new BorderLayout());
         
         iMap = mapImages(pList);
-        PatientListListener plv = new PatientListListener();
         viewer = new JList(new TBListModel(pList));
         viewer.setCellRenderer(new PatientCellRenderer());
-        viewer.addListSelectionListener(plv);
         
         JScrollPane scroll = new JScrollPane(viewer);
         
