@@ -45,6 +45,22 @@ public class DBAccess {
             }
     }
     
+    public static int CallIdentity(){
+        try{
+            Class.forName("org.hsqldb.jdbcDriver");
+            String dbConn = "jdbc:hsqldb:file:"+dir+";user=root";
+            conn = (JDBCConnection) JDBCDriver.getConnection(dbConn, null);
+            stmt = (JDBCStatement) conn.createStatement();
+            rs = (JDBCResultSet) stmt.executeQuery("CALL IDENTITY();");
+            
+            int i = rs.getInt(1);
+            //return sReturn;
+        }catch(Exception e){
+           System.out.println(e);
+        }
+        return 0;
+    }
+    
     public static boolean dbQuery(String s){
         try{
             Class.forName("org.hsqldb.jdbcDriver");

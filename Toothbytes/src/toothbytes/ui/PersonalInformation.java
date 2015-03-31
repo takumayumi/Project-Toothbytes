@@ -336,16 +336,23 @@ public class PersonalInformation extends javax.swing.JPanel {
             String surname = surnameTF.getText();               //no numbers, special characters
             String givenName = givenNameTF.getText();           //no numbers, special characters
             String mi =  miTF.getText();                        //no numbers
+            String gender = genderCB.getSelectedItem().toString();
             String birthYear = yearTF.getText();                //no letters
             String nationality = nationalityTF.getText();       //no numbers, special characters
             String religion = religionTF.getText();             //no numbers
             String occupation = occupationTF.getText();         //no numbers
             String homeAddress = homeAddressTF.getText();
+            String telephoneNo = telephoneNumberTF.getText();
+            String officeNo = officeNumberTF.getText();
+            String emailAdd = emailAddressTF.getText();
+            String cellphoneNo = cellphoneNumberTF.getText();
+            String faxNo = faxNumberTF.getText();
             
             if(birthYear.isEmpty())
                 birthYear = "0";
             
-            pi = new PersonalInfo(surname, givenName, mi, Integer.parseInt(birthYear), nationality, religion, occupation, homeAddress);
+            pi = new PersonalInfo(surname, givenName, mi, gender, Integer.parseInt(birthYear), nationality, religion, occupation, homeAddress, 
+                                telephoneNo, officeNo, emailAdd, cellphoneNo, faxNo);
             
             launchAdditionalInfo();
         }else{
@@ -374,12 +381,17 @@ public class PersonalInformation extends javax.swing.JPanel {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame tb = new JFrame();
-                AdditionalInformation adi;
-                if(ai.getReason().isEmpty()){
+                AdditionalInformation adi = null;
+                System.out.println("here");
+                try{
+                    if(ai.getReason().isEmpty()){
+                        
+                    } else {
+                        adi = new AdditionalInformation(tb, pi, ai, mc);
+                    }
+                }catch(Exception e){
                     adi = new AdditionalInformation(tb, pi);
-                } else {
-                    adi = new AdditionalInformation(tb, pi, ai, mc);
-                }
+                }                
                 tb.setSize(adi.getPreferredSize());
                 System.out.println(adi.isVisible());
                 tb.add(adi);
@@ -472,11 +484,22 @@ public class PersonalInformation extends javax.swing.JPanel {
         surnameTF.setText(pi.getSurname());
         givenNameTF.setText(pi.getGivenName());
         miTF.setText(pi.getMI());
+        
+        if(pi.getGender().compareTo("Male") == 0){
+            genderCB.setSelectedIndex(0);
+        } else {
+            genderCB.setSelectedIndex(1);
+        }
+        
         yearTF.setText(String.valueOf(pi.getBirthYear()));
         nationalityTF.setText(pi.getNationality());
         religionTF.setText(pi.getReligion());
         occupationTF.setText(pi.getOccupation());
         homeAddressTF.setText(pi.getHomeAddress());
+        telephoneNumberTF.setText(pi.getTelephoneNo());
+        officeNumberTF.setText(pi.getOfficeNo());
+        emailAddressTF.setText(pi.getEmailAdd());
+        faxNumberTF.setText(pi.getFaxNo());
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

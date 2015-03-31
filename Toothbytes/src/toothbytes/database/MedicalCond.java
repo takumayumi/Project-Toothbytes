@@ -5,6 +5,8 @@
  */
 package toothbytes.database;
 
+import org.hsqldb.jdbc.JDBCResultSet;
+
 /**
  *
  * @author Ecchi Powa
@@ -64,17 +66,19 @@ public class MedicalCond {
     public boolean q12opt14ans;
     public boolean q12opt15ans;
     
-    public String Update(){
-        String UpdateMedicalCon = "INSERT INTO Medical_History (q1_goodHealth, q2_condition, q3_seriousIllness, q4_hospitalized, q5_prescription, \n" +
+    public int Update(){
+        String UpdateMedicalCon = "INSERT INTO Medical_History (medicalHistoryID, q1_goodHealth, q2_condition, q3_seriousIllness, q4_hospitalized, q5_prescription, \n" +
 "							q6_tobacco, q7_drugs, q8_pregnant, q8_nursing, q8_birthControl, q9_allergy, q9_otherAllergy, \n" +
 "							q10_bloodType, q11_bloodPressure, q12_illness, q12_otherIllness)"
-                + "                                      VALUES ('"+q1ans+"', '"+q2ans+"', '"+q3ans+"', '"+q4ans+"', '"+q5ans+"', '"+q6ans+"',"
+                + "                                      VALUES (DEFAULT, '"+q1ans+"', '"+q2ans+"', '"+q3ans+"', '"+q4ans+"', '"+q5ans+"', '"+q6ans+"',"
                 + "                                             '"+q7ans+"', '"+q8ans+"', '"+q9ans+"', '"+q10ans+"', '"+q11CB1ans+", "+q11CB2ans+""
                 + "                                             ,"+q11CB3ans+","+q11CB4ans+","+q11CB4ansTF+"',"
                 + "                                             '"+q12opt1ans+", "+q12opt2ans+", "+q12opt3ans+", "+q12opt4ans+","
                 + "                                              "+q12opt5ans+", "+q12opt6ans+", "+q12opt7ans+", "+q12opt8ans+","
                 + "                                              "+q12opt9ans+", "+q12opt10ans+", "+q12opt11ans+", "+q12opt12ans+""
                 + "                                              "+q12opt13ans+", "+q12opt14ans+", "+q12opt15ans+"' );";
-        return UpdateMedicalCon;
+        
+        DBAccess.dbQuery(UpdateMedicalCon);
+        return DBAccess.CallIdentity();
     }
 }

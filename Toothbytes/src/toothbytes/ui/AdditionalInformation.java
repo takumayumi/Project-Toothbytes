@@ -428,7 +428,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
                 tb.add(mc);
                 tb.pack();
                 tb.setVisible(true);
-                tb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                tb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 }
             }
         );
