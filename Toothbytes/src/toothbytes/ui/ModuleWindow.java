@@ -11,6 +11,7 @@ import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -30,6 +31,30 @@ public class ModuleWindow extends JPanel{
         this.add(mainPanel, BorderLayout.CENTER);
         
         addPatientBut = new JButton("New Patient");
+        
+        //Emi
+        addPatientBut.addActionListener(new java.awt.event.ActionListener(){
+            
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    
+                    public void run() {
+                        JFrame ctb = new JFrame();
+                        PersonalInformation pi = new PersonalInformation(ctb);
+                        System.out.println(pi.isVisible());
+                        ctb.setSize(pi.getPreferredSize());
+                        ctb.add(pi);
+                        ctb.pack();
+                        ctb.setVisible(true);
+                        ctb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        }
+                    }
+                );
+            }
+        });
+        
+        
         setAppointmentBut = new JButton("New Appointment");
         toolBar.add(addPatientBut);
         toolBar.add(setAppointmentBut);
