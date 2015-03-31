@@ -186,15 +186,11 @@ public class PatientListViewer extends JPanel {
 // Setting the model to the list again
         viewer.setModel(filteredModel);
     }
-    public class PatientListListener implements ListSelectionListener {
-
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                  Patient p = (Patient)viewer.getSelectedValue();
-                  System.out.println(DBAccess.getData(p.getId()));
-                }
-        }
-        
+    
+    public void setListListener(ListSelectionListener lsl) {
+        viewer.addListSelectionListener(lsl);
+    }
+    public Patient getSelectedPatient() {
+        return (Patient)viewer.getSelectedValue();
     }
 }
