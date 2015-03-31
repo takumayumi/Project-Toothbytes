@@ -737,6 +737,8 @@ public class MedicalCondition extends javax.swing.JPanel {
                     q12opt14ans, q12opt15ans);
             
             updateDatabase();
+            
+            tb.dispose();
         }else{
             if(!hasAnswer(q1)){q1Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(!hasAnswer(q2)){q2Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
@@ -828,7 +830,12 @@ public class MedicalCondition extends javax.swing.JPanel {
     }
 
     public void updateDatabase(){
-        
+       int medicalID = mc.Update();
+       System.out.println("medicalhere");
+       int personalID = pi.UpdatePersonalInfo(medicalID);
+       System.out.println("personalInfo");
+       boolean isOK = ai.UpdateAdditionalInfo(personalID);
+       System.out.println("Everything "+ isOK);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField bloodPressureTF;

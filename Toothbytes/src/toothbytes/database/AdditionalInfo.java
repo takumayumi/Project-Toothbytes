@@ -39,13 +39,19 @@ public class AdditionalInfo {
         this.officeNumber = officeNumber;
     }
     
-    public String UpdateAdditionalInfo(){
-        String additionalInfoUpdate = "INSERT INTO Additional_Info (dentalInsurance, effectiveDate, guardianName, guardianOccupation, referral, consulationReason,\n" +
-"				previousDentist, lastDentalVisit, physicianName, physicianOffice, physicianSpecialty, physicianContactNo) \n" +
-"                               VALUES ('"+dentalInsurance+"', '"+effectiveDateYear+"', '"+guardiansName+"', '"+occupation+"', '"+refferer+"', '"+reason+"',"
-                + "             '"+previousDentist+"', '"+lastDentalVisitYear+"', '"+nameOfPhysician+"', '"+officeAddress+"', '"+specialization+"', '"+officeNumber+"')";
-        
-        return additionalInfoUpdate;
+    public boolean UpdateAdditionalInfo(int patientID){
+        try{
+            String additionalInfoUpdate = "INSERT INTO Additional_Info (additionalInfoID, patientID, dentalInsurance, effectiveDate, guardianName, guardianOccupation, referral, consulationReason,\n" +
+    "				previousDentist, lastDentalVisit, physicianName, physicianOffice, physicianSpecialty, physicianContactNo) \n" +
+    "                               VALUES (DEFAULT, "+patientID+", '"+dentalInsurance+"', '"+effectiveDateYear+"', '"+guardiansName+"', '"+occupation+"', '"+refferer+"', '"+reason+"',"
+                    + "             '"+previousDentist+"', '"+lastDentalVisitYear+"', '"+nameOfPhysician+"', '"+officeAddress+"', '"+specialization+"', '"+officeNumber+"')";
+
+            return true;
+        }catch(Exception e){
+            System.out.println(e);
+            return false;
+        }
+
     }
     
     public String getDentalInsurance(){
