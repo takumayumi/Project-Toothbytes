@@ -18,7 +18,4 @@ public class DataMan {
         long milis = System.currentTimeMillis() - bday.getTime().getTime();
         return (int) (milis/1000/31536000);
     }
-    public static String dateToString(Date d) {
-        return d.toString();
-    }
 }
