@@ -4,7 +4,7 @@ public class Patient implements Comparable<Patient>{
     private int id;
     private String lastName, firstName, midName;
 
-    public Patient(int id, String firstName, String lastName, String midName) {
+    public Patient(int id, String lastName, String firstName, String midName) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -44,7 +44,7 @@ public class Patient implements Comparable<Patient>{
     }
     
     public String getFullName() {
-        return this.lastName + ", " + this.firstName + " " + this.midName + ". ";
+        return this.firstName + ", " + this.lastName + " " + this.midName + ". ";
     }
 
     @Override
@@ -53,6 +53,6 @@ public class Patient implements Comparable<Patient>{
     }
     
     public String toString() {
-        return this.lastName + ", " + this.firstName + " " + this.midName + ". ";
+        return this.firstName + ", " + this.lastName + " " + this.midName + ". ";
     }
 }
