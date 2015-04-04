@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -72,19 +73,19 @@ public class UIScaffold extends JFrame {
         moduleMenu.setLayout(new FlowLayout(FlowLayout.LEFT));
         moduleMenu.setBackground(Color.white);
         
-            //buttons
+        //buttons
         navButtons = new ButtonGroup();
         
-        recBut = new JButton("Records");
-        //recBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/PatientRecords.png"));
+        recBut = new JButton("Patient Records");
+        recBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/PatientRecords.png"));
         navButtons.add(recBut);
         
         appBut = new JButton("Appointments");
-        //appBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Appointments.png"));
+        appBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Appointments.png"));
         navButtons.add(appBut);
         
         payBut = new JButton("Payments");
-        //payBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Finances.png"));
+        payBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Finances.png"));
         navButtons.add(payBut);        
         
         moduleMenu.add(recBut);
@@ -192,7 +193,7 @@ public class UIScaffold extends JFrame {
         public void actionPerformed(ActionEvent e) {
             //System.out.println(e.getActionCommand());
             switch(e.getActionCommand()) {
-                case "Records" :
+                case "Patient Records" :
                     if(!state.equals("recw")){
                         modulePanel.removeAll();
                         loadModule(getModule("recw"), "recw");

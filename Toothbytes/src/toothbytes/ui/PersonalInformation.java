@@ -189,14 +189,18 @@ public class PersonalInformation extends javax.swing.JPanel {
 
         jLabel19.setText("Occupation:");
 
+        nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/toothbytes/res/icons/btn/Next.png"))); // NOI18N
         nextButton.setText("Next");
+        nextButton.setToolTipText("");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
             }
         });
 
+        cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/toothbytes/res/icons/btn/Cancel.png"))); // NOI18N
         cancelButton.setText("Cancel");
+        cancelButton.setToolTipText("");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);

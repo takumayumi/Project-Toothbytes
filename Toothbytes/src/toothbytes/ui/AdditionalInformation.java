@@ -199,21 +199,27 @@ public class AdditionalInformation extends javax.swing.JPanel {
 
         jLabel15.setText("Office Number:");
 
+        nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/toothbytes/res/icons/btn/Next.png"))); // NOI18N
         nextButton.setText("Next");
+        nextButton.setToolTipText("");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
             }
         });
 
+        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/toothbytes/res/icons/btn/Back.png"))); // NOI18N
         backButton.setText("Back");
+        backButton.setToolTipText("");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
             }
         });
 
+        cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/toothbytes/res/icons/btn/Cancel.png"))); // NOI18N
         cancelButton.setText("Cancel");
+        cancelButton.setToolTipText("");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -377,7 +383,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
                     .addComponent(officeAddressTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
                     .addComponent(officeNumberTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nextButton)
                     .addComponent(backButton)

@@ -277,6 +277,7 @@ public class MedicalCondition extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        finishButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/toothbytes/res/icons/btn/Save.png"))); // NOI18N
         finishButton.setText("Finish");
         finishButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,8 +285,10 @@ public class MedicalCondition extends javax.swing.JPanel {
             }
         });
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/toothbytes/res/icons/btn/Back.png"))); // NOI18N
         jButton2.setText("Back");
 
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/toothbytes/res/icons/btn/Cancel.png"))); // NOI18N
         jButton3.setText("Cancel");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

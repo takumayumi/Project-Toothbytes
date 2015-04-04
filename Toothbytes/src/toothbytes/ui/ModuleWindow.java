@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -24,6 +25,7 @@ public class ModuleWindow extends JPanel{
         this.add(mainPanel, BorderLayout.CENTER);
         
         addPatientBut = new JButton("New Patient");
+        addPatientBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/AddNewPatient.png"));
         
         addPatientBut.addActionListener(new java.awt.event.ActionListener(){
             
@@ -50,6 +52,7 @@ public class ModuleWindow extends JPanel{
         
         
         setAppointmentBut = new JButton("New Appointment");
+        setAppointmentBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/AddNewAppointment.png"));
         toolBar.add(addPatientBut);
         toolBar.add(setAppointmentBut);
     }
