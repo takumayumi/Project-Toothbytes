@@ -1,7 +1,6 @@
 package toothbytes.ui;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -22,9 +21,10 @@ import toothbytes.util.DataMan;
 public class RecordsWindow extends ModuleWindow {
 
     private PatientListViewer plv;
-    private JPanel patientViewer;
+    private JTabbedPane tabsPane;
+    private JPanel dentalViewer, infoViewer, gallery;
     private MigLayout layout, formLayout;
-    private JScrollPane scroll;
+    private JScrollPane scrollInfo, scrollDental, scrollGallery;
     private PatientX current;
 
     public RecordsWindow(ArrayList<Patient> pList) {
@@ -51,18 +51,37 @@ public class RecordsWindow extends ModuleWindow {
         PatientListListener pll = new PatientListListener();
         plv.setListListener(pll);
         
-        patientViewer = new JPanel();
-        patientViewer.setLayout(formLayout);
-        patientViewer.setBackground(Color.white);
+        tabsPane = new JTabbedPane();
+        tabsPane.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
         
-        scroll = new JScrollPane(patientViewer);
+        infoViewer = new JPanel();
+        infoViewer.setLayout(formLayout);
+        infoViewer.setBackground(Color.white);
+        
+        dentalViewer = new JPanel();
+        dentalViewer.setLayout(formLayout);
+        dentalViewer.setBackground(Color.white);
+        
+        gallery = new JPanel();
+        gallery.setLayout(formLayout);
+        gallery.setBackground(Color.white);
+        
+        scrollInfo = new JScrollPane(infoViewer);
+        scrollDental = new JScrollPane(dentalViewer);
+        scrollGallery = new JScrollPane(gallery);
+        
+        tabsPane.addTab("Personal Info", scrollInfo);
+        tabsPane.addTab("Dental Info", scrollDental);
+        tabsPane.addTab("Gallery", scrollGallery);
+        
+        
         super.addToMainPane(plv, "span 2, grow");
-        super.addToMainPane(scroll, "span 10, grow");
+        super.addToMainPane(tabsPane, "span 10, grow");
     }
 
     public void showInfo(PatientX p) {
         if(this.current != null) {
-            patientViewer.removeAll();
+            infoViewer.removeAll();
         }
         
         this.current = p;
@@ -107,51 +126,51 @@ public class RecordsWindow extends ModuleWindow {
             photo.setIcon(new ImageIcon("src/toothbytes/res/photos/patient.png"));
         }
         
-        patientViewer.add(photo, "span 3");
+        infoViewer.add(photo, "span 3");
         
-        patientViewer.add(lblName, "skip 12, span 2");
-        patientViewer.add(name, "span 7");
+        infoViewer.add(lblName, "skip 12, span 2");
+        infoViewer.add(name, "span 7");
         
-        patientViewer.add(lblAge, "skip 3, span 2");
-        patientViewer.add(age, "span 7");
+        infoViewer.add(lblAge, "skip 3, span 2");
+        infoViewer.add(age, "span 7");
         
-        patientViewer.add(lblBdate, "skip 3, span 2");
-        patientViewer.add(bdate, "span 7");
+        infoViewer.add(lblBdate, "skip 3, span 2");
+        infoViewer.add(bdate, "span 7");
         
-        patientViewer.add(lblOccupation, "skip 3, span 2");
-        patientViewer.add(occupation, "span 7");
+        infoViewer.add(lblOccupation, "skip 3, span 2");
+        infoViewer.add(occupation, "span 7");
         
-        patientViewer.add(lblCivstat, "skip 3, span 2");
-        patientViewer.add(civstat, "span 7");
+        infoViewer.add(lblCivstat, "skip 3, span 2");
+        infoViewer.add(civstat, "span 7");
         
-        patientViewer.add(lblGender, "skip 3, span 2");
-        patientViewer.add(gender, "span 7");
+        infoViewer.add(lblGender, "skip 3, span 2");
+        infoViewer.add(gender, "span 7");
         
-        patientViewer.add(lblNname, "skip 3, span 2");
-        patientViewer.add(nName, "span 7");
+        infoViewer.add(lblNname, "skip 3, span 2");
+        infoViewer.add(nName, "span 7");
         
-        patientViewer.add(lblHomeadd, "skip 3, span 2");
-        patientViewer.add(homeadd, "span 7");
+        infoViewer.add(lblHomeadd, "skip 3, span 2");
+        infoViewer.add(homeadd, "span 7");
         
-        patientViewer.add(lblHomeno, "skip 3, span 2");
-        patientViewer.add(homeno, "span 7");
+        infoViewer.add(lblHomeno, "skip 3, span 2");
+        infoViewer.add(homeno, "span 7");
         
-        patientViewer.add(lblOfficeno, "skip 3, span 2");
-        patientViewer.add(officeno, "span 7");
+        infoViewer.add(lblOfficeno, "skip 3, span 2");
+        infoViewer.add(officeno, "span 7");
         
-        patientViewer.add(lblFaxno, "skip 3, span 2");
-        patientViewer.add(faxno, "span 7");
+        infoViewer.add(lblFaxno, "skip 3, span 2");
+        infoViewer.add(faxno, "span 7");
         
-        patientViewer.add(lblFaxno, "skip 3, span 2");
-        patientViewer.add(faxno, "span 7");
+        infoViewer.add(lblFaxno, "skip 3, span 2");
+        infoViewer.add(faxno, "span 7");
         
-        patientViewer.add(lblCellno, "skip 3, span 2");
-        patientViewer.add(cellno, "span 7");
+        infoViewer.add(lblCellno, "skip 3, span 2");
+        infoViewer.add(cellno, "span 7");
         
-        patientViewer.add(lblEadd, "skip 3, span 2");
-        patientViewer.add(eAdd, "span 7");
+        infoViewer.add(lblEadd, "skip 3, span 2");
+        infoViewer.add(eAdd, "span 7");
         
-        SwingUtilities.updateComponentTreeUI(patientViewer);
+        SwingUtilities.updateComponentTreeUI(infoViewer);
     }
     
     public class PatientListListener implements ListSelectionListener {
