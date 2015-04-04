@@ -1,6 +1,5 @@
 package toothbytes.ui;
 
-// author @jheraldinetbugtong
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -18,11 +17,6 @@ import java.text.NumberFormat;
 
 import java.io.File;
 import net.miginfocom.swing.MigLayout;
-
-/**
- *
- * @author jhrldnnn
- */
 
 public class AppointmentsWindow extends ModuleWindow {
 
@@ -96,9 +90,7 @@ public class AppointmentsWindow extends ModuleWindow {
         cal = Calendar.getInstance(TimeZone.getDefault());
 
         /**
-         * *************************************
          * initialize data storage structure, if possible load from file
-         **************************************
          */
         calendarStore = new CalendarStorage();
         calendarStoreFile = new File("temp.dat");
@@ -182,7 +174,7 @@ public class AppointmentsWindow extends ModuleWindow {
             for (Action action : actions) {
                 add(new JButton(action));
 
-                    //action.setPreferredSize(new Dimension(40,25));
+                //action.setPreferredSize(new Dimension(40,25));
                 //action.setPreferredSize(new Dimension(40,25));
                 //JToolBar(action).setPreferredSize(new Dimension( 40,25 ));
                 //actions[i].setPreferredSize(new Dimension(40,25));
@@ -197,14 +189,12 @@ public class AppointmentsWindow extends ModuleWindow {
         currentState = state;
 
 		//this.setJMenuBar(new AppropiateMenuBar());
-		// get container and remove current GUI
+        // get container and remove current GUI
         //Container content = this.getContentPane();
         p_body.removeAll();
 
         /**
-         * **********************************************
          * set layout, add toolbar, add Header panels
-		 *********************************************
          */
         p_body.setLayout(new BoxLayout(p_body, BoxLayout.PAGE_AXIS));
         p_body.add(new AppropiateToolBar());
@@ -223,7 +213,7 @@ public class AppointmentsWindow extends ModuleWindow {
         /**
          * **********************************************
          * display necessary GUI depending upon state
-		 *********************************************
+         * ********************************************
          */
         switch (currentState) {
             case ST_DISPLAY_YEAR:
@@ -323,10 +313,8 @@ public class AppointmentsWindow extends ModuleWindow {
         }
 
         /**
-         * **********************************************
          * footer panels to wrap off header panels and allow central GUI to
          * scroll
-		 *********************************************
          */
         JScrollPane scrollPane = new JScrollPane(scrollPanel,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -343,7 +331,7 @@ public class AppointmentsWindow extends ModuleWindow {
         p_body.add(Box.createRigidArea(new Dimension(0, 10)));
         p_body.add(Box.createVerticalGlue());
 
-		// tell window to repaint itself now that its contents have changed
+        // tell window to repaint itself now that its contents have changed
         //this.pack();
         //this.repaint();
     }
@@ -446,7 +434,7 @@ public class AppointmentsWindow extends ModuleWindow {
             this.year = year;
             this.month = month;
 
-			// use calendar object to find how many days in monmth etc
+            // use calendar object to find how many days in monmth etc
             Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
             calendar.set(Calendar.DAY_OF_MONTH, 1);
             calendar.set(Calendar.MONTH, month);
@@ -547,16 +535,12 @@ public class AppointmentsWindow extends ModuleWindow {
                 Calendar c = Calendar.getInstance(TimeZone.getDefault());
 
                 /**
-                 * ****************************************
                  * if today change colour (green)
-				 *****************************************
                  */
                 if (year == c.get(Calendar.YEAR) && month == c.get(Calendar.MONTH) && day == c.get(Calendar.DAY_OF_MONTH)) {
                     this.setBackground(new Color((float) 0.5, (float) 1, (float) 0.5));
                 } /**
-                 * ****************************************
-                 * else if appoitments exist change colour (yellow)
-				 *****************************************
+                 * else if appointments exist change colour (yellow)
                  */
                 else if (appointments != null) {
                     float darkness; //value 0-1 representing how dark a colour
@@ -568,9 +552,7 @@ public class AppointmentsWindow extends ModuleWindow {
 
                     this.setBackground(new Color((float) 1, (float) 1, 1 - darkness));
                 } /**
-                 * ****************************************
                  * else if annual appointments change colour (red)
-				 *****************************************
                  */
                 else if (annualAppointments != null) {
                     this.setBackground(new Color((float) 1, (float) 0.5, (float) 0.5));
@@ -649,9 +631,7 @@ public class AppointmentsWindow extends ModuleWindow {
             ArrayList daysAnnualAppointments = calendarStore.getArrayListOfAnnualObjectsFor(month, day);
 
             /**
-             * **********************************
              * annual appointments
-			 **********************************
              */
             if (daysAnnualAppointments != null) {
                 for (int i = 0; i < daysAnnualAppointments.size(); i++) {
@@ -660,9 +640,7 @@ public class AppointmentsWindow extends ModuleWindow {
             }
 
             /**
-             * **********************************
              * normal appointments
-			 **********************************
              */
             // if no appointments
             if (daysAppointments == null) {
@@ -839,9 +817,7 @@ public class AppointmentsWindow extends ModuleWindow {
             String[] dayChoices;
 
             /**
-             * ****************************************
              * create components
-			 *****************************************
              */
             // year/month/day  drop downs
             yearComboBox = new JComboBox(yearChoices);
@@ -876,9 +852,7 @@ public class AppointmentsWindow extends ModuleWindow {
             categoryComboBox = new JComboBox(categoryLabels);
 
             /**
-             * ****************************************
              * if editing existing appointment initialise to its values
-			 *****************************************
              */
             Appointment appointment = null;
             if (arrayListIndex != -1) {
@@ -896,9 +870,7 @@ public class AppointmentsWindow extends ModuleWindow {
             }
 
             /**
-             * ****************************************
              * add components to panel
-			 *****************************************
              */
             setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
             JPanel temp;
@@ -1088,9 +1060,7 @@ public class AppointmentsWindow extends ModuleWindow {
             String[] dayChoices;
 
             /**
-             * ****************************************
              * create components
-			 *****************************************
              */
             monthComboBox = new JComboBox(monthLabels);
             monthComboBox.setSelectedItem("" + monthLabels[month]);
@@ -1121,9 +1091,7 @@ public class AppointmentsWindow extends ModuleWindow {
                     JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
             /**
-             * ****************************************
              * if editing existing appointment initialise to its values
-			 *****************************************
              */
             Appointment appointment = null;
             if (arrayListIndex != -1) {
@@ -1140,9 +1108,7 @@ public class AppointmentsWindow extends ModuleWindow {
             }
 
             /**
-             * ****************************************
              * add components to panel
-			 *****************************************
              */
             setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
             JPanel temp;
@@ -1236,7 +1202,7 @@ public class AppointmentsWindow extends ModuleWindow {
                     setState(ST_DISPLAY_DAY);
                 }
 
-            } //***** else if delete button pressed then delete and goto viewDay in question
+            } // else if delete button pressed then delete and goto viewDay in question
             else if (eo.equals(deleteButton)) {
                 calendarStore.deleteAnnualObject(this.month, this.day, this.arrayListIndex);
                 setState(ST_DISPLAY_DAY);

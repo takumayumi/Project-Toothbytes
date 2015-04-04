@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.ui;
 
 import java.awt.BorderLayout;
@@ -14,15 +9,12 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-/**
- *
- * @author Jolas
- */
 public class ModuleWindow extends JPanel{
     private JPanel toolBar, mainPanel;
     private JButton addPatientBut, setAppointmentBut;
     public ModuleWindow(){
         this.setLayout(new BorderLayout());
+        this.setBackground(Color.white);
         toolBar = new JPanel();
         toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         toolBar.setBackground(Color.white);
@@ -32,7 +24,6 @@ public class ModuleWindow extends JPanel{
         
         addPatientBut = new JButton("New Patient");
         
-        //Emi
         addPatientBut.addActionListener(new java.awt.event.ActionListener(){
             
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -47,6 +38,8 @@ public class ModuleWindow extends JPanel{
                         ctb.add(pi);
                         ctb.pack();
                         ctb.setVisible(true);
+                        ctb.setForeground(Color.white);
+                        ctb.setBackground(Color.white);
                         ctb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                         }
                     }

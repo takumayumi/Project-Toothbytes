@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.ui;
 
 import java.awt.Color;
@@ -24,10 +19,6 @@ import toothbytes.model.Patient;
 import toothbytes.model.PatientX;
 import toothbytes.util.DataMan;
 
-/**
- *
- * @author Jolas
- */
 public class RecordsWindow extends ModuleWindow {
 
     private PatientListViewer plv;
@@ -78,12 +69,8 @@ public class RecordsWindow extends ModuleWindow {
         
         File f = new File("src/toothbytes/res/photos/" + p.getId() + ".jpg");
         JLabel photo = new JLabel();
-        JLabel lName = new JLabel(p.getLastName());
-        JLabel lblLname = new JLabel("Last Name:");
-        JLabel fName = new JLabel(p.getFirstName());
-        JLabel lblFname = new JLabel("First Name:");
-        JLabel mName = new JLabel(p.getMidName());
-        JLabel lblMname = new JLabel("Middle Initial:");
+        JLabel name = new JLabel(p.getFirstName() + " " + p.getMidName() + ". " + p.getLastName());
+        JLabel lblName = new JLabel("Name:");
         JLabel age = new JLabel(DataMan.getAge(p.getBdate())+"");
         JLabel lblAge = new JLabel("Age:");
         SimpleDateFormat format1 = new SimpleDateFormat("MM-dd-yyyy");
@@ -122,14 +109,8 @@ public class RecordsWindow extends ModuleWindow {
         
         patientViewer.add(photo, "span 3");
         
-        patientViewer.add(lblLname, "skip 12, span 2");
-        patientViewer.add(lName, "span 7");
-        
-        patientViewer.add(lblFname, "skip 3, span 2");
-        patientViewer.add(fName, "span 7");
-        
-        patientViewer.add(lblMname, "skip 3, span 2");
-        patientViewer.add(mName, "span 7");
+        patientViewer.add(lblName, "skip 12, span 2");
+        patientViewer.add(name, "span 7");
         
         patientViewer.add(lblAge, "skip 3, span 2");
         patientViewer.add(age, "span 7");

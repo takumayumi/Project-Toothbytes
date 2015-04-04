@@ -12,10 +12,7 @@ import toothbytes.ui.RecordsWindow;
 import toothbytes.ui.AppointmentsWindow;
 import toothbytes.ui.PaymentsWindow;
 import toothbytes.ui.UIScaffold;
-/**
- *
- * @author Jolas
- */
+
 public class ToothbytesApp {
     /**
      * @param args the command line arguments

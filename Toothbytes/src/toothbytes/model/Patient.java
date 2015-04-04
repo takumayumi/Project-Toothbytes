@@ -1,19 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.model;
 
-/**
- *
- * @author Jolas
- */
 public class Patient implements Comparable<Patient>{
     private int id;
     private String lastName, firstName, midName;
 
-    public Patient(int id, String lastName, String firstName, String midName) {
+    public Patient(int id, String firstName, String lastName, String midName) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -53,7 +44,7 @@ public class Patient implements Comparable<Patient>{
     }
     
     public String getFullName() {
-        return this.firstName+" "+this.midName+". "+this.lastName;
+        return this.lastName + ", " + this.firstName + " " + this.midName + ". ";
     }
 
     @Override
@@ -62,6 +53,6 @@ public class Patient implements Comparable<Patient>{
     }
     
     public String toString() {
-        return this.firstName+" "+this.midName+". "+this.lastName;
+        return this.lastName + ", " + this.firstName + " " + this.midName + ". ";
     }
 }

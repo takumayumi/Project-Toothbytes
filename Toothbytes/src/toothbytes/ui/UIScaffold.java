@@ -97,14 +97,15 @@ public class UIScaffold extends JFrame {
         modulePanel = new JPanel();
         //modulePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         modulePanel.setLayout(new MigLayout("fill"));
-        mainPanel.add(modulePanel, "span 10 2");
+        mainPanel.add(modulePanel, "span 9 2");
         modulePanel.add(new Cover(), "grow");
         
         //side panel(right)
         sidePanel = new JPanel();
         //sidePanel.setBackground(Color.yellow);
         sidePanel.setLayout(new MigLayout("fill"));
-        mainPanel.add(sidePanel, "span 2 2");
+        sidePanel.setBackground(Color.white);
+        mainPanel.add(sidePanel, "span 3 2");
         //status Bar(bottom)
         statusBar = new JPanel();
 //        statusBar.setBackground(Color.white);
@@ -134,8 +135,8 @@ public class UIScaffold extends JFrame {
         this.setVisible(true);
     }
     
-    /**
-    *This method takes the screen size of the computer for the computation of the frame size.
+    /*
+     * This method takes the screen size of the computer for the computation of the frame size.
     */
     public Dimension generateSize() {
         return Toolkit.getDefaultToolkit().getScreenSize();
