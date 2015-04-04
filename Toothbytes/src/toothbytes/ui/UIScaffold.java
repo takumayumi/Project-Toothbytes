@@ -49,6 +49,7 @@ public class UIScaffold extends JFrame {
         
         //menu bar
         menuBar = new TBMenuBar();
+        menuBar.setBackground(Color.white);
         this.setJMenuBar(menuBar);
         menuBar.bindListenerToMenu(new MenuBarHandler(), 1);
         //layout configurations
@@ -101,6 +102,7 @@ public class UIScaffold extends JFrame {
         modulePanel = new JPanel();
         //modulePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         modulePanel.setLayout(new MigLayout("fill"));
+        modulePanel.setBackground(Color.white);
         mainPanel.add(modulePanel, "span 9 2");
         modulePanel.add(new Cover(), "grow");
         
