@@ -62,11 +62,15 @@ public class UIScaffold extends JFrame {
         //mainpanel configurations
         mainPanel = new JPanel();
         mainPanel.setLayout(framework);
+        mainPanel.setBackground(Color.white);
         //mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         this.setContentPane(mainPanel);
+        
         //moduleMenu
         moduleMenu = new JPanel();
         moduleMenu.setLayout(new FlowLayout(FlowLayout.LEFT));
+        moduleMenu.setBackground(Color.white);
+        
             //buttons
         navButtons = new ButtonGroup();
         
@@ -102,13 +106,12 @@ public class UIScaffold extends JFrame {
         
         //side panel(right)
         sidePanel = new JPanel();
-        //sidePanel.setBackground(Color.yellow);
         sidePanel.setLayout(new MigLayout("fill"));
         sidePanel.setBackground(Color.white);
         mainPanel.add(sidePanel, "span 3 2");
         //status Bar(bottom)
         statusBar = new JPanel();
-//        statusBar.setBackground(Color.white);
+        statusBar.setBackground(Color.white);
         mainPanel.add(statusBar, "span 12 1");
         //test here
 //        JTextField field = new JTextField();

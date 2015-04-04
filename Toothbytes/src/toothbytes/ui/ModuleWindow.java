@@ -19,6 +19,7 @@ public class ModuleWindow extends JPanel{
         toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         toolBar.setBackground(Color.white);
         mainPanel = new JPanel();
+        mainPanel.setBackground(Color.white);
         this.add(toolBar, BorderLayout.NORTH);
         this.add(mainPanel, BorderLayout.CENTER);
         
