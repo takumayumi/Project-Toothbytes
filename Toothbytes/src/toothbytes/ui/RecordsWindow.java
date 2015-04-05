@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -70,9 +71,9 @@ public class RecordsWindow extends ModuleWindow {
         scrollDental = new JScrollPane(dentalViewer);
         scrollGallery = new JScrollPane(gallery);
         
-        tabsPane.addTab("Personal Info", scrollInfo);
-        tabsPane.addTab("Dental Info", scrollDental);
-        tabsPane.addTab("Gallery", scrollGallery);
+        tabsPane.addTab("Personal Info", new ImageIcon("src/toothbytes/res/icons/btn/PersonalInfo.png"), scrollInfo);
+        tabsPane.addTab("Dental Info", new ImageIcon("src/toothbytes/res/icons/btn/DentalRecords.png"), scrollDental);
+        tabsPane.addTab("Gallery", new ImageIcon("src/toothbytes/res/icons/btn/Images.png"), scrollGallery);
         
         
         super.addToMainPane(plv, "span 2, grow");
