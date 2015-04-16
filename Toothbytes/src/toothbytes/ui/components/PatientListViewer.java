@@ -1,4 +1,4 @@
-package toothbytes.ui;
+package toothbytes.ui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

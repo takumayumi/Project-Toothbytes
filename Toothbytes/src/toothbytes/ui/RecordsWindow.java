@@ -1,5 +1,7 @@
 package toothbytes.ui;
 
+import toothbytes.ui.components.PatientListViewer;
+import toothbytes.ui.components.ModuleWindow;
 import java.awt.Color;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -70,9 +72,9 @@ public class RecordsWindow extends ModuleWindow {
         scrollDental = new JScrollPane(dentalViewer);
         scrollGallery = new JScrollPane(gallery);
         
-        tabsPane.addTab("Personal Info", scrollInfo);
-        tabsPane.addTab("Dental Info", scrollDental);
-        tabsPane.addTab("Gallery", scrollGallery);
+        tabsPane.addTab("Personal Info", new ImageIcon("src/toothbytes/res/icons/btn/PersonalInfo.png"), scrollInfo);
+        tabsPane.addTab("Dental Info", new ImageIcon("src/toothbytes/res/icons/btn/DentalRecords.png"), scrollDental);
+        tabsPane.addTab("Gallery", new ImageIcon("src/toothbytes/res/icons/btn/Images.png"), scrollGallery);
         
         
         super.addToMainPane(plv, "span 2, grow");
@@ -116,9 +118,6 @@ public class RecordsWindow extends ModuleWindow {
         JLabel lblCellno = new JLabel("Cellphone Number:");
         JLabel eAdd = new JLabel(p.getEmailAdd());
         JLabel lblEadd = new JLabel("Email Address:");
-        
-        //lName.setFont(new Font("Calibri", Font.PLAIN, 12));
-        //lName.setEditable(false);
         
         if(f.exists()) {
             photo.setIcon(new ImageIcon(f.getAbsolutePath()));

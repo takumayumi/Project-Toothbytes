@@ -1,4 +1,4 @@
-package toothbytes.ui;
+package toothbytes.ui.forms;
 
 import java.util.regex.Pattern;
 import javax.swing.JFrame;

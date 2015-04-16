@@ -1,8 +1,13 @@
 package toothbytes.ui;
 
+import toothbytes.ui.components.SidePanel;
+import toothbytes.ui.components.AppointmentsWindow;
+import toothbytes.ui.components.PaymentsWindow;
+import toothbytes.ui.components.Cover;
+import toothbytes.ui.components.ModuleWindow;
+import toothbytes.ui.forms.PersonalInformation;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -13,157 +18,168 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import toothbytes.ui.toolbars.TBMenuBar;
 
+public class MainScreen extends JFrame {
 
-public class UIScaffold extends JFrame {
-    private JPanel mainPanel, sidePanel, statusBar, modulePanel;
+    private JPanel mainPanel, sidePanel, modulePanel;
     private JButton mainButton1, mainButton2, mainButton3;
     private MigLayout framework;
     private Dimension defaultSize;
     private boolean fullScreen;
     private ButtonGroup navButtons;
-    private JButton appBut, recBut, payBut,testButton;
+    private JButton appBut, recBut, payBut, testButton;
     private TBMenuBar menuBar;
-    private JToolBar navBar, quickBar;
+    private JToolBar navBar, quickBar, statusBar;
     private JButton qAddPatientBut, qSetAppointmentBut;
     private String state;
     private ModuleWindow recWindow, appWindow, payWindow;
+    private SidePanel sp;
     
-    public UIScaffold(RecordsWindow rw, AppointmentsWindow aw, PaymentsWindow pw) {
+    public MainScreen(RecordsWindow rw, AppointmentsWindow aw, PaymentsWindow pw) {
+        
         recWindow = rw;
         appWindow = aw;
         payWindow = pw;
-        
+
         state = "firstrun";
+        
         Font uiButtonFont = new Font("Arial", Font.PLAIN, 24);
         Color uiButtonColor = Color.WHITE;
+        
         //frame configurations
         defaultSize = generateSize();
         defaultSize.setSize(
-                defaultSize.getWidth(), defaultSize.getHeight()-40);
+                defaultSize.getWidth(), defaultSize.getHeight() - 40);
+        
         this.setTitle("Toothbytes");
         this.setSize(defaultSize);
         this.setIconImage(new ImageIcon("src/toothbytes/favicon.png").getImage());
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        fullScreen = false;
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        fullScreen = false;
+
         //menu bar
         menuBar = new TBMenuBar();
         menuBar.setBackground(Color.white);
         this.setJMenuBar(menuBar);
         menuBar.bindListenerToMenu(new MenuBarHandler(), 1);
+        
         //layout configurations
         framework = new MigLayout(
-                "filly, wrap 12",   //layout constraints
+                "filly, wrap 12", //layout constraints
                 "[fill]push[fill]push[fill]push[fill]push"
-                        + "[fill]push[fill]push[fill]push[fill]push"
-                        + "[fill][fill]push[fill]push[fill]", //12 columns
-                "[fill]push[fill][fill, 25]");//rows
-        
+                + "[fill]push[fill]push[fill]push[fill]push"
+                + "[fill][fill]push[fill]push[fill]", //12 columns
+                "[fill]push[fill]");//rows
+
         //mainpanel configurations
         mainPanel = new JPanel();
         mainPanel.setLayout(framework);
         mainPanel.setBackground(Color.white);
-        //mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         this.setContentPane(mainPanel);
+             
+        //status Bar(bottom)
+        statusBar = new JToolBar();
+        statusBar.setBackground(Color.darkGray);
         
+        mainPanel.add(statusBar, "south");
+        
+        JLabel test = new JLabel("8:30 PM *this is just a sample");
+        test.setForeground(Color.white);
+        test.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        statusBar.add(test);
+        
+        //nav bar
         navBar = new JToolBar("TestBar");
-        navButtons = new ButtonGroup();
-        
+        //navButtons = new ButtonGroup();
+
         recBut = new JButton();
         recBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/PatientRecords.png"));
         recBut.setToolTipText("Dental Records");
-        navButtons.add(recBut);
-        
+        //navButtons.add(recBut);
+
         appBut = new JButton();
         appBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Appointments.png"));
         appBut.setToolTipText("Appointments");
-        navButtons.add(appBut);
-        
+        //navButtons.add(appBut);
+
         payBut = new JButton();
         payBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Finances.png"));
         payBut.setToolTipText("Payments");
-        navButtons.add(payBut);        
+        //navButtons.add(payBut);
         
-//        moduleMenu.add(recBut);
-//        moduleMenu.add(appBut);
-//        moduleMenu.add(payBut);
         navBar.add(recBut);
         navBar.add(appBut);
         navBar.add(payBut);
-        
+
         NavigationHandler nh = new NavigationHandler();
         recBut.addActionListener(nh);
         appBut.addActionListener(nh);
         payBut.addActionListener(nh);
-        
+
         navBar.setOrientation(JToolBar.VERTICAL);
         navBar.setFloatable(false);
         navBar.setBorder(BorderFactory.createLineBorder(Color.gray));
         mainPanel.add(navBar, "west");
+
+        //module window(left)
+        modulePanel = new JPanel();
+        modulePanel.setLayout(new MigLayout("fill"));
+        modulePanel.setBackground(Color.white);
+        mainPanel.add(modulePanel, "span 12 2");
+        modulePanel.add(new Cover(), "grow");
+
+        //side panel(right)
+        sp = new SidePanel();
+        mainPanel.add(sp, "east");
         
+        //quick bar
         quickBar = new JToolBar("QuickBar");
-        
+
         qAddPatientBut = new JButton(new ImageIcon("src/toothbytes/res/icons/btn/AddNewPatient.png"));
         qSetAppointmentBut = new JButton(new ImageIcon("src/toothbytes/res/icons/btn/AddNewAppointment.png"));
-        
+
         QuickBarHandler qh = new QuickBarHandler();
         qAddPatientBut.addActionListener(qh);
         qSetAppointmentBut.addActionListener(qh);
-        
+
         quickBar.add(qAddPatientBut);
         quickBar.add(qSetAppointmentBut);
-        
-        quickBar.setFloatable(false);
+
+        //quickBar.setFloatable(false);
         mainPanel.add(quickBar, "north");
-        
-        //module window(left)
-        modulePanel = new JPanel();
-        //modulePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        modulePanel.setLayout(new MigLayout("fill"));
-        modulePanel.setBackground(Color.white);
-        mainPanel.add(modulePanel, "span 9 2");
-        modulePanel.add(new Cover(), "grow");
-        
-        //side panel(right)
-        sidePanel = new JPanel();
-        sidePanel.setLayout(new MigLayout("fill"));
-        sidePanel.setBackground(Color.white);
-        mainPanel.add(sidePanel, "span 3 2");
-        //status Bar(bottom)
-        statusBar = new JPanel();
-        statusBar.setBackground(Color.white);
-        mainPanel.add(statusBar, "span 12 1");
     }
-    
+
     public void testButtonActionPerformed(ActionEvent evt) {
         this.toggleFullScreen();
     }
-       
+
     /**
-    *this method sets the frame to be visible.
-    */
-    public void init(){
+     * this method sets the frame to be visible.
+     */
+    public void init() {
         menuBar.setAllFont(new Font("Tahoma", Font.PLAIN, 16));
         this.setVisible(true);
     }
-    
+
     /*
      * This method takes the screen size of the computer for the computation of the frame size.
-    */
+     */
     public Dimension generateSize() {
         return Toolkit.getDefaultToolkit().getScreenSize();
     }
+
     /**
-    *This method toggles the full screen mode of the frame.
-    */
+     * This method toggles the full screen mode of the frame.
+     */
     public void toggleFullScreen() {
-        if(this.fullScreen) {
+        if (this.fullScreen) {
             this.dispose();
             this.setUndecorated(false);
             this.fullScreen = false;
@@ -177,33 +193,37 @@ public class UIScaffold extends JFrame {
             this.init();
         }
     }
-    public ModuleWindow getModule(String state){
-        if(state.equals("recw")){
+
+    public ModuleWindow getModule(String state) {
+        if (state.equals("recw")) {
             return recWindow;
         } else {
-            if(state.equals("appw")){
+            if (state.equals("appw")) {
                 return appWindow;
-            } else{
-                if(state.equals("payw")) {
+            } else {
+                if (state.equals("payw")) {
                     return payWindow;
                 }
             }
         }
         return null;
     }
+
     public void loadModule(ModuleWindow c, String state) {
         this.state = state;
         modulePanel.add(c, "grow");
         SwingUtilities.updateComponentTreeUI(modulePanel);
     }
+
     public void addToSidePanel(JComponent c) {
         sidePanel.add(c, "grow");
     }
+
     public class QuickBarHandler implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == qAddPatientBut) {
+            if (e.getSource() == qAddPatientBut) {
                 java.awt.EventQueue.invokeLater(new Runnable() {
 
                     public void run() {
@@ -217,50 +237,51 @@ public class UIScaffold extends JFrame {
                         ctb.setForeground(Color.white);
                         ctb.setBackground(Color.white);
                         ctb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        }
                     }
+                }
                 );
             }
-            
-            
-            if(e.getSource() == qSetAppointmentBut) {
-                
+
+            if (e.getSource() == qSetAppointmentBut) {
+
             }
         }
-        
+
     }
+
     public class NavigationHandler implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == recBut) {
-                if(!state.equals("recw")){
+            if (e.getSource() == recBut) {
+                if (!state.equals("recw")) {
                     modulePanel.removeAll();
                     loadModule(getModule("recw"), "recw");
                 }
             }
-            if(e.getSource() == appBut) {
-                if(!state.equals("appw")){
+            if (e.getSource() == appBut) {
+                if (!state.equals("appw")) {
                     modulePanel.removeAll();
                     loadModule(getModule("appw"), "appw");
                 }
             }
-            if(e.getSource() == payBut) {
-                if(!state.equals("payw")){
+            if (e.getSource() == payBut) {
+                if (!state.equals("payw")) {
                     modulePanel.removeAll();
                     loadModule(getModule("payw"), "payw");
                 }
             }
         }
     }
+
     public class MenuBarHandler implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getActionCommand().matches("Full Screen")) {
+            if (e.getActionCommand().matches("Full Screen")) {
                 toggleFullScreen();
             }
         }
-        
+
     }
-}//end of UIScaffold
+}//end of MainScreen

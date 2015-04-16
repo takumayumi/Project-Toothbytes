@@ -19,35 +19,40 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import toothbytes.ui.HelpContents;
-import toothbytes.ui.PersonalInformation;
+import toothbytes.ui.forms.PersonalInformation;
 
 /**
  *
  * @author Jolas
  */
-public class TBMenuBar extends JMenuBar implements ActionListener{
+public class TBMenuBar extends JMenuBar implements ActionListener {
+
     JMenu viewMenu, fileMenu, settingsMenu, helpMenu;
     JMenuItem addPatientFileItem, helpContents, aboutContents;
     JCheckBoxMenuItem fullScreenViewItem;
     ArrayList<JMenuItem> menuItems = new ArrayList<JMenuItem>();
-    
+
     public TBMenuBar() {
         //File Menu
         fileMenu = new JMenu("File");
         fileMenu.setMnemonic(KeyEvent.VK_F);
         fileMenu.getAccessibleContext().setAccessibleDescription(
                 "Add patient, Set Appointment, exit program, etc.");
-        this.add(fileMenu);
         
-        addPatientFileItem = new JMenuItem("New Patient", new ImageIcon("src/toothbytes/res/icons/btn/AddNewPatient_s.png"));
+        this.add(fileMenu);
+
+        addPatientFileItem = new JMenuItem("New Patient", new ImageIcon(
+                "src/toothbytes/res/icons/btn/AddNewPatient_s.png"));
+        
         addPatientFileItem.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_ENTER, ActionEvent.CTRL_MASK));
-        addPatientFileItem.addActionListener(new java.awt.event.ActionListener(){
-            
+        
+        addPatientFileItem.addActionListener(new java.awt.event.ActionListener() {
+
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                
+
                 java.awt.EventQueue.invokeLater(new Runnable() {
-                    
+
                     public void run() {
                         JFrame ctb = new JFrame();
                         PersonalInformation pi = new PersonalInformation(ctb);
@@ -57,12 +62,12 @@ public class TBMenuBar extends JMenuBar implements ActionListener{
                         ctb.pack();
                         ctb.setVisible(true);
                         ctb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        }
                     }
+                }
                 );
             }
         });
-        
+
         fileMenu.add(addPatientFileItem);
         //View Menu
         viewMenu = new JMenu("View");
@@ -70,7 +75,7 @@ public class TBMenuBar extends JMenuBar implements ActionListener{
         viewMenu.getAccessibleContext().setAccessibleDescription(
                 "Change Toothbyte's display mode");
         this.add(viewMenu);
-            //items in View Menu
+        //items in View Menu
         fullScreenViewItem = new JCheckBoxMenuItem("Full Screen");
         fullScreenViewItem.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_ENTER, ActionEvent.ALT_MASK));
@@ -78,7 +83,7 @@ public class TBMenuBar extends JMenuBar implements ActionListener{
         //Settings menu
         settingsMenu = new JMenu("Settings");
         this.add(settingsMenu);
-                //helpMenu - jheraldinetbugtong, integrated on 03/29/15
+        //helpMenu - jheraldinetbugtong, integrated on 03/29/15
         helpMenu = new JMenu("Help");
         this.add(helpMenu);
         helpMenu.add(helpContents = new JMenuItem("Help Contents"));
@@ -89,14 +94,15 @@ public class TBMenuBar extends JMenuBar implements ActionListener{
         //add items to array
         menuItems.add(addPatientFileItem); //0
         menuItems.add(fullScreenViewItem); //1
-        
+
         helpContents.addActionListener(this);
         aboutContents.addActionListener(this);
     }
-    
+
     public void bindListenerToMenu(ActionListener al, int menuIndex) {
         menuItems.get(menuIndex).addActionListener(al);
     }
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == helpContents) {
             HelpContents hc = new HelpContents();
@@ -104,12 +110,13 @@ public class TBMenuBar extends JMenuBar implements ActionListener{
             JOptionPane.showMessageDialog(null, "©  Project Toothbytes 2014-2015\n\n Bringas | Bugtong | Burayag | Gonzales \n\n Fabian | Maglaya | Takuma | Tandoc", "About", JOptionPane.PLAIN_MESSAGE, new ImageIcon("i/diary.gif"));
         }
     }
-    public void setAllFont(Font f){
+
+    public void setAllFont(Font f) {
         viewMenu.setFont(f);
         fileMenu.setFont(f);
         helpMenu.setFont(f);
         settingsMenu.setFont(f);
-        for(JMenuItem i : menuItems) {
+        for (JMenuItem i : menuItems) {
             i.setFont(f);
         }
     }

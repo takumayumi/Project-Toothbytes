@@ -1,4 +1,4 @@
-package toothbytes.ui;
+package toothbytes.ui.components;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import javax.swing.*;
@@ -17,6 +17,9 @@ import java.text.NumberFormat;
 
 import java.io.File;
 import net.miginfocom.swing.MigLayout;
+import toothbytes.ui.Appointment;
+import toothbytes.ui.CalendarStorage;
+import toothbytes.ui.Data;
 
 public class AppointmentsWindow extends ModuleWindow {
 

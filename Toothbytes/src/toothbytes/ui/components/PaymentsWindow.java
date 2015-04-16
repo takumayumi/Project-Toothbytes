@@ -1,4 +1,4 @@
-package toothbytes.ui;
+package toothbytes.ui.components;
 
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
