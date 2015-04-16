@@ -39,7 +39,7 @@ public class TBMenuBar extends JMenuBar implements ActionListener{
                 "Add patient, Set Appointment, exit program, etc.");
         this.add(fileMenu);
         
-        addPatientFileItem = new JMenuItem("New Patient", new ImageIcon("images/middle.gif"));
+        addPatientFileItem = new JMenuItem("New Patient", new ImageIcon("src/toothbytes/res/icons/btn/AddNewPatient_s.png"));
         addPatientFileItem.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_ENTER, ActionEvent.CTRL_MASK));
         addPatientFileItem.addActionListener(new java.awt.event.ActionListener(){

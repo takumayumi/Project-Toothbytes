@@ -14,13 +14,14 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import toothbytes.ui.toolbars.TBMenuBar;
 
 
 public class UIScaffold extends JFrame {
-    private JPanel mainPanel, sidePanel, moduleMenu, statusBar, modulePanel;
+    private JPanel mainPanel, sidePanel, statusBar, modulePanel;
     private JButton mainButton1, mainButton2, mainButton3;
     private MigLayout framework;
     private Dimension defaultSize;
@@ -28,6 +29,8 @@ public class UIScaffold extends JFrame {
     private ButtonGroup navButtons;
     private JButton appBut, recBut, payBut,testButton;
     private TBMenuBar menuBar;
+    private JToolBar navBar, quickBar;
+    private JButton qAddPatientBut, qSetAppointmentBut;
     private String state;
     private ModuleWindow recWindow, appWindow, payWindow;
     
@@ -45,6 +48,7 @@ public class UIScaffold extends JFrame {
                 defaultSize.getWidth(), defaultSize.getHeight()-40);
         this.setTitle("Toothbytes");
         this.setSize(defaultSize);
+        this.setIconImage(new ImageIcon("src/toothbytes/favicon.png").getImage());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fullScreen = false;
         
@@ -59,7 +63,7 @@ public class UIScaffold extends JFrame {
                 "[fill]push[fill]push[fill]push[fill]push"
                         + "[fill]push[fill]push[fill]push[fill]push"
                         + "[fill][fill]push[fill]push[fill]", //12 columns
-                "[fill, 25][fill]push[fill][fill, 25]");//rows
+                "[fill]push[fill][fill, 25]");//rows
         
         //mainpanel configurations
         mainPanel = new JPanel();
@@ -68,36 +72,55 @@ public class UIScaffold extends JFrame {
         //mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         this.setContentPane(mainPanel);
         
-        //moduleMenu
-        moduleMenu = new JPanel();
-        moduleMenu.setLayout(new FlowLayout(FlowLayout.LEFT));
-        moduleMenu.setBackground(Color.white);
-        
-        //buttons
+        navBar = new JToolBar("TestBar");
         navButtons = new ButtonGroup();
         
-        recBut = new JButton("Patient Records");
+        recBut = new JButton();
         recBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/PatientRecords.png"));
+        recBut.setToolTipText("Dental Records");
         navButtons.add(recBut);
         
-        appBut = new JButton("Appointments");
+        appBut = new JButton();
         appBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Appointments.png"));
+        appBut.setToolTipText("Appointments");
         navButtons.add(appBut);
         
-        payBut = new JButton("Payments");
+        payBut = new JButton();
         payBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Finances.png"));
+        payBut.setToolTipText("Payments");
         navButtons.add(payBut);        
         
-        moduleMenu.add(recBut);
-        moduleMenu.add(appBut);
-        moduleMenu.add(payBut);
+//        moduleMenu.add(recBut);
+//        moduleMenu.add(appBut);
+//        moduleMenu.add(payBut);
+        navBar.add(recBut);
+        navBar.add(appBut);
+        navBar.add(payBut);
         
         NavigationHandler nh = new NavigationHandler();
         recBut.addActionListener(nh);
         appBut.addActionListener(nh);
         payBut.addActionListener(nh);
         
-        mainPanel.add(moduleMenu, "span 12 1");
+        navBar.setOrientation(JToolBar.VERTICAL);
+        navBar.setFloatable(false);
+        navBar.setBorder(BorderFactory.createLineBorder(Color.gray));
+        mainPanel.add(navBar, "west");
+        
+        quickBar = new JToolBar("QuickBar");
+        
+        qAddPatientBut = new JButton(new ImageIcon("src/toothbytes/res/icons/btn/AddNewPatient.png"));
+        qSetAppointmentBut = new JButton(new ImageIcon("src/toothbytes/res/icons/btn/AddNewAppointment.png"));
+        
+        QuickBarHandler qh = new QuickBarHandler();
+        qAddPatientBut.addActionListener(qh);
+        qSetAppointmentBut.addActionListener(qh);
+        
+        quickBar.add(qAddPatientBut);
+        quickBar.add(qSetAppointmentBut);
+        
+        quickBar.setFloatable(false);
+        mainPanel.add(quickBar, "north");
         
         //module window(left)
         modulePanel = new JPanel();
@@ -116,17 +139,6 @@ public class UIScaffold extends JFrame {
         statusBar = new JPanel();
         statusBar.setBackground(Color.white);
         mainPanel.add(statusBar, "span 12 1");
-        //test here
-//        JTextField field = new JTextField();
-//        field.setColumns(8);
-//        statusBar.add(field);
-//        testButton = new JButton("test");
-//        testButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent evt) {
-//                testButtonActionPerformed(evt);
-//            }
-//        });
-//        statusBar.add(testButton);
     }
     
     public void testButtonActionPerformed(ActionEvent evt) {
@@ -187,30 +199,57 @@ public class UIScaffold extends JFrame {
     public void addToSidePanel(JComponent c) {
         sidePanel.add(c, "grow");
     }
+    public class QuickBarHandler implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == qAddPatientBut) {
+                java.awt.EventQueue.invokeLater(new Runnable() {
+
+                    public void run() {
+                        JFrame ctb = new JFrame();
+                        PersonalInformation pi = new PersonalInformation(ctb);
+                        System.out.println(pi.isVisible());
+                        ctb.setSize(pi.getPreferredSize());
+                        ctb.add(pi);
+                        ctb.pack();
+                        ctb.setVisible(true);
+                        ctb.setForeground(Color.white);
+                        ctb.setBackground(Color.white);
+                        ctb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        }
+                    }
+                );
+            }
+            
+            
+            if(e.getSource() == qSetAppointmentBut) {
+                
+            }
+        }
+        
+    }
     public class NavigationHandler implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            //System.out.println(e.getActionCommand());
-            switch(e.getActionCommand()) {
-                case "Patient Records" :
-                    if(!state.equals("recw")){
-                        modulePanel.removeAll();
-                        loadModule(getModule("recw"), "recw");
-                    }
-                    break;
-                case "Appointments" :
-                    if(!state.equals("appw")){
-                        modulePanel.removeAll();
-                        loadModule(getModule("appw"), "appw");
-                    }
-                    break;
-                case "Payments" :
-                    if(!state.equals("payw")){
-                        modulePanel.removeAll();
-                        loadModule(getModule("payw"), "payw");
-                    }
-                    break;
+            if(e.getSource() == recBut) {
+                if(!state.equals("recw")){
+                    modulePanel.removeAll();
+                    loadModule(getModule("recw"), "recw");
+                }
+            }
+            if(e.getSource() == appBut) {
+                if(!state.equals("appw")){
+                    modulePanel.removeAll();
+                    loadModule(getModule("appw"), "appw");
+                }
+            }
+            if(e.getSource() == payBut) {
+                if(!state.equals("payw")){
+                    modulePanel.removeAll();
+                    loadModule(getModule("payw"), "payw");
+                }
             }
         }
     }
