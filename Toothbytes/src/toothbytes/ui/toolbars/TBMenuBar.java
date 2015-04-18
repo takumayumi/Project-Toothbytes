@@ -16,8 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import toothbytes.ui.About;
 import toothbytes.ui.HelpContents;
 import toothbytes.ui.forms.PersonalInformation;
 
@@ -107,7 +107,7 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
         if (e.getSource() == helpContents) {
             HelpContents hc = new HelpContents();
         } else if (e.getSource() == aboutContents) {
-            JOptionPane.showMessageDialog(null, "©  Project Toothbytes 2014-2015\n\n Bringas | Bugtong | Burayag | Gonzales \n\n Fabian | Maglaya | Takuma | Tandoc", "About", JOptionPane.PLAIN_MESSAGE, new ImageIcon("i/diary.gif"));
+            About ab = new About();
         }
     }
 
