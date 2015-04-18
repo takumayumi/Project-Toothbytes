@@ -1,12 +1,7 @@
 package toothbytes.ui;
 
-import toothbytes.ui.components.SidePanel;
-import toothbytes.ui.components.AppointmentsWindow;
-import toothbytes.ui.components.PaymentsWindow;
-import toothbytes.ui.components.Cover;
-import toothbytes.ui.components.ModuleWindow;
-import toothbytes.ui.forms.PersonalInformation;
 import java.awt.Color;
+import static java.awt.Color.WHITE;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -26,6 +21,12 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
+import toothbytes.ui.components.AppointmentsWindow;
+import toothbytes.ui.components.Cover;
+import toothbytes.ui.components.ModuleWindow;
+import toothbytes.ui.components.PaymentsWindow;
+import toothbytes.ui.components.SidePanel;
+import toothbytes.ui.forms.PersonalInformation;
 import toothbytes.ui.toolbars.TBMenuBar;
 
 public class MainScreen extends JFrame {
@@ -153,21 +154,25 @@ public class MainScreen extends JFrame {
         recBut = new JButton();
         recBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/PatientRecords.png"));
         recBut.setToolTipText("Dental Records");
+        recBut.setBackground(WHITE);
         //navButtons.add(recBut);
 
         appBut = new JButton();
         appBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Appointments.png"));
         appBut.setToolTipText("Appointments");
+        appBut.setBackground(WHITE);
         //navButtons.add(appBut);
 
         payBut = new JButton();
         payBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Finances.png"));
         payBut.setToolTipText("Payments");
+        payBut.setBackground(WHITE);
         //navButtons.add(payBut);
         
         navBar.add(recBut);
         navBar.add(appBut);
         navBar.add(payBut);
+        navBar.setBackground(WHITE);
 
         NavigationHandler nh = new NavigationHandler();
         recBut.addActionListener(nh);
@@ -188,13 +193,19 @@ public class MainScreen extends JFrame {
 
         //side panel(right)
         sp = new SidePanel();
+        sp.setBackground(WHITE);
         mainPanel.add(sp, "east");
         
         //quick bar
         quickBar = new JToolBar("QuickBar");
+        quickBar.setBackground(WHITE);
 
         qAddPatientBut = new JButton(new ImageIcon("src/toothbytes/res/icons/btn/AddNewPatient.png"));
+        qAddPatientBut.setBackground(WHITE);
+        qAddPatientBut.setToolTipText("Add Patient");
         qSetAppointmentBut = new JButton(new ImageIcon("src/toothbytes/res/icons/btn/AddNewAppointment.png"));
+        qSetAppointmentBut.setBackground(WHITE);
+        qSetAppointmentBut.setToolTipText("Set Appointment");
 
         QuickBarHandler qh = new QuickBarHandler();
         qAddPatientBut.addActionListener(qh);

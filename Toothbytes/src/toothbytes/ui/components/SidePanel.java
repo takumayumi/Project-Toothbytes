@@ -6,6 +6,8 @@
 package toothbytes.ui.components;
 
 import java.awt.BorderLayout;
+import static java.awt.Color.WHITE;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -40,11 +42,13 @@ public class SidePanel extends JPanel{
         sideAppointment.add(sideAppScroll, BorderLayout.CENTER);
         
         viewSched = new JButton("View Full Schedule");
+        viewSched.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/WholeCalendar.png"));
         sideAppointment.add(viewSched, BorderLayout.SOUTH);
         
         //PAYMENTS
         sidePayment = new JPanel();
         sidePayment.setLayout(new BorderLayout());
         sideTabsPane.add("Payments Tracker", sidePayment);
+        sidePayment.setBackground(WHITE);
     }
 }
