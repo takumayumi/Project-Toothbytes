@@ -103,9 +103,16 @@ public class MainScreen extends JFrame {
                 public void run() {
                     int hour = LocalDateTime.now().getHour();
                     int minute = LocalDateTime.now().getMinute();
+                    
+                    int year = LocalDateTime.now().getYear();
+                    int month = LocalDateTime.now().getMonthValue();
+                    int day = LocalDateTime.now().getDayOfMonth();
+                    
                     String sHour = String.valueOf(hour);
                     String sMin = String.valueOf(minute);
                     String hourFormat = "AM";
+                    
+                    String date = year + "/" + month + "/" + day;
                     
                     System.out.println(hour + " : " + minute);
                     
@@ -126,7 +133,9 @@ public class MainScreen extends JFrame {
                     }
                     
                     time = sHour + " : " + sMin + " " + hourFormat;
-                    test.setText(time);
+                    
+                    
+                    test.setText("<html>"+time +"<br>"+ date + "/<html>");
                 }
             }, 1000, 1000);
         
