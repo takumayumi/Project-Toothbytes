@@ -1,19 +1,30 @@
 package toothbytes.ui;
 
-public class About extends javax.swing.JDialog {
+import java.awt.Toolkit;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
+public class About extends javax.swing.JDialog {
+    
     /**
      * Creates new form About
+     * @param parent
+     * @param modal
      */
     public About(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.pack();
+        this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width)/2 - getWidth()/2, (Toolkit.getDefaultToolkit().getScreenSize().height)/2 - getHeight()/2);
     }
 
     public About() {
         super();
         initComponents();
         this.setVisible(true);
+        this.pack();
+        this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width)/2 - getWidth()/2, (Toolkit.getDefaultToolkit().getScreenSize().height)/2 - getHeight()/2);
     }
 
     /**
@@ -25,35 +36,30 @@ public class About extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        aboutPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        aboutTA = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         moreTA = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        developersTP = new javax.swing.JTextPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        aboutTP = new javax.swing.JTextPane();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        developersTP1 = new javax.swing.JTextPane();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        developersTP2 = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        aboutPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/toothbytes/res/icons/about_logo.png"))); // NOI18N
 
-        jScrollPane1.setBorder(null);
-
-        aboutTA.setEditable(false);
-        aboutTA.setColumns(20);
-        aboutTA.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        aboutTA.setLineWrap(true);
-        aboutTA.setRows(5);
-        aboutTA.setText("Toothbytes is a dental management software exclusively only for Dr. Ruben Pascual Dental Clinic. This software helps with the organization of the patients’ personal and dental records which includes the management of the billing records and the appointment scheduling. For more information, please visit Pines City Doctors' Hospital, Baguio City, Benguet, Philippines.\n\nDevelopers:\nEmrod Van Gonzales\nJheraldine Bugtong\nJolas Burayag\nKimwell Tandoc\nLouriz Bringas\nNichole Joanne Fabian\nVilgladys Maglaya\nYumi Takuma");
-        aboutTA.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(aboutTA);
-
         moreTA.setEditable(false);
         moreTA.setColumns(20);
-        moreTA.setFont(new java.awt.Font("Times New Roman", 0, 10)); // NOI18N
+        moreTA.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         moreTA.setLineWrap(true);
         moreTA.setRows(5);
         moreTA.setWrapStyleWord(true);
@@ -73,38 +79,104 @@ public class About extends javax.swing.JDialog {
 
         // + "\n" + "Class Directory: " + System.getProperty("java.class.path")
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jScrollPane4.setBorder(null);
+
+        developersTP.setEditable(false);
+        developersTP.setBorder(null);
+        developersTP.setFont(new java.awt.Font("Monotype Corsiva", 0, 18)); // NOI18N
+        developersTP.setText("Louriz Bringas\nNichole Joanne Fabian\nVilgladys Maglaya\nYumi Takuma");
+        jScrollPane4.setViewportView(developersTP);
+        StyledDocument dtp = developersTP.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        dtp.setParagraphAttributes(0, dtp.getLength(), center, false);
+
+        jScrollPane3.setBorder(null);
+
+        aboutTP.setEditable(false);
+        aboutTP.setBorder(null);
+        aboutTP.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        aboutTP.setText("Toothbytes is a dental management software exclusively only for Dr. Ruben Pascual Dental Clinic. This software helps with the organization of the patients’ personal and dental records which includes the management of the billing records and the appointment scheduling. For more information, please visit Pines City Doctors' Hospital, Baguio City, Benguet, Philippines.");
+        jScrollPane3.setViewportView(aboutTP);
+        StyledDocument aboutDoc = aboutTP.getStyledDocument();
+        SimpleAttributeSet justify = new SimpleAttributeSet();
+        StyleConstants.setAlignment(justify, StyleConstants.ALIGN_JUSTIFIED);
+        aboutDoc.setParagraphAttributes(0, aboutDoc.getLength(), justify, false);
+
+        jScrollPane5.setBorder(null);
+
+        developersTP1.setEditable(false);
+        developersTP1.setBorder(null);
+        developersTP1.setFont(new java.awt.Font("Monotype Corsiva", 0, 18)); // NOI18N
+        developersTP1.setText("Emrod Van Gonzales\nJheraldine Bugtong\nJolas Burayag\nKimwell Tandoc");
+        jScrollPane5.setViewportView(developersTP1);
+        StyledDocument dtp1 = developersTP1.getStyledDocument();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        dtp1.setParagraphAttributes(0, dtp1.getLength(), center, false);
+
+        jScrollPane6.setBorder(null);
+
+        developersTP2.setEditable(false);
+        developersTP2.setBorder(null);
+        developersTP2.setFont(new java.awt.Font("Monotype Corsiva", 0, 18)); // NOI18N
+        developersTP2.setText("Developers:");
+        jScrollPane6.setViewportView(developersTP2);
+        StyledDocument dtp2 = developersTP2.getStyledDocument();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        dtp2.setParagraphAttributes(0, dtp2.getLength(), center, false);
+
+        javax.swing.GroupLayout aboutPanelLayout = new javax.swing.GroupLayout(aboutPanel);
+        aboutPanel.setLayout(aboutPanelLayout);
+        aboutPanelLayout.setHorizontalGroup(
+            aboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(aboutPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
+                .addComponent(jScrollPane2)
                 .addContainerGap())
+            .addGroup(aboutPanelLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 36, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, aboutPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(aboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, aboutPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, aboutPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(123, 123, 123)))
+                .addGap(133, 133, 133))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+        aboutPanelLayout.setVerticalGroup(
+            aboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(aboutPanelLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(aboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(aboutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(aboutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -153,11 +225,17 @@ public class About extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea aboutTA;
+    private javax.swing.JPanel aboutPanel;
+    private javax.swing.JTextPane aboutTP;
+    private javax.swing.JTextPane developersTP;
+    private javax.swing.JTextPane developersTP1;
+    private javax.swing.JTextPane developersTP2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTextArea moreTA;
     // End of variables declaration//GEN-END:variables
 }
