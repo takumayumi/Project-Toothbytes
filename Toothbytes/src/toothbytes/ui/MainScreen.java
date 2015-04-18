@@ -12,6 +12,9 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -40,6 +43,7 @@ public class MainScreen extends JFrame {
     private String state;
     private ModuleWindow recWindow, appWindow, payWindow;
     private SidePanel sp;
+    public static String time;
     
     public MainScreen(RecordsWindow rw, AppointmentsWindow aw, PaymentsWindow pw) {
         
@@ -90,7 +94,45 @@ public class MainScreen extends JFrame {
         
         mainPanel.add(statusBar, "south");
         
-        JLabel test = new JLabel("8:30 PM *this is just a sample");
+        JLabel test = new JLabel(time);
+        
+            Timer setTime = new Timer();
+            setTime.scheduleAtFixedRate(new TimerTask() {
+
+                @Override
+                public void run() {
+                    int hour = LocalDateTime.now().getHour();
+                    int minute = LocalDateTime.now().getMinute();
+                    String sHour = String.valueOf(hour);
+                    String sMin = String.valueOf(minute);
+                    String hourFormat = "AM";
+                    
+                    System.out.println(hour + " : " + minute);
+                    
+                    if(hour > 12){
+                        hour = hour - 12;
+                        hourFormat = "PM";
+                    } else if (hour == 0){
+                        hour = 12;
+                        sHour = "12";
+                    }
+                    
+                    if(hour < 10){
+                        sHour = "0"+sHour;
+                    }
+                    
+                    if(minute < 10){
+                        sMin = "0"+sMin;
+                    }
+                    
+                    time = sHour + " : " + sMin + " " + hourFormat;
+                    test.setText(time);
+                }
+            }, 1000, 1000);
+        
+        
+        
+        
         test.setForeground(Color.white);
         test.setFont(new Font("Tahoma", Font.PLAIN, 18));
         statusBar.add(test);
@@ -283,5 +325,5 @@ public class MainScreen extends JFrame {
             }
         }
 
-    }
+    }   
 }//end of MainScreen
