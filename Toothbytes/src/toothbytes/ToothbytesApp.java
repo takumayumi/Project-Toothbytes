@@ -24,10 +24,10 @@ public class ToothbytesApp {
     public static void main(String[] args) {
 
         try {
-            LoginWindow lw = new LoginWindow();
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            SwingUtilities.updateComponentTreeUI(lw);
-            lw.init();
+//            LoginWindow lw = new LoginWindow();
+//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//            SwingUtilities.updateComponentTreeUI(lw);
+//            lw.init();
             DBAccess.connectDB(); //connect to database
             patientList = DBAccess.initPatientList(); //initialize list of patients
             RecordsWindow rWin = new RecordsWindow(patientList);
