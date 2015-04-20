@@ -115,11 +115,10 @@ public class MainScreen extends JFrame {
                     
                     String date = year + "/" + month + "/" + day;
                     
-                    System.out.println(hour + " : " + minute);
-                    
                     if(hour > 12){
                         hour = hour - 12;
                         hourFormat = "PM";
+                        sHour = String.valueOf(hour);
                     } else if (hour == 0){
                         hour = 12;
                         sHour = "12";
