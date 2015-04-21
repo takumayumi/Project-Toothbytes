@@ -29,7 +29,7 @@ public class DBAccess {
     private static JDBCConnection conn = null;
     private static JDBCResultSet rs = null;
     private static JDBCStatement stmt = null;
-    private static String dir = new File("src/db").getAbsolutePath();
+    private static String dir = new File("src/db/").getAbsolutePath();
     /**
      *This method connects to the database 
      */
