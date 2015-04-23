@@ -14,17 +14,16 @@ import javax.swing.JPanel;
  * manage the modules of program Toothbytes.
  */
 public class ModuleWindow extends JPanel{
-<<<<<<< Updated upstream
-    private JPanel mainPanel;
+
     //private JButton addPatientBut, setAppointmentBut;
-=======
+
     private JPanel toolBar, mainPanel;
     
     /**
      * This constructor creates the Module Window interface and layouts it's 
      * components.
      */
->>>>>>> Stashed changes
+
     public ModuleWindow(){
         this.setLayout(new BorderLayout());
         this.setBackground(Color.white);

@@ -89,21 +89,21 @@ public class RecordsWindow extends ModuleWindow {
         super.addToMainPane(plv, "span 2, grow");
         super.addToMainPane(tabsPane, "span 10, grow");
     }
-<<<<<<< Updated upstream:Toothbytes/src/toothbytes/ui/components/RecordsWindow.java
+
     
     public void showDental(Patient p) {
         //dental chart
         //table listing treatments and condition
     }
     
-=======
+
 
     /**
      * This method shows the information about the Patient from the database.
      * @param   p
      *          Object representation of PatientX.
      */
->>>>>>> Stashed changes:Toothbytes/src/toothbytes/ui/RecordsWindow.java
+
     public void showInfo(PatientX p) {
         //if there is a selected patient clear the viewer
         if(this.current != null) {
