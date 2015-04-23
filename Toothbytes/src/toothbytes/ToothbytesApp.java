@@ -9,8 +9,9 @@ import javax.swing.UIManager;
 import toothbytes.database.DBAccess;
 import toothbytes.model.Patient;
 import toothbytes.ui.MainScreen;
-import toothbytes.ui.RecordsWindow;
+import toothbytes.ui.components.RecordsWindow;
 import toothbytes.ui.components.AppointmentsWindow;
+import toothbytes.ui.components.DentalChart;
 import toothbytes.ui.components.PaymentsWindow;
 
 /**
@@ -26,8 +27,20 @@ public class ToothbytesApp {
 
     public static void main(String[] args) {
         try {
+
             DBAccess.connectDB();
             patientList = DBAccess.initPatientList();
+
+//            LoginWindow lw = new LoginWindow();
+//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//            SwingUtilities.updateComponentTreeUI(lw);
+//            lw.init();
+//            DentalChart dc = new DentalChart();
+//            dc.init();
+            
+            DBAccess.connectDB(); //connect to database
+            patientList = DBAccess.initPatientList(); //initialize list of patients
+
             RecordsWindow rWin = new RecordsWindow(patientList);
             AppointmentsWindow aWin = new AppointmentsWindow();
             PaymentsWindow pWin = new PaymentsWindow();

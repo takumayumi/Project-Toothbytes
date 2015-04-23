@@ -1,5 +1,6 @@
 package toothbytes.ui;
 
+import toothbytes.ui.components.RecordsWindow;
 import java.awt.Color;
 import static java.awt.Color.WHITE;
 import java.awt.Dimension;
@@ -225,7 +226,7 @@ public class MainScreen extends JFrame {
      * this method sets the frame to be visible.
      */
     public void init() {
-        menuBar.setAllFont(new Font("Tahoma", Font.PLAIN, 16));
+        menuBar.setAllFont(new Font("Consolas", Font.PLAIN, 16));
         this.setVisible(true);
     }
 

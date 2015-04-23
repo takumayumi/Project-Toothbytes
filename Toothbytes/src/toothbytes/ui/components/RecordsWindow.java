@@ -1,4 +1,4 @@
-package toothbytes.ui;
+package toothbytes.ui.components;
 
 import toothbytes.ui.components.PatientListViewer;
 import toothbytes.ui.components.ModuleWindow;
@@ -76,12 +76,17 @@ public class RecordsWindow extends ModuleWindow {
         tabsPane.addTab("Dental Info", new ImageIcon("src/toothbytes/res/icons/btn/DentalRecords.png"), scrollDental);
         tabsPane.addTab("Gallery", new ImageIcon("src/toothbytes/res/icons/btn/Images.png"), scrollGallery);
         
-        
         super.addToMainPane(plv, "span 2, grow");
         super.addToMainPane(tabsPane, "span 10, grow");
     }
-
+    
+    public void showDental(Patient p) {
+        //dental chart
+        //table listing treatments and condition
+    }
+    
     public void showInfo(PatientX p) {
+        //if there is a selected patient clear the viewer
         if(this.current != null) {
             infoViewer.removeAll();
         }
@@ -178,7 +183,9 @@ public class RecordsWindow extends ModuleWindow {
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 Patient p = plv.getSelectedPatient();
-                showInfo(DBAccess.getData(p.getId()));
+                PatientX px = DBAccess.getData(p.getId());
+                showInfo(px);
+                showDental(p);
             }
         }
 

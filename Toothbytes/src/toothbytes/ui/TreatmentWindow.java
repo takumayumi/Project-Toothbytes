@@ -12,6 +12,7 @@ import javax.swing.JFrame;
  * @author Jolas
  */
 public class TreatmentWindow extends JFrame{
-    
-    
+    public TreatmentWindow() {
+        
+    }
 }
