@@ -9,9 +9,6 @@ import toothbytes.database.AdditionalInfo;
 import toothbytes.database.PersonalInfo;
 import toothbytes.database.MedicalCond;
 
-/**
- * @author Kimwell Tandoc
- */
 public class MedicalCondition extends javax.swing.JPanel {
     public JFrame tb;
     public PersonalInfo pi;
@@ -622,19 +619,19 @@ public class MedicalCondition extends javax.swing.JPanel {
 
     private void q2NoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_q2NoMouseClicked
         q2YesTF.setEditable(false);
-        q2YesTF.setBackground(Color.red);//to be removed
+        q2YesTF.setBackground(Color.red); // To be removed
     }//GEN-LAST:event_q2NoMouseClicked
 
     private void q2YesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_q2YesMouseClicked
         q2YesTF.setEditable(true);
         q2YesTF.setText("");
-        q2YesTF.setBackground(Color.green);//to be removed  
+        q2YesTF.setBackground(Color.green); // To be removed  
     }//GEN-LAST:event_q2YesMouseClicked
 
     private void q11CB4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_q11CB4ActionPerformed
         if(q11CB4.isSelected() == true){
             q11CB4TF.setEditable(true);
-            q11CB4TF.setBackground(Color.green);//tobe removed
+            q11CB4TF.setBackground(Color.green); // To be removed
         }else{
             q11CB4TF.setEditable(false);
             q11CB4TF.setBackground(Color.red);
@@ -645,39 +642,39 @@ public class MedicalCondition extends javax.swing.JPanel {
     private void q3YesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_q3YesMouseClicked
         q3YesTF.setEditable(true);
         q3YesTF.setText("");
-        q3YesTF.setBackground(Color.green);//to be removed 
+        q3YesTF.setBackground(Color.green); // To be removed 
     }//GEN-LAST:event_q3YesMouseClicked
 
     private void q4YesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_q4YesMouseClicked
         q4YesTF.setEditable(true);
         q4YesTF.setText("");
-        q4YesTF.setBackground(Color.green);//to be removed 
+        q4YesTF.setBackground(Color.green); // To be removed 
     }//GEN-LAST:event_q4YesMouseClicked
 
     private void q5YesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_q5YesMouseClicked
         q5YesTF.setEditable(true);
         q5YesTF.setText("");
-        q5YesTF.setBackground(Color.green);//to be removed 
+        q5YesTF.setBackground(Color.green); // To be removed 
     }//GEN-LAST:event_q5YesMouseClicked
 
     private void q3NoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_q3NoMouseClicked
         q3YesTF.setEditable(false);
-        q3YesTF.setBackground(Color.red);//to be removed
+        q3YesTF.setBackground(Color.red); // To be removed
     }//GEN-LAST:event_q3NoMouseClicked
 
     private void q4NoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_q4NoMouseClicked
         q4YesTF.setEditable(false);
-        q4YesTF.setBackground(Color.red);//to be removed
+        q4YesTF.setBackground(Color.red); // To be removed
     }//GEN-LAST:event_q4NoMouseClicked
 
     private void q5NoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_q5NoMouseClicked
         q5YesTF.setEditable(false);
-        q5YesTF.setBackground(Color.red);//to be removed
+        q5YesTF.setBackground(Color.red); // To be removed
     }//GEN-LAST:event_q5NoMouseClicked
 
     private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
         grayTFBorders();
-        if(entriesValid()){
+        if(entriesValid()) {
             String q2ansTF ="";
             String q3ansTF ="";
             String q4ansTF ="";
@@ -686,19 +683,19 @@ public class MedicalCondition extends javax.swing.JPanel {
             
             boolean q1ans = getAnswer(q1);
             boolean q2ans = getAnswer(q2);
-                if(q2ans){
+                if(q2ans) {
                     q2ansTF = q2YesTF.getText();
                 }
             boolean q3ans = getAnswer(q3);
-                if(q3ans){
+                if(q3ans) {
                     q3ansTF = q3YesTF.getText();
                 }
             boolean q4ans = getAnswer(q4);
-                if(q4ans){
+                if(q4ans) {
                     q4ansTF = q4YesTF.getText();
                 }
             boolean q5ans = getAnswer(q5);
-                if(q5ans){
+                if(q5ans) {
                     q5ansTF = q5YesTF.getText();
                 }
             boolean q6ans = getAnswer(q6);
@@ -706,18 +703,15 @@ public class MedicalCondition extends javax.swing.JPanel {
             boolean q8ans = getAnswer(q8);
             boolean q9ans = getAnswer(q9);
             boolean q10ans = getAnswer(q10);
-            
             boolean q11CB1ans = q11CB1.isSelected();
             boolean q11CB2ans = q11CB2.isSelected();
             boolean q11CB3ans = q11CB3.isSelected();
             boolean q11CB4ans = q11CB4.isSelected();
-                if(q11CB4ans){
+                if(q11CB4ans) {
                     q11CB4ansTF = q11CB4TF.getText();
                 }
-                
             String bloodType = bloodTypeCB.getSelectedItem().toString();
             String bloodPressure = bloodPressureTF.getText();
-            
             boolean q12opt1ans = q12opt1.isSelected();
             boolean q12opt2ans = q12opt2.isSelected();
             boolean q12opt3ans = q12opt3.isSelected();
@@ -734,7 +728,7 @@ public class MedicalCondition extends javax.swing.JPanel {
             boolean q12opt14ans = q12opt14.isSelected();
             boolean q12opt15ans = q12opt15.isSelected();
             
-            mc = new MedicalCond(q1ans, q2ans, q2ansTF, q3ans, q3ansTF, q5ans, q5ansTF, q6ans, q7ans, q8ans, q9ans, q10ans,
+            mc = new MedicalCond(q1ans, q2ans, q2ansTF, q3ans, q3ansTF, q4ans, q4ansTF, q5ans, q5ansTF, q6ans, q7ans, q8ans, q9ans, q10ans,
                     q11CB1ans, q11CB2ans, q11CB3ans, q11CB4ans, q11CB4ansTF, q12opt1ans, q12opt2ans, q12opt3ans, q12opt4ans,
                     q12opt5ans, q12opt6ans, q12opt7ans, q12opt8ans, q12opt9ans, q12opt10ans, q12opt11ans, q12opt12ans, q12opt13ans,
                     q12opt14ans, q12opt15ans);
@@ -764,7 +758,7 @@ public class MedicalCondition extends javax.swing.JPanel {
         tb.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
     
-    public boolean entriesValid(){ 
+    public boolean entriesValid() { 
         if(hasAnswer(q1) &&
            hasAnswer(q2) && 
            hasAnswer(q3) &&
@@ -777,14 +771,16 @@ public class MedicalCondition extends javax.swing.JPanel {
            hasAnswer(q10) &&
            !hasNumbers(bloodTypeCB.getSelectedItem().toString()) &&
            !hasLetters(bloodPressureTF.getText())){
-            
-           return true; //all entries are valid
+           
+           // All entries are valid
+           return true; 
         }else{
-            return false; //on or more entries are NOT valid
+            // On or more entries are NOT valid
+            return false; 
         }
     }
     
-    public void grayTFBorders(){
+    public void grayTFBorders() {
         q1Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
         q2Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
         q3Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
@@ -797,42 +793,46 @@ public class MedicalCondition extends javax.swing.JPanel {
         q10Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
     }
     
-    public boolean hasAnswer(ButtonGroup btnGrp){
-        if(btnGrp.isSelected(null)){
-            return false;//no radio button within the button group is selected
+    public boolean hasAnswer(ButtonGroup btnGrp) {
+        if(btnGrp.isSelected(null)) {
+            // No radio button within the button group is selected
+            return false;
         }else{
             return true;
         }
         
     }
     
-    public boolean hasNumbers(String numberlessString){
+    public boolean hasNumbers(String numberlessString) {
         String pattern = "[0-9]";
-        if(Pattern.compile(pattern).matcher(numberlessString).find()){
-            return true;//there is a number in the string
+        if(Pattern.compile(pattern).matcher(numberlessString).find()) {
+            // There is a number in the string
+            return true;
         }else{
-            return false;//the string has no numbers
+            // The string has no numbers
+            return false;
         }
     }
     
-    public boolean hasLetters(String letterlessString){
+    public boolean hasLetters(String letterlessString) {
         String pattern = "[A-Za-z]";
-        if(Pattern.compile(pattern).matcher(letterlessString).find()){
-            return true;//there is a letter on the string
+        if(Pattern.compile(pattern).matcher(letterlessString).find()) {
+            // There is a letter on the string
+            return true;
         }else{
             return false;
         }   
     }
     
-    public boolean getAnswer(ButtonGroup btnGrp){
-        if(btnGrp.getSelection().getActionCommand() == "y"){
+    public boolean getAnswer(ButtonGroup btnGrp) {
+        if(btnGrp.getSelection().getActionCommand() == "y") {
             return true;
         }else{
             return false;
         }
     }
 
-    public void updateDatabase(){
+    public void updateDatabase() {
        int medicalID = mc.Update();
        System.out.println("medicalhere");
        int personalID = pi.UpdatePersonalInfo(medicalID);

@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package toothbytes.database;
 
 /**
- *
- * @author EcchiPowa
+ * <h1>PersonalInfo</h1>
+ * The {@code PersonalInfo} class retrieves and updates the data the user 
+ * manipulates for the Patient table of Toothbytes database. It represents the 
+ * variables of additional information about the user that are used to the 
+ * forms and database.
  */
 public class PersonalInfo {
     String surname;
@@ -27,12 +24,45 @@ public class PersonalInfo {
     String cellphoneNo;
     String faxNo;
 
-    public PersonalInfo(){
-        
-    }
+    public PersonalInfo() {}
     
-    public PersonalInfo(String surname, String givenName, String middleInitial, String gender, int birthYear, String nationality,
-            String religion, String occupation, String homeAddress, String telephoneNo, String officeNo, String emailAdd, String cellphoneNo, String faxNo){
+    /**
+     * This method constructs the variables to be used in the Patient table of 
+     * Toothbytes database schema.
+     * @param   surname
+     *          Last name of the patient.
+     * @param   givenName
+     *          First name of the patient.
+     * @param   middleInitial
+     *          Middle initial of the patienet.
+     * @param   gender
+     *          Gender of the patient.
+     * @param   birthYear
+     *          Date of birth of the patient.
+     * @param   nationality
+     *          Nationality of the patient.
+     * @param   religion
+     *          Religion of the patient.
+     * @param   occupation
+     *          Occupation of the patient.
+     * @param   homeAddress
+     *          Home address of the patient.
+     * @param   telephoneNo
+     *          Telephone number of the patient.
+     * @param   officeNo
+     *          Office number of the patient.
+     * @param   emailAdd
+     *          Email address of the patient.
+     * @param   cellphoneNo
+     *          Mobile number of the patient.
+     * @param   faxNo 
+     *          Fax number of the patient.
+     */
+    public PersonalInfo(String surname, String givenName, String middleInitial, 
+        String gender, int birthYear, String nationality, String religion, 
+        String occupation, String homeAddress, String telephoneNo, 
+        String officeNo, String emailAdd, String cellphoneNo, String faxNo) {
+        
         this.surname = surname;
         this.givenName = givenName;
         mi = middleInitial;
@@ -49,71 +79,137 @@ public class PersonalInfo {
         this.faxNo = faxNo;
     }
     
-    public int UpdatePersonalInfo(int medicalHistoryID){
-        String PersonalInfoUpdate = "INSERT INTO Patient "
-                + "(patientID, medicalHistoryID, patient_LastName, patient_FirstName, patient_MiddleInitial,"
-                + " birthdate, occupation, civilStatus, gender, nickname, homeAddress, homeNo, officeNo,"
-                + " faxNo, cellNo, emailAddress) VALUES (DEFAULT, "+medicalHistoryID+", '"+surname+"', '"+givenName+"',"
-                + " '"+mi+"', '"+birthYear+"', '"+occupation+"', NULL, "+gender+", NULL, '"+homeAddress+"', "+telephoneNo+","
-                + " "+officeNo+", "+faxNo+", "+cellphoneNo+", "+emailAdd+");";
+    /**
+     * This method injects data the user input that will update the 
+     * Patient table from the Toothbytes database schema.
+     * @param   medicalHistoryID
+     *          A foreign key from the Medical_History table.
+     * @return  Identity value while inserting records into database.
+     */
+    public int UpdatePersonalInfo(int medicalHistoryID) {
+        String PersonalInfoUpdate = "INSERT INTO Patient " + "(patientID, "
+            + "medicalHistoryID, patient_LastName, patient_FirstName, "
+            + "patient_MiddleInitial, birthdate, occupation, civilStatus, "
+            + "gender, nickname, homeAddress, homeNo, officeNo, faxNo, cellNo, "
+            + "emailAddress) VALUES (DEFAULT, " + medicalHistoryID + ", "
+            + surname + ", " + givenName + ", " + ", " + mi + ", " + birthYear 
+            + ", " + occupation + ", NULL, " + gender + ", NULL, " + homeAddress 
+            + ", " + telephoneNo + ", " + officeNo + ", " + faxNo + ", " 
+            + cellphoneNo + ", " + emailAdd + ");";
         
-         DBAccess.dbQuery(PersonalInfoUpdate);
-         return DBAccess.CallIdentity();
+        DBAccess.dbQuery(PersonalInfoUpdate);
+        return DBAccess.CallIdentity();
     }
     
-    public String getSurname(){
+    /**
+     * Returns the last name of the patient
+     * @return  Surname.
+     */
+    public String getSurname() {
         return surname;
     }
     
-    public String getGivenName(){
+    /**
+     * Returns the first name of the patient.
+     * @return  Given name.
+     */
+    public String getGivenName() {
         return givenName;
     }
     
-    public String getMI(){
+    /**
+     * Returns the middle initial of the patient.
+     * @return  Middle initial.
+     */
+    public String getMI() {
         return mi;
     }
     
-    public String getGender(){
+    /**
+     * Returns the gender of the patient.
+     * @return  Gender.
+     */
+    public String getGender() {
         return gender;
     }
     
-    public int getBirthYear(){
+    /**
+     * Returns the date of birth of the patient.
+     * @return  Birthday.
+     */
+    public int getBirthYear() {
         return birthYear;
     }
     
-    public String getNationality(){
+    /**
+     * Returns the nationality of the patient.
+     * @return  Nationality.
+     */
+    public String getNationality() {
         return nationality;
     }
     
-    public String getReligion(){
+    /**
+     * Returns the religion of the patient.
+     * @return  Religion.
+     */
+    public String getReligion() {
         return religion;
     }
     
-    public String getOccupation(){
+    /**
+     * Returns the occupation of the patient.
+     * @return  Occupation.
+     */
+    public String getOccupation() {
         return occupation;
     }
     
-    public String getHomeAddress(){
+    /**
+     * Returns the home address of the patient.
+     * @return  Home address.
+     */
+    public String getHomeAddress() {
         return homeAddress;
     }
     
-    public String getTelephoneNo(){
+    /**
+     * Returns the telephone number of the patient.
+     * @return  Telephone number.
+     */
+    public String getTelephoneNo() {
         return telephoneNo;
     }
     
-    public String getOfficeNo(){
+    /**
+     * Returns the office number of ten patient.
+     * @return  Office number.
+     */
+    public String getOfficeNo() {
         return officeNo;
     }
     
-    public String getEmailAdd(){
+    /**
+     * Returns the email address of the patient.
+     * @return  Email address.
+     */
+    public String getEmailAdd() {
         return emailAdd;
     }
     
-    public String getCellphoneNo(){
+    /**
+     * Returns the mobile number of the patient
+     * @return  Mobile number.
+     */
+    public String getCellphoneNo() {
         return cellphoneNo;
     }
     
-    public String getFaxNo(){
+    /**
+     * Returns the fax number of the patient.
+     * @return  Fax number.
+     */
+    public String getFaxNo() {
         return faxNo;
     }
 }

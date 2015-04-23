@@ -8,36 +8,34 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import toothbytes.database.DBAccess;
 import toothbytes.model.Patient;
-import toothbytes.ui.LoginWindow;
 import toothbytes.ui.MainScreen;
 import toothbytes.ui.RecordsWindow;
 import toothbytes.ui.components.AppointmentsWindow;
 import toothbytes.ui.components.PaymentsWindow;
 
+/**
+ * <h1>ToothbytesApp</h1>
+ * The {@code ToothbytesApp} program is the main class that executes the whole 
+ * system of Toothbytes. It connects to database, initialize the list of 
+ * patients, instantiate the User Interfaces of the program Toothbytes and 
+ * initialize them.
+ */
 public class ToothbytesApp {
 
-    /**
-     * @param args the command line arguments
-     */
     public static ArrayList<Patient> patientList;
 
     public static void main(String[] args) {
-
         try {
-//            LoginWindow lw = new LoginWindow();
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//            SwingUtilities.updateComponentTreeUI(lw);
-//            lw.init();
-            DBAccess.connectDB(); //connect to database
-            patientList = DBAccess.initPatientList(); //initialize list of patients
+            DBAccess.connectDB();
+            patientList = DBAccess.initPatientList();
             RecordsWindow rWin = new RecordsWindow(patientList);
             AppointmentsWindow aWin = new AppointmentsWindow();
             PaymentsWindow pWin = new PaymentsWindow();
 
-            MainScreen ui = new MainScreen(rWin, aWin, pWin); //instantiate UI
+            MainScreen ui = new MainScreen(rWin, aWin, pWin);
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             SwingUtilities.updateComponentTreeUI(ui);
-            ui.init(); //initialize UI
+            ui.init();
         } catch (ClassNotFoundException |
                 InstantiationException |
                 IllegalAccessException |

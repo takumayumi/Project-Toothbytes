@@ -1,37 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.util;
 
-/**
- *
- * @author jheraldinebugtong
- */
-/**
- * @(#)FileReaderWriter.java
- *
- *
- * @author jheraldinetbugtong
- * @version 1.00 2015/3/23
- */
-import javax.swing.*;
 import java.io.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.util.*;
-import java.io.Serializable;
 
 /**
- * Class that allows reading/writing one object to file.
+ * <h1>FileReaderWriter</h1>
+ * The {@code FilreReaderWrite} class allows reading/writing one object to file.
  */
 public class FileReaderWriter {
 
     /**
-     * read specified file and return 1 object or null if file doesnt exist
-     *
-     * @param f1 the File to read
+     * This method reads specified file and return 1 object or null if file 
+     * doesn't exist.
+     * @param   f1
+     *          The file to read.
+     * @return  x
      */
     public Object readObjectFromFile(File f1) {
         Object x = null;
@@ -49,10 +31,11 @@ public class FileReaderWriter {
     }
 
     /**
-     * write object to file
-     *
-     * @param o the object to write out
-     * @param f1 the file to write to
+     * This method writes object to file.
+     * @param   o
+     *          The object to write out
+     * @param   f1
+     *          The file to write to
      */
     public void writeObjectToFile(File f1, Object o) {
         try {

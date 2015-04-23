@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.ui.toolbars;
 
 import java.awt.Font;
@@ -21,10 +16,6 @@ import toothbytes.ui.About;
 import toothbytes.ui.HelpContents;
 import toothbytes.ui.forms.PersonalInformation;
 
-/**
- *
- * @author Jolas
- */
 public class TBMenuBar extends JMenuBar implements ActionListener {
 
     JMenu viewMenu, fileMenu, settingsMenu, helpMenu;
@@ -63,27 +54,30 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
                         ctb.setVisible(true);
                         ctb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     }
-                }
-                );
+                });
             }
         });
 
         fileMenu.add(addPatientFileItem);
-        //View Menu
+        
+        // View Menu
         viewMenu = new JMenu("View");
         viewMenu.setMnemonic(KeyEvent.VK_V);
         viewMenu.getAccessibleContext().setAccessibleDescription(
                 "Change Toothbyte's display mode");
         this.add(viewMenu);
-        //items in View Menu
+        
+        // Items in View Menu
         fullScreenViewItem = new JCheckBoxMenuItem("Full Screen");
         fullScreenViewItem.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_ENTER, ActionEvent.ALT_MASK));
         viewMenu.add(fullScreenViewItem);
-        //Settings menu
+        
+        // Settings menu
         settingsMenu = new JMenu("Settings");
         this.add(settingsMenu);
-        //helpMenu - jheraldinetbugtong, integrated on 03/29/15
+        
+        // Help menu
         helpMenu = new JMenu("Help");
         this.add(helpMenu);
         helpMenu.add(helpContents = new JMenuItem("Help Contents"));
@@ -91,9 +85,9 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
         helpMenu.add(aboutContents = new JMenuItem("About"));
         aboutContents.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
 
-        //add items to array
-        menuItems.add(addPatientFileItem); //0
-        menuItems.add(fullScreenViewItem); //1
+        // Add items to array
+        menuItems.add(addPatientFileItem); // 0 
+        menuItems.add(fullScreenViewItem); // 1
 
         helpContents.addActionListener(this);
         aboutContents.addActionListener(this);

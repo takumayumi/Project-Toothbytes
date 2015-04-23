@@ -1,25 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.model;
 
 import java.util.ArrayList;
 import javax.swing.AbstractListModel;
-import toothbytes.model.Patient;
 
 /**
- *
- * @author Jolas
+ * <h1>TBListModel</h1>
+ * The {@code TBListModel} class represents the list of Patients.
  */
 public class TBListModel extends AbstractListModel{
     ArrayList<Patient> list;
     
+    /**
+     * This method is the main method of TBList model class that constructs 
+     * the list of Patients.
+     * @param   list
+     *          ArrayList object of Patient.
+     */
     public TBListModel(ArrayList<Patient> list) {
         this.list = list;
     }
     
+    /**
+     * 
+     * @return  
+     */
     @Override
     public int getSize() {
         return list.size();

@@ -444,14 +444,16 @@ public class PersonalInformation extends javax.swing.JPanel {
            !hasNumbers(occupation)){
             return true;
         }else{
-            return false; // one of the entries has invalid inputs
+            // One of the entries has invalid inputs
+            return false;
         }
         
     }
     
     public boolean entriesNull(String surname, String givenName, String mi, String birthYear, String age, String nationality, String occupation, String homeAddress){
         if(surname.isEmpty() || givenName.isEmpty() || mi.isEmpty() || birthYear.isEmpty() || age.isEmpty() || nationality.isEmpty() || occupation.isEmpty() || homeAddress.isEmpty()){
-            return true;//one or more strings are null
+            // One or more strings are null
+            return true;
         }else{
             return false;
         }
@@ -460,16 +462,19 @@ public class PersonalInformation extends javax.swing.JPanel {
     public boolean hasNumbers(String numberlessString){
         String pattern = "[0-9]";
         if(Pattern.compile(pattern).matcher(numberlessString).find()){
-            return true;//there is a number in the string
+            // There is a number in the string
+            return true;
         }else{
-            return false;//the string has no numbers
+            // The string has no numbers
+            return false;
         }
     }
     
     public boolean hasSpecialCharacters(String specialCharacterlessString){
         String pattern = "[^A-Za-z0-9]+";
         if(Pattern.compile(pattern).matcher(specialCharacterlessString).find()){
-            return true;//there is a special character in the string
+            // There is a special character in the string
+            return true;
         }else{
             return false;
         }
@@ -478,7 +483,8 @@ public class PersonalInformation extends javax.swing.JPanel {
     public boolean hasLetters(String letterlessString){
         String pattern = "[A-Za-z]";
         if(Pattern.compile(pattern).matcher(letterlessString).find()){
-            return true;//there is a letter on the string
+            // There is a letter on the string
+            return true;
         }else{
             return false;
         }   

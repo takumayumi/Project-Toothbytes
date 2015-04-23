@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package toothbytes.ui.forms;
 
 import java.util.regex.Pattern;
@@ -13,23 +7,19 @@ import toothbytes.database.AdditionalInfo;
 import toothbytes.database.MedicalCond;
 import toothbytes.database.PersonalInfo;
 
-/**
- *
- * @author Karyl
- */
 public class AdditionalInformation extends javax.swing.JPanel {
     private PersonalInfo pi;
     private AdditionalInfo ai;
     private MedicalCond mc;
     private JFrame tb;
        
-    public AdditionalInformation(JFrame tb, PersonalInfo pi){
+    public AdditionalInformation(JFrame tb, PersonalInfo pi) {
         initComponents();
         this.pi = pi;
         this.tb = tb;
     }
     
-    public AdditionalInformation(JFrame tb, PersonalInfo pi, AdditionalInfo ai, MedicalCond mc){
+    public AdditionalInformation(JFrame tb, PersonalInfo pi, AdditionalInfo ai, MedicalCond mc) {
         initComponents();
         this.tb = tb;
         this.pi = pi;
@@ -40,7 +30,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
         effectiveDateYearTF.setText(ai.getEffectiveDateYear());
         guardiansNameTF.setText(ai.getGuardianName());
         occupationTF.setText(ai.getOccupation());
-        reffererTF.setText(ai.getReferer());
+        referrerTF.setText(ai.getReferrer());
         reasonTF.setText(ai.getReason());
         previousDentistTF.setText(ai.getPreviousDentist());
         lastDentalVisitYearTF.setText(ai.getLastDentalVisitYear());
@@ -52,27 +42,31 @@ public class AdditionalInformation extends javax.swing.JPanel {
     
     public boolean hasNumbers(String numberlessString){
         String pattern = "[0-9]";
-        if(Pattern.compile(pattern).matcher(numberlessString).find()){
-            return true;//there is a number in the string
-        }else{
-            return false;//the string has no numbers
-        }
-    }
-    
-    public boolean hasSpecialCharacters(String specialCharacterlessString){
-        String pattern = "[^A-Za-z0-9]+";
-        if(Pattern.compile(pattern).matcher(specialCharacterlessString).find()){
-            return true;//there is a special character in the string
-        }else{
+        if(Pattern.compile(pattern).matcher(numberlessString).find()) {
+            // There is a number in the string
+            return true;
+        } else {
+            // The string has no numbers
             return false;
         }
     }
     
-    public boolean hasLetters(String letterlessString){
+    public boolean hasSpecialCharacters(String specialCharacterlessString) {
+        String pattern = "[^A-Za-z0-9]+";
+        if(Pattern.compile(pattern).matcher(specialCharacterlessString).find()) {
+            // There is a special character in the string
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean hasLetters(String letterlessString) {
         String pattern = "[A-Za-z]";
-        if(Pattern.compile(pattern).matcher(letterlessString).find()){
-            return true;//there is a letter on the string
-        }else{
+        if(Pattern.compile(pattern).matcher(letterlessString).find()) {
+            // There is a letter on the string
+            return true;
+        } else {
             return false;
         }   
     }
@@ -100,7 +94,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
         imagePanel = new javax.swing.JPanel();
         addImageButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        reffererTF = new javax.swing.JTextField();
+        referrerTF = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         reasonTF = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -276,7 +270,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(reffererTF)
+                            .addComponent(referrerTF)
                             .addComponent(reasonTF, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(17, 17, 17))
                     .addGroup(layout.createSequentialGroup()
@@ -351,7 +345,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(reffererTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(referrerTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -394,14 +388,14 @@ public class AdditionalInformation extends javax.swing.JPanel {
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         grayTFBorders();
-        if(entriesValid()){
-            //proceed to medical condition form
+        if(entriesValid()) {
+            // Proceed to medical condition form
             System.out.println("Entries are valid.");
             String dentalInsurance = dentalInsuranceTF.getText();            
             String effectiveDateYear = effectiveDateYearTF.getText();       
             String guardiansName = guardiansNameTF.getText();              
             String occupation = occupationTF.getText();                     
-            String refferer = reffererTF.getText();                         
+            String referrer = referrerTF.getText();                         
             String reason = reasonTF.getText();                           
             String previousDentist = previousDentistTF.getText();          
             String lastDentalVisitYear = lastDentalVisitYearTF.getText();  
@@ -410,11 +404,11 @@ public class AdditionalInformation extends javax.swing.JPanel {
             String specialization = specializationTF.getText();           
             String officeNumber = officeNumberTF.getText();    
             
-            ai = new AdditionalInfo(dentalInsurance, effectiveDateYear, guardiansName, occupation, refferer, reason, previousDentist,
+            ai = new AdditionalInfo(dentalInsurance, effectiveDateYear, guardiansName, occupation, referrer, reason, previousDentist,
                                                 lastDentalVisitYear, nameOfPhysician, officeAddress, specialization, officeNumber);
             
             launchMedicalCondition();
-        }else{
+        } else {
             if(reasonTF.getText().isEmpty()){reasonTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(!dentalInsuranceTF.getText().isEmpty()){
                 if(effectiveDateYearTF.getText().isEmpty() || hasLetters(effectiveDateYearTF.getText()) || hasSpecialCharacters(effectiveDateYearTF.getText()) ){effectiveDateYearTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}}
@@ -424,7 +418,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_nextButtonActionPerformed
 
-    private void launchMedicalCondition(){
+    private void launchMedicalCondition() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame tb = new JFrame();
@@ -466,7 +460,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
         tb.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
     
-    private void launchPersonalInformation(){
+    private void launchPersonalInformation() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame tb = new JFrame();
@@ -483,13 +477,13 @@ public class AdditionalInformation extends javax.swing.JPanel {
         tb.dispose();
     }
     
-    public boolean entriesValid(){
-        //get values from fields
+    public boolean entriesValid() {
+        // Get values from fields
         String dentalnsurance = dentalInsuranceTF.getText();            //no filter
         String effectiveDateYear = effectiveDateYearTF.getText();       //no letter, special chars
         String guardiansName = guardiansNameTF.getText();               //no number
         String occupation = occupationTF.getText();                     //no filter
-        String refferer = reffererTF.getText();                         //no number
+        String referrer = referrerTF.getText();                         //no number
         String reason = reasonTF.getText();                             //no filter
         String previousDentist = previousDentistTF.getText();           //no number
         String lastDentalVisitYear = lastDentalVisitYearTF.getText();   //no letter
@@ -501,7 +495,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
         if(!entriesNull(reason)&& 
            !hasLetters(effectiveDateYear) && !hasSpecialCharacters(effectiveDateYear) &&
            !hasNumbers(guardiansName) && 
-           !hasNumbers(refferer) &&
+           !hasNumbers(referrer) &&
            !hasNumbers(previousDentist) &&
            !hasLetters(lastDentalVisitYear) &&
            !hasNumbers(nameOfPhysician) &&
@@ -512,12 +506,12 @@ public class AdditionalInformation extends javax.swing.JPanel {
         }
     }
     
-    public void grayTFBorders(){
+    public void grayTFBorders() {
         dentalInsuranceTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
         effectiveDateYearTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
         guardiansNameTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
         occupationTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
-        reffererTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
+        referrerTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
         reasonTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
         previousDentistTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
         lastDentalVisitYearTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
@@ -527,10 +521,10 @@ public class AdditionalInformation extends javax.swing.JPanel {
         officeNumberTF .setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(201,201,201)));
     }
     
-    public boolean entriesNull(String reason){
-        if(reason.isEmpty()){
+    public boolean entriesNull(String reason) {
+        if(reason.isEmpty()) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -570,7 +564,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
     private javax.swing.JTextField officeNumberTF;
     private javax.swing.JTextField previousDentistTF;
     private javax.swing.JTextField reasonTF;
-    private javax.swing.JTextField reffererTF;
+    private javax.swing.JTextField referrerTF;
     private javax.swing.JTextField specializationTF;
     // End of variables declaration//GEN-END:variables
 }

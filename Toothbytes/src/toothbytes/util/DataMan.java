@@ -1,21 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.util;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
- *
- * @author Jolas
+ * <h1>DataMan</h1>
+ * The {@code DataMan} class for data manipulation.
  */
 public class DataMan {
+    
+    /**
+     * This method computes and returns the age given by the date.
+     * @param   bday
+     *          Calendar object.
+     * @return  Integer value of age.
+     */
     public static int getAge(Calendar bday) {
         long milis = System.currentTimeMillis() - bday.getTime().getTime();
         return (int) (milis/1000/31536000);
     }
+    
 }
