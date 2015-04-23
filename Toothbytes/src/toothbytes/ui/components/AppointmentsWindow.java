@@ -4,23 +4,23 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.Border;
-
 import java.awt.*;
 import java.awt.event.*;
-
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import java.text.NumberFormat;
-
 import java.io.File;
 import net.miginfocom.swing.MigLayout;
 import toothbytes.ui.Appointment;
 import toothbytes.ui.CalendarStorage;
 import toothbytes.ui.Data;
 
+/**
+ * <h1>AppointmentsWindow</h1>
+ * The {@code AppointmentsWindow} class constructs a window of Appointments.
+ */
 public class AppointmentsWindow extends ModuleWindow {
 
     private MigLayout layout;
@@ -49,52 +49,42 @@ public class AppointmentsWindow extends ModuleWindow {
     static final int ST_LOAD_FROM_FILE = 7;
     static final int ST_NEW_FILE = 8;
 
-    private Action addAction, deleteAction, viewAboutAction, addAnnualAction, viewDayAction, viewWeekAction, viewMonthAction, viewYearAction, saveToFileAction, loadFromFileAction, newFileAction, viewTodayAction;
-
+    private Action addAction, deleteAction, viewAboutAction, addAnnualAction, 
+            viewDayAction, viewWeekAction, viewMonthAction, viewYearAction, 
+            saveToFileAction, loadFromFileAction, newFileAction, viewTodayAction;
     private int currentState;
-    private CalendarStorage calendarStore;	//data storage for storing appointments
+    private CalendarStorage calendarStore; // Data storage for storing appointments.
     private File calendarStoreFile;
-    private Calendar cal;		// used to store the currently selected year/month/day
+    private Calendar cal; // Used to store the currently selected year/month/day.
     private int arrayListIndex;
-
     private double screenWidth;
     private double screenHeight;
 
+    /**
+     * This constructor completes it all and add to frame. It also initializes 
+     * data storage structure, and if possible, load it from a file.
+     */
     public AppointmentsWindow() {
         p_title = new Panel();
         p_title.setLayout(new BorderLayout());
         p_title.add(title = new Label("Appointments", Label.CENTER), BorderLayout.CENTER);
         title.setForeground(Color.RED);
-
-        //p_choices = new Panel();
-        //p_choices.setLayout(new FlowLayout());
-        //p_choices.add(monthly = new Button("Monthly"));
-        //p_choices.add(today = new Button("Today"));
-        //p_choices.add(annually = new Button("Anually"));
-        // Mix title + search
         p_up = new Panel();
         p_up.setLayout(new GridLayout(2, 1));
         p_up.add(p_title);
-        //p_up.add(p_choices);
         p_body = new Panel();
         p_body.setLayout(new BorderLayout());
         p_body.add(new JScrollPane(scroll, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-        //p_body.add(addNewAppointment = new Button("Add New Appointment"));
-
-        // completed it all and add to frame
+        
         p_complete = new Panel();
         p_complete.setLayout(new BorderLayout());
         p_complete.add(p_up, BorderLayout.NORTH);
         p_complete.add(p_body, BorderLayout.CENTER);
         p_complete.add(new Label(""), BorderLayout.SOUTH);
-        //p_complete.add(p_down,BorderLayout.SOUTH);
         this.add(p_complete);
 
         cal = Calendar.getInstance(TimeZone.getDefault());
 
-        /**
-         * initialize data storage structure, if possible load from file
-         */
         calendarStore = new CalendarStorage();
         calendarStoreFile = new File("temp.dat");
 
@@ -115,7 +105,6 @@ public class AppointmentsWindow extends ModuleWindow {
         });
 
         addAction = new ChangeStateAction("New Appointment", KeyEvent.VK_A, ST_ADD_APPOINTMENT);
-        //this.setPreferredSize(new Dimension(40, 25));
 
         addAnnualAction = new ChangeStateAction("Annual Appointment", KeyEvent.VK_P, ST_ADD_ANNUAL_APPOINTMENT);
 
@@ -135,73 +124,54 @@ public class AppointmentsWindow extends ModuleWindow {
 
         saveToFileAction = new NoChangeStateAction("Save As", KeyEvent.VK_S, NoChangeStateAction.SAVE);
 
-        // initialise member variables eg. set the appropiate start state
+        // Initialises member variables eg. set the appropiate start state.
         this.setState(ST_DISPLAY_DAY);
-
-        //monthly.addActionListener(this);
-        //annually.addActionListener(this);
-        //addNewAppointment.addActionListener(this);
     }
 
-    //@Override
-    /*
-     public void actionPerformed(ActionEvent e){
-     if (e.getSource() == monthly){
-     Action[] actions = {viewMonthAction};
-     for (Action action : actions) {
-     add(new JButton(action));
-     }
-     } else if(e.getSource() == annually){
-     JOptionPane.showMessageDialog(null,"©  Project Toothbytes 2014-2015\n\n Bringas | Bugtong | Burayag | Gonzales \n\n Fabian | Maglaya | Takuma | Tandoc","About",JOptionPane.PLAIN_MESSAGE,new ImageIcon("i/diary.gif"));
-     } else if(e.getSource() == addNewAppointment){
-     Action[] actions = {addAction};
-     for (Action action : actions) {
-     add(new JButton(action));
-     }
-     } else {
-                    
-     }}
+    /**
+     * This method enables a File saves to CalendarStorage.
      */
     private void close() {
         calendarStore.saveToFile(calendarStoreFile);
     }
 
-    public class AppropiateToolBar extends JPanel {
+    /**
+     * <h1>AppropriateToolBar</h1>
+     * The {@code AppropriateToolBar} class creates toolbar for the 
+     * Appointments Window.
+     */
+    public class AppropriateToolBar extends JPanel {
 
         JButton action;
 
-        public AppropiateToolBar() {
+        /**
+         * This constructs the toolbar.
+         */
+        public AppropriateToolBar() {
 
             Action[] actions = {addAction, viewTodayAction, viewDayAction, viewMonthAction, viewYearAction};
 
             for (Action action : actions) {
                 add(new JButton(action));
-
-                //action.setPreferredSize(new Dimension(40,25));
-                //action.setPreferredSize(new Dimension(40,25));
-                //JToolBar(action).setPreferredSize(new Dimension( 40,25 ));
-                //actions[i].setPreferredSize(new Dimension(40,25));
-                //addAction.setPreferredSize(new Dimension( 40,25 ));
             }
+            
         }
 
     }
 
+    /**
+     * This method sets layout, add toolbar, add header panels, and add footer 
+     * panels to wrap off header panels and allow central GUI to scroll. It 
+     * also displays necessary GUI depending upon state, warn any changes that 
+     * can lead to losing of any data. It lets user choose file. 
+     */
     public void setState(int state) {
 
         currentState = state;
 
-		//this.setJMenuBar(new AppropiateMenuBar());
-        // get container and remove current GUI
-        //Container content = this.getContentPane();
         p_body.removeAll();
-
-        /**
-         * set layout, add toolbar, add Header panels
-         */
         p_body.setLayout(new BoxLayout(p_body, BoxLayout.PAGE_AXIS));
-        p_body.add(new AppropiateToolBar());
-        //content.add(new AppropriateButtons());
+        p_body.add(new AppropriateToolBar());
         p_body.add(Box.createRigidArea(new Dimension(0, 10)));
 
         JPanel centerPanel = new JPanel();
@@ -213,11 +183,6 @@ public class AppointmentsWindow extends ModuleWindow {
 
         String title;
 
-        /**
-         * **********************************************
-         * display necessary GUI depending upon state
-         * ********************************************
-         */
         switch (currentState) {
             case ST_DISPLAY_YEAR:
                 title = "" + cal.get(Calendar.YEAR);
@@ -269,7 +234,6 @@ public class AppointmentsWindow extends ModuleWindow {
             case ST_NEW_FILE:
                 String[] choices = {"yes", "no"};
 
-                //warn anychanges will be lost
                 int chosen = JOptionPane.showOptionDialog(null,
                         "Warning you will lose any unsaved changes. OK to proceed?",
                         "Lose any changes?",
@@ -287,7 +251,6 @@ public class AppointmentsWindow extends ModuleWindow {
             case ST_LOAD_FROM_FILE:
                 String[] choices2 = {"yes", "no"};
 
-                //warn anychanges will be lost
                 int chosen2 = JOptionPane.showOptionDialog(null,
                         "Warning. OK to proceed?",
                         "Lose any changes?",
@@ -298,7 +261,6 @@ public class AppointmentsWindow extends ModuleWindow {
                         choices2[0]);
 
                 if (chosen2 == 0) {
-                    // let user choose file
                     JFileChooser obox = new JFileChooser();
                     int returnVal = obox.showOpenDialog(null);
 
@@ -315,10 +277,6 @@ public class AppointmentsWindow extends ModuleWindow {
                 break;
         }
 
-        /**
-         * footer panels to wrap off header panels and allow central GUI to
-         * scroll
-         */
         JScrollPane scrollPane = new JScrollPane(scrollPanel,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -333,19 +291,19 @@ public class AppointmentsWindow extends ModuleWindow {
         p_body.add(centerPanel);
         p_body.add(Box.createRigidArea(new Dimension(0, 10)));
         p_body.add(Box.createVerticalGlue());
-
-        // tell window to repaint itself now that its contents have changed
-        //this.pack();
-        //this.repaint();
+        
     }
 
+    /**
+     * <h1>ChangeStateAction</h1>
+     * The {@code ChangeStateAction} class
+     */
     public class ChangeStateAction extends AbstractAction {
 
         private int state;
 
         public ChangeStateAction(String text, Integer mnemonic, int state) {
             super(text, new ImageIcon("i/" + text.replace(" ", "") + ".gif"));
-            //putValue(SHORT_DESCRIPTION, text);
             putValue(MNEMONIC_KEY, mnemonic);
             this.state = state;
         }
@@ -357,10 +315,11 @@ public class AppointmentsWindow extends ModuleWindow {
     }
 
     /**
-     * class to define an action that does not change the state but does take
-     * action assumes button images are in i folder with text as file name where
-     * text has had its whitespace removed text used for both action text and
-     * description.
+     * <h1>NoChangeStateAction</h1>
+     * The {@code NoChangeStateAction} class to define an action that does not 
+     * change the state but does take action assumes button images are in i 
+     * folder with text as file name where text has had its whitespace removed 
+     * text used for both action text and description.
      */
     public class NoChangeStateAction extends AbstractAction {
 
@@ -379,7 +338,7 @@ public class AppointmentsWindow extends ModuleWindow {
         public void actionPerformed(ActionEvent e) {
             switch (action) {
                 case SAVE:
-                    // let user choose file
+                    // Let user choose file.
                     JFileChooser sbox = new JFileChooser();
                     int returnVal2 = sbox.showSaveDialog(null);
 
@@ -397,7 +356,9 @@ public class AppointmentsWindow extends ModuleWindow {
     }
 
     /**
-     * panel to allow month/day selection, it displays the year
+     * <h1>YearPanel</h1>
+     * This {@code YearPanel} class creates panel to allow month/day selection, 
+     * and displays the year.
      */
     public class YearPanel extends JPanel {
 
@@ -411,33 +372,42 @@ public class AppointmentsWindow extends ModuleWindow {
     }
 
     /**
-     * panel to allow day selection, it displays the month
+     * <h1>MonthPanel</h1>
+     * This {@code MonthPanel} class creates panel to allow day selection, 
+     * and displays the month.
      */
     public class MonthPanel extends JPanel implements MouseListener {
 
         int year;
         int month;
 
-        /*
-         * default constructor for when you want the normal sized version
+        /**
+         * This is a default constructor for when you want the normal 
+         * sized version.
          */
         public MonthPanel(int year, int month) {
             this(year, month, false);
         }
 
-        /*
-         * @param smallVersion if true then panel is smaller
+        /**
+         * This constructor stores as member variables, uses calendar object to 
+         * find how many days in month, etc. It creates border and set 
+         * layout. It also creates labels panel, actual grid of days
+         * @param   year
+         *          Integer representation of the year.
+         * @param   month
+         *          Integer representation of the month.
+         * @param   smallVersion
+         *          If true then panel is smaller.
          */
         public MonthPanel(int year, int month, boolean smallVersion) {
             int dayOfWeek;
             int initalValueOfFirstGrid;
             int daysInThisMonth;
 
-            // store as member variables
             this.year = year;
             this.month = month;
 
-            // use calendar object to find how many days in monmth etc
             Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
             calendar.set(Calendar.DAY_OF_MONTH, 1);
             calendar.set(Calendar.MONTH, month);
@@ -451,14 +421,12 @@ public class AppointmentsWindow extends ModuleWindow {
             }
 
             if (smallVersion) {
-                //create border and set layout
                 TitledBorder monthBorder = BorderFactory.createTitledBorder(getMonthString(month));
                 monthBorder.setTitleJustification(TitledBorder.CENTER);
                 setBorder(monthBorder);
                 setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
             }
 
-            // create labels panel
             JPanel dayPanel = new JPanel();
             dayPanel.setLayout(new GridLayout(0, 7));
 
@@ -467,7 +435,6 @@ public class AppointmentsWindow extends ModuleWindow {
                 dayPanel.add(a);
             }
 
-            // create actual grid of days
             for (int i = initalValueOfFirstGrid; i <= daysInThisMonth; i++) {
                 if (i >= 1) {
                     dayPanel.add(new SelectDayButton(year, month, i));
@@ -481,7 +448,8 @@ public class AppointmentsWindow extends ModuleWindow {
         }
 
         /**
-         * when mouse clicked setState to display month
+         * This method is an event when mouse clicked setState, it will display 
+         * month.
          */
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -491,18 +459,22 @@ public class AppointmentsWindow extends ModuleWindow {
             setState(ST_DISPLAY_MONTH);
         }
 
-        public void mouseExited(MouseEvent e) {
-        }
+        public void mouseExited(MouseEvent e) {}
 
-        public void mouseEntered(MouseEvent e) {
-        }
+        public void mouseEntered(MouseEvent e) {}
 
-        public void mouseReleased(MouseEvent e) {
-        }
+        public void mouseReleased(MouseEvent e) {}
 
-        public void mousePressed(MouseEvent e) {
-        }
+        public void mousePressed(MouseEvent e) {}
 
+        /**
+         * This method returns String representation of days.
+         * @param   day
+         *          Integer representation of day.
+         * @param   shortVersions
+         *          Boolean representation if a month has 28-30 days.
+         * @return  Array of days.
+         */
         private String getDayString(int day, boolean shortVersions) {
             final String[] dayLabels = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
             final String[] shortDayLabels = {"M", "T", "W", "Th", "F", "S", "Sun"};
@@ -512,10 +484,13 @@ public class AppointmentsWindow extends ModuleWindow {
             } else {
                 return dayLabels[day];
             }
+            
         }
 
-        /*
-         * button to represent one given day
+        /**
+         * <h1>SelectDayButton</h1>
+         * This {@code SelectDayButton} class creates a button to represent 
+         * one given day.
          */
         public class SelectDayButton extends JButton implements ActionListener {
 
@@ -523,8 +498,16 @@ public class AppointmentsWindow extends ModuleWindow {
             int month;
             int day;
 
+            /**
+             * This method stores variables
+             * @param   year
+             *          Integer representation of the year.
+             * @param   month
+             *          Integer representation of the month.
+             * @param   day
+             *          Integer representation of the day.
+             */
             public SelectDayButton(int year, int month, int day) {
-                // store variables
                 this.year = year;
                 this.month = month;
                 this.day = day;

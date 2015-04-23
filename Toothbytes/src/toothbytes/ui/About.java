@@ -5,12 +5,20 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+/**
+ * <h1>About</h1>
+ * The {@code About} class implements a program that shows the information 
+ * about the program Toothbytes when the user choosed the Help option on the 
+ * menu bar and clicked About.
+ */
 public class About extends javax.swing.JDialog {
     
     /**
-     * Creates new form About
-     * @param parent
-     * @param modal
+     * This constructor creates new form About.
+     * @param   parent
+     *          Object representation of java.awt.Frame.
+     * @param   modal
+     *          A boolean representation.
      */
     public About(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -19,6 +27,10 @@ public class About extends javax.swing.JDialog {
         this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width)/2 - getWidth()/2, (Toolkit.getDefaultToolkit().getScreenSize().height)/2 - getHeight()/2);
     }
 
+    /**
+     * This constructor creates new form About without java.awt.Frame parent 
+     * and boolean modal.
+     */
     public About() {
         super();
         initComponents();

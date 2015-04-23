@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.ui.components;
 
 import java.awt.BorderLayout;
@@ -15,8 +10,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 /**
- *
- * @author Jolas
+ * <h1>SidePanel</h1>
+ * The {@code Sidepanel} class constructs a side panel within the main window. 
+ * The side panel includes an appointments feature ("Patients for today") and 
+ * payments feature ("Payments Tracker").
  */
 public class SidePanel extends JPanel{
     
@@ -26,13 +23,16 @@ public class SidePanel extends JPanel{
     private JScrollPane sideAppScroll, sidePayScroll;
     private JButton viewSched;
     
+    /**
+     * This is the default constructor of the SidePanel class.
+     */
     public SidePanel() {
         this.setLayout(new BorderLayout());
         
         sideTabsPane = new JTabbedPane();
         this.add(sideTabsPane);
         
-        //APPOINTMENTS
+        // APPOINTMENTS
         sideAppointment = new JPanel();
         sideAppointment.setLayout(new BorderLayout());
         sideTabsPane.add("Patients for today", sideAppointment);
@@ -45,7 +45,7 @@ public class SidePanel extends JPanel{
         viewSched.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/WholeCalendar.png"));
         sideAppointment.add(viewSched, BorderLayout.SOUTH);
         
-        //PAYMENTS
+        // PAYMENTS
         sidePayment = new JPanel();
         sidePayment.setLayout(new BorderLayout());
         sideTabsPane.add("Payments Tracker", sidePayment);

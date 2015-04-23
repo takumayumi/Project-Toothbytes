@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.ui;
 
 import java.awt.BorderLayout;
@@ -18,8 +13,10 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 /**
- *
- * @author Jolas
+ * <h1>LoginWindow</h1>
+ * The {@code LoginWindow} class implements a program that will show a Login 
+ * Window for authentication and authorization purposes of the program 
+ * Toothbytes.
  */
 public class LoginWindow extends JFrame {
     private JLabel logo, usrLabel, pwdLabel;
@@ -29,6 +26,9 @@ public class LoginWindow extends JFrame {
     private JButton login, exit;
     private boolean granted;
     
+    /**
+     * This constructor creates the login window and layouts it's components.
+     */
     public LoginWindow() {
         this.setTitle("Toothbytes");
         this.setIconImage(new ImageIcon("src/toothbytes/favicon.png").getImage());

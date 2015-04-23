@@ -20,6 +20,11 @@ import toothbytes.model.Patient;
 import toothbytes.model.PatientX;
 import toothbytes.util.DataMan;
 
+/**
+ * <h1>RecordsWindow</h1>
+ * The {@code RecordsWindow class constructs the Records Window to be able to 
+ * see the list of patients and their respective attributes.
+ */
 public class RecordsWindow extends ModuleWindow {
 
     private PatientListViewer plv;
@@ -29,6 +34,11 @@ public class RecordsWindow extends ModuleWindow {
     private JScrollPane scrollInfo, scrollDental, scrollGallery;
     private PatientX current;
 
+    /**
+     * This constructor layouts the Records Window.
+     * @param   pList
+     *          Object of array list of Patient.
+     */
     public RecordsWindow(ArrayList<Patient> pList) {
         layout = new MigLayout(
                 "filly, wrap 12",
@@ -79,12 +89,21 @@ public class RecordsWindow extends ModuleWindow {
         super.addToMainPane(plv, "span 2, grow");
         super.addToMainPane(tabsPane, "span 10, grow");
     }
+<<<<<<< Updated upstream:Toothbytes/src/toothbytes/ui/components/RecordsWindow.java
     
     public void showDental(Patient p) {
         //dental chart
         //table listing treatments and condition
     }
     
+=======
+
+    /**
+     * This method shows the information about the Patient from the database.
+     * @param   p
+     *          Object representation of PatientX.
+     */
+>>>>>>> Stashed changes:Toothbytes/src/toothbytes/ui/RecordsWindow.java
     public void showInfo(PatientX p) {
         //if there is a selected patient clear the viewer
         if(this.current != null) {
@@ -177,6 +196,11 @@ public class RecordsWindow extends ModuleWindow {
         SwingUtilities.updateComponentTreeUI(infoViewer);
     }
     
+    /**
+     * <h1>PatientListListener</h1>
+     * The {@code PatientListListener} class implements ListSelectionListener 
+     * for retrieving the Patient data in database.
+     */
     public class PatientListListener implements ListSelectionListener {
 
         @Override

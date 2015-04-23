@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.ui.components;
 
 import java.awt.BorderLayout;
@@ -12,11 +7,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
- * @author Jolas
+ * <h1>Cover</h1>
+ * The {@code Cover} manages the opening screen of the program Toothbytes.
  */
 public class Cover extends JPanel{
     
+    /**
+     * This constructor layouts the opening screen of the program.
+     */
     public Cover() {
         this.setLayout(new BorderLayout());
         this.setBackground(Color.white);

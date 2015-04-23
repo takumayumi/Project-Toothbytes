@@ -30,6 +30,12 @@ import toothbytes.ui.components.SidePanel;
 import toothbytes.ui.forms.PersonalInformation;
 import toothbytes.ui.toolbars.TBMenuBar;
 
+/**
+ * <h1>MainScreen</h1>
+ * The {@code MainScreen} class constructs the main window of Toothbytes. It 
+ * layouts the panels, buttons, menu bar, toolbars, and module windows of 
+ * the program.
+ */
 public class MainScreen extends JFrame {
 
     private JPanel mainPanel, sidePanel, modulePanel;
@@ -58,7 +64,7 @@ public class MainScreen extends JFrame {
         Font uiButtonFont = new Font("Arial", Font.PLAIN, 24);
         Color uiButtonColor = Color.WHITE;
         
-        //frame configurations
+        // Frame configurations.
         defaultSize = generateSize();
         defaultSize.setSize(
                 defaultSize.getWidth(), defaultSize.getHeight() - 40);
@@ -70,27 +76,27 @@ public class MainScreen extends JFrame {
         
         fullScreen = false;
 
-        //menu bar
+        // Menu bar.
         menuBar = new TBMenuBar();
         menuBar.setBackground(Color.white);
         this.setJMenuBar(menuBar);
         menuBar.bindListenerToMenu(new MenuBarHandler(), 1);
         
-        //layout configurations
+        // Layout configurations.
         framework = new MigLayout(
-                "filly, wrap 12", //layout constraints
+                "filly, wrap 12", // Layout constraints.
                 "[fill]push[fill]push[fill]push[fill]push"
                 + "[fill]push[fill]push[fill]push[fill]push"
-                + "[fill][fill]push[fill]push[fill]", //12 columns
-                "[fill]push[fill]");//rows
+                + "[fill][fill]push[fill]push[fill]", // 12 columns.
+                "[fill]push[fill]"); // Rows.
 
-        //mainpanel configurations
+        // Mainpanel configurations.
         mainPanel = new JPanel();
         mainPanel.setLayout(framework);
         mainPanel.setBackground(Color.white);
         this.setContentPane(mainPanel);
              
-        //status Bar(bottom)
+        // Status Bar (bottom).
         statusBar = new JToolBar();
         statusBar.setBackground(Color.darkGray);
         
@@ -101,6 +107,10 @@ public class MainScreen extends JFrame {
             Timer setTime = new Timer();
             setTime.scheduleAtFixedRate(new TimerTask() {
 
+                /**
+                 * This method calls the time depending on the user's device 
+                 * and displays it on the status bar.
+                 */
                 @Override
                 public void run() {
                     int hour = LocalDateTime.now().getHour();
@@ -140,34 +150,27 @@ public class MainScreen extends JFrame {
                 }
             }, 1000, 1000);
         
-        
-        
-        
         test.setForeground(Color.white);
         test.setFont(new Font("Tahoma", Font.PLAIN, 18));
         statusBar.add(test);
         
-        //nav bar
+        // Nav bar.
         navBar = new JToolBar("TestBar");
-        //navButtons = new ButtonGroup();
 
         recBut = new JButton();
         recBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/PatientRecords.png"));
         recBut.setToolTipText("Dental Records");
         recBut.setBackground(WHITE);
-        //navButtons.add(recBut);
 
         appBut = new JButton();
         appBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Appointments.png"));
         appBut.setToolTipText("Appointments");
         appBut.setBackground(WHITE);
-        //navButtons.add(appBut);
 
         payBut = new JButton();
         payBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Finances.png"));
         payBut.setToolTipText("Payments");
         payBut.setBackground(WHITE);
-        //navButtons.add(payBut);
         
         navBar.add(recBut);
         navBar.add(appBut);
@@ -184,19 +187,19 @@ public class MainScreen extends JFrame {
         navBar.setBorder(BorderFactory.createLineBorder(Color.gray));
         mainPanel.add(navBar, "west");
 
-        //module window(left)
+        // Module window (left).
         modulePanel = new JPanel();
         modulePanel.setLayout(new MigLayout("fill"));
         modulePanel.setBackground(Color.white);
         mainPanel.add(modulePanel, "span 12 2");
         modulePanel.add(new Cover(), "grow");
 
-        //side panel(right)
+        // Side panel (right).
         sp = new SidePanel();
         sp.setBackground(WHITE);
         mainPanel.add(sp, "east");
         
-        //quick bar
+        // Quick bar.
         quickBar = new JToolBar("QuickBar");
         quickBar.setBackground(WHITE);
 
@@ -214,24 +217,30 @@ public class MainScreen extends JFrame {
         quickBar.add(qAddPatientBut);
         quickBar.add(qSetAppointmentBut);
 
-        //quickBar.setFloatable(false);
         mainPanel.add(quickBar, "north");
     }
 
+    /**
+     * This method tests the button action performed.
+     * @param   evt 
+     *          ActionEvent object.
+     */
     public void testButtonActionPerformed(ActionEvent evt) {
         this.toggleFullScreen();
     }
 
     /**
-     * this method sets the frame to be visible.
+     * This method sets the frame to be visible.
      */
     public void init() {
         menuBar.setAllFont(new Font("Consolas", Font.PLAIN, 16));
         this.setVisible(true);
     }
 
-    /*
-     * This method takes the screen size of the computer for the computation of the frame size.
+    /**
+     * This method takes the screen size of the computer for the computation of 
+     * the frame size.
+     * @return  Screen size of the user's device.
      */
     public Dimension generateSize() {
         return Toolkit.getDefaultToolkit().getScreenSize();
@@ -256,6 +265,13 @@ public class MainScreen extends JFrame {
         }
     }
 
+    /**
+     * This method returns a specific module window depending on the state 
+     * chosen by the user.
+     * @param   state
+     *          A String representation.
+     * @return  Module window.
+     */
     public ModuleWindow getModule(String state) {
         if (state.equals("recw")) {
             return recWindow;
@@ -271,16 +287,34 @@ public class MainScreen extends JFrame {
         return null;
     }
 
+    /**
+     * This method allows the program to load the module return by the 
+     * getModule method.
+     * @param   c
+     *          Object representation of ModuleWindow.
+     * @param   state
+     *          A String representation.
+     * @see     getModule
+     */
     public void loadModule(ModuleWindow c, String state) {
         this.state = state;
         modulePanel.add(c, "grow");
         SwingUtilities.updateComponentTreeUI(modulePanel);
     }
 
+    /**
+     * This method allows a JComponent to be added into the side panel.
+     * @param   c 
+     *          Object representation of JComponent.
+     */
     public void addToSidePanel(JComponent c) {
         sidePanel.add(c, "grow");
     }
 
+    /**
+     * <h1>QuickBarHandler</h1>
+     * The {@code QuickBarHandler} class handles quick bar from the JFrame.
+     */
     public class QuickBarHandler implements ActionListener {
 
         @Override
@@ -311,8 +345,19 @@ public class MainScreen extends JFrame {
 
     }
 
+    /**
+     * <h1>NavigationHandler</h1>
+     * The {@code NavigationHandler} class manages the navigation of the 
+     * module panel.
+     */
     public class NavigationHandler implements ActionListener {
 
+        /**
+         * This method handles the action performed by the user within the 
+         * module panel.
+         * @param   e
+         *          Object representation of ActionEvent.
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == recBut) {
@@ -336,8 +381,18 @@ public class MainScreen extends JFrame {
         }
     }
 
+    /**
+     * <h1>MenuBarHandler</h1>
+     * The {@code MenuBarHandler} class manages the menu bar of the program.
+     */
     public class MenuBarHandler implements ActionListener {
 
+        /**
+         * The method handles the action performed by the user within the 
+         * menu bar.
+         * @param   e
+         *          Object representation of ActionEvent.
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().matches("Full Screen")) {
@@ -346,4 +401,5 @@ public class MainScreen extends JFrame {
         }
 
     }   
-}//end of MainScreen
+}
+//end of MainScreen

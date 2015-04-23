@@ -9,8 +9,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,12 +24,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import toothbytes.database.DBAccess;
 import toothbytes.model.Patient;
 import toothbytes.model.TBListModel;
 
+
+/**
+ * <h1>PatienListViewer</h1>
+ * The {@code PatientListViewer} class creates a modified JList for patients.
+ */
 public class PatientListViewer extends JPanel {
 
     private Map<String, ImageIcon> iMap;
@@ -39,6 +40,12 @@ public class PatientListViewer extends JPanel {
     private JTextField searchField;
     int keyLength;
 
+    /**
+     * This method is used to construct the interface for viewing the list of 
+     * patients.
+     * @param   pList
+     *          List of patients.
+     */
     public PatientListViewer(ArrayList<Patient> pList) {
         this.setLayout(new BorderLayout());
 
@@ -108,10 +115,10 @@ public class PatientListViewer extends JPanel {
     }
 
     /**
-     * This method creates an array of full names of patients
-     *
-     * @param pList - list of patients
-     * @return array of names
+     * This method creates an array of full names of patients.
+     * @param   pList
+     *          List of patients.
+     * @return  Array of names.
      */
     private String[] createNames(ArrayList<Patient> pList) {
         String[] names = new String[pList.size()];
@@ -122,10 +129,10 @@ public class PatientListViewer extends JPanel {
     }
 
     /**
-     * This method maps the image path to patient names
-     *
-     * @param pList - list of patients
-     * @return map object
+     * This method maps the image path to patient names.
+     * @param   pList
+     *          List of patients.
+     * @return  Map object.
      */
     private Map<String, ImageIcon> mapImages(ArrayList<Patient> pList) {
         Map<String, ImageIcon> map = new HashMap<>();
@@ -142,8 +149,27 @@ public class PatientListViewer extends JPanel {
         return map;
     }
 
+    /**
+     * <h1>PatientCallRenderer</h1>
+     * The {@code PatientCallRenderer} class renders a cell for the JList.
+     */
     public class PatientCellRenderer extends DefaultListCellRenderer {
 
+        /**
+         * This method is used to get the list of cell component when 
+         * rendered.
+         * @param   list
+         *          JList object.
+         * @param   value
+         *          An object representation.
+         * @param   index
+         *          An integer representation.
+         * @param   isSelected
+         *          A boolean representation.
+         * @param   cellHasFocus
+         *          A boolean representation.
+         * @return  JLabel.
+         */
         @Override
         public Component getListCellRendererComponent(
                 JList list, Object value, int index, boolean isSelected,
@@ -160,26 +186,28 @@ public class PatientListViewer extends JPanel {
     DefaultListModel filteredModel;
     DefaultListModel noMatchModel;
 
+    /**
+     * This method sets up the environment for the logic function of the 
+     * program and sets hold NO DUPLICATE values. Following logic is used to 
+     * find an item in JList and following try-catch blog will enhance the 
+     * user friendliness. It allows to add the filtered results to the new 
+     * model and sets the model to the list again.
+     */
     private void filterList() {
-// Setting up the environment for the logic
         int start = 0;
         int itemIx = 0;
 
-// Here the glitch that one should remeber
-// Sets hold NO DUPLICATE values... :)
         Set resultSet = new HashSet();
 
         filteredModel = new DefaultListModel();
 
-// Following logic is used to find an item in JList
         String prefix = searchField.getText();
 
         javax.swing.text.Position.Bias direction = javax.swing.text.Position.Bias.Forward;
 
         for (int i = 0; i < viewer.getModel().getSize(); i++) {
             itemIx = viewer.getNextMatch(prefix, start, direction);
-
-// Following try-catch blog will enhance the user friendliness
+            
             try {
                 resultSet.add(viewer.getModel().getElementAt(itemIx));
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -193,19 +221,26 @@ public class PatientListViewer extends JPanel {
 
         Iterator itr = resultSet.iterator();
 
-// Adding the filtered results to the new model
         while (itr.hasNext()) {
             filteredModel.addElement(itr.next());
         }
 
-// Setting the model to the list again
         viewer.setModel(filteredModel);
     }
 
+    /**
+     * This method sets a list listener for viewing the patients list.
+     * @param   lsl 
+     *          Object representation of lsl.
+     */
     public void setListListener(ListSelectionListener lsl) {
         viewer.addListSelectionListener(lsl);
     }
 
+    /**
+     * This method is used to get the selected patient.
+     * @return  A patient selected by the user.
+     */
     public Patient getSelectedPatient() {
         return (Patient) viewer.getSelectedValue();
     }

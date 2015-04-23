@@ -17,14 +17,16 @@ import toothbytes.ui.components.PaymentsWindow;
 /**
  * <h1>ToothbytesApp</h1>
  * The {@code ToothbytesApp} program is the main class that executes the whole 
- * system of Toothbytes. It connects to database, initialize the list of 
- * patients, instantiate the User Interfaces of the program Toothbytes and 
- * initialize them.
+ * system of Toothbytes.
  */
 public class ToothbytesApp {
 
     public static ArrayList<Patient> patientList;
 
+    /**
+     * It connects to database, initializes the list of patients, instantiates 
+     * the User Interfaces of the program Toothbytes and initializes them.
+     */
     public static void main(String[] args) {
         try {
 

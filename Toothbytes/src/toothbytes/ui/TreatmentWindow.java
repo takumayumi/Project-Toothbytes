@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.ui;
 
 import javax.swing.JFrame;
 
 /**
- *
- * @author Jolas
+ * <h1>TreatmentWindow</h1>
+ * The {@code TreatmentWindow} class
  */
 public class TreatmentWindow extends JFrame{
     public TreatmentWindow() {
