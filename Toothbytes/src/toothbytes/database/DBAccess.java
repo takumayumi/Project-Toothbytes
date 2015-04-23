@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package toothbytes.database;
 
 import java.io.File;
@@ -22,16 +17,21 @@ import toothbytes.model.Patient;
 import toothbytes.model.PatientX;
 
 /**
- *
- * @author Jolas
+ * <h1>DBAccess</h1>
+ * The {@code DBAccess} class connects to the database.
  */
 public class DBAccess {
     private static JDBCConnection conn = null;
     private static JDBCResultSet rs = null;
     private static JDBCStatement stmt = null;
     private static String dir = new File("src/db/").getAbsolutePath();
+    
     /**
-     *This method connects to the database 
+     * This method connects to the database.
+     * @throws  ClassNotFoundException
+     * @see     ClassNotFoundException
+     * @throws  SQLException
+     * @see     SQLException
      */
     public static void connectDB() throws ClassNotFoundException, SQLException {
             Class.forName("org.hsqldb.jdbcDriver");
@@ -45,6 +45,9 @@ public class DBAccess {
             }
     }
     
+    /**
+     * This method returns the last primary key value.
+     */
     public static int CallIdentity(){
         try{
             Class.forName("org.hsqldb.jdbcDriver");
@@ -61,6 +64,14 @@ public class DBAccess {
         return 0;
     }
     
+    /**
+     * This method checks for database query success. It will return a boolean 
+     * true if it is a success. Otherwise, false if failed.
+     * @param   s
+     *          Used for the execution of the SQL statement in a 
+     *          PreparedStatement object, which may be any kind of SQL 
+     *          statement.
+     */
     public static boolean dbQuery(String s){
         try{
             Class.forName("org.hsqldb.jdbcDriver");
@@ -77,9 +88,10 @@ public class DBAccess {
     }
     
     /**
-     * This method initializes a patient list from the Database
-     * @return ArrayList<Patient>
-     * @throws SQLException 
+     * This method initializes a patient list from the database.
+     * @return  ArrayList of Patient
+     * @throws  SQLException
+     * @see     SQLException
      */
     public static ArrayList<Patient> initPatientList() throws SQLException{
         rs = (JDBCResultSet) stmt.executeQuery("SELECT patientID, patient_FirstName, patient_LastName, patient_MiddleInitial FROM PATIENT");
@@ -95,12 +107,13 @@ public class DBAccess {
         Collections.sort(patientList);
         return patientList;
     }
+    
     /**
-     * This method gets the information about a patient by an ID
-     * @param id
-     * @return PatientX
-     * @throws SQLException
-     * @throws ParseException 
+     * This method gets the information about a patient by an ID.
+     * @param   id
+     *          The number of the pstientID of a particular patient in the 
+     *          database.
+     * @return  PatientX
      */
     public static PatientX getData(int id) {
         try {
