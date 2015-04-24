@@ -1,10 +1,16 @@
 package toothbytes.ui.toolbars;
 
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.util.ArrayList;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -13,7 +19,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import toothbytes.ui.About;
-import toothbytes.ui.HelpContents;
 import toothbytes.ui.forms.PersonalInformation;
 
 public class TBMenuBar extends JMenuBar implements ActionListener {
@@ -88,6 +93,8 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
         // Add items to array
         menuItems.add(addPatientFileItem); // 0 
         menuItems.add(fullScreenViewItem); // 1
+        menuItems.add(helpContents);
+        menuItems.add(aboutContents);
 
         helpContents.addActionListener(this);
         aboutContents.addActionListener(this);
@@ -99,7 +106,7 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == helpContents) {
-            HelpContents hc = new HelpContents();
+            help();
         } else if (e.getSource() == aboutContents) {
             About ab = new About();
         }
@@ -113,5 +120,30 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
         for (JMenuItem i : menuItems) {
             i.setFont(f);
         }
+    }
+    
+    public void help() {
+        
+        String HS_FILE = "toothbytes.ui.toolbars.help/help.hs";
+        HelpSet helpSet;
+        HelpBroker helpBroker = null;
+        ClassLoader cl = getClass().getClassLoader();
+        
+        try {
+            URL url = HelpSet.findHelpSet(cl, HS_FILE);
+            helpSet = new HelpSet(null,url);
+            helpBroker = helpSet.createHelpBroker();
+            helpBroker.setDisplayed(true);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        helpBroker.setSize(d);
+        
+    }
+    
+    protected void menuhelp_actionPerformed(ActionEvent arg0) {
+        help();
     }
 }

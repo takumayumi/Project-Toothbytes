@@ -2,6 +2,7 @@ package toothbytes.ui.components;
 
 import java.awt.BorderLayout;
 import static java.awt.Color.WHITE;
+import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;

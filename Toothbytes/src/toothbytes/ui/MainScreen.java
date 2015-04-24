@@ -1,6 +1,5 @@
 package toothbytes.ui;
 
-import toothbytes.ui.components.RecordsWindow;
 import java.awt.Color;
 import static java.awt.Color.WHITE;
 import java.awt.Dimension;
@@ -26,6 +25,7 @@ import toothbytes.ui.components.AppointmentsWindow;
 import toothbytes.ui.components.Cover;
 import toothbytes.ui.components.ModuleWindow;
 import toothbytes.ui.components.PaymentsWindow;
+import toothbytes.ui.components.RecordsWindow;
 import toothbytes.ui.components.SidePanel;
 import toothbytes.ui.forms.PersonalInformation;
 import toothbytes.ui.toolbars.TBMenuBar;
@@ -62,7 +62,7 @@ public class MainScreen extends JFrame {
 
         state = "cover";
         
-        Font uiButtonFont = new Font("Arial", Font.PLAIN, 24);
+        Font uiButtonFont = new Font("Walkway SemiBold", Font.PLAIN, 24);
         Color uiButtonColor = Color.WHITE;
         
         // Frame configurations.

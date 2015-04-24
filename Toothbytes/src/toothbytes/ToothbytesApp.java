@@ -28,11 +28,6 @@ public class ToothbytesApp {
 
     public static ArrayList<Patient> patientList;
     
-//    private static Font ttfBase = null;
-//    private static Font fontChamp = null;
-//    private static InputStream myStream = null;
-//    private static final String fontPath = "src/fonts/MonaBella Demo.ttf";
-
     /**
      * It connects to database, initializes the list of patients, instantiates 
      * the User Interfaces of the program Toothbytes and initializes them.
@@ -51,7 +46,7 @@ public class ToothbytesApp {
             PaymentsWindow pWin = new PaymentsWindow();
             
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Walkway SemiBold.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/toothbytes/font/Walkway SemiBold.ttf")));
 
             MainScreen ui = new MainScreen(rWin, aWin, pWin);
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
