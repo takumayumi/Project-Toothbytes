@@ -44,7 +44,7 @@ public class MainScreen extends JFrame {
     private Dimension defaultSize;
     private boolean fullScreen;
     private ButtonGroup navButtons;
-    private JButton appBut, recBut, payBut, testButton;
+    private JButton homeBut, appBut, recBut, payBut, testButton;
     private TBMenuBar menuBar;
     private JToolBar navBar, quickBar, statusBar;
     private JButton qAddPatientBut, qSetAppointmentBut;
@@ -52,6 +52,7 @@ public class MainScreen extends JFrame {
     private ModuleWindow recWindow, appWindow, payWindow;
     private SidePanel sp;
     public static String time;
+    private Cover c;
     
     public MainScreen(RecordsWindow rw, AppointmentsWindow aw, PaymentsWindow pw) {
         
@@ -59,7 +60,7 @@ public class MainScreen extends JFrame {
         appWindow = aw;
         payWindow = pw;
 
-        state = "firstrun";
+        state = "cover";
         
         Font uiButtonFont = new Font("Arial", Font.PLAIN, 24);
         Color uiButtonColor = Color.WHITE;
@@ -156,6 +157,11 @@ public class MainScreen extends JFrame {
         
         // Nav bar.
         navBar = new JToolBar("TestBar");
+        
+        homeBut = new JButton();
+        homeBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Home.png"));
+        homeBut.setToolTipText("Home");
+        homeBut.setBackground(WHITE);
 
         recBut = new JButton();
         recBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/PatientRecords.png"));
@@ -172,12 +178,14 @@ public class MainScreen extends JFrame {
         payBut.setToolTipText("Payments");
         payBut.setBackground(WHITE);
         
+        navBar.add(homeBut);
         navBar.add(recBut);
         navBar.add(appBut);
         navBar.add(payBut);
         navBar.setBackground(WHITE);
 
         NavigationHandler nh = new NavigationHandler();
+        homeBut.addActionListener(nh);
         recBut.addActionListener(nh);
         appBut.addActionListener(nh);
         payBut.addActionListener(nh);
@@ -192,7 +200,8 @@ public class MainScreen extends JFrame {
         modulePanel.setLayout(new MigLayout("fill"));
         modulePanel.setBackground(Color.white);
         mainPanel.add(modulePanel, "span 12 2");
-        modulePanel.add(new Cover(), "grow");
+        c = new Cover();
+        modulePanel.add(c, "grow");
 
         // Side panel (right).
         sp = new SidePanel();
@@ -233,7 +242,7 @@ public class MainScreen extends JFrame {
      * This method sets the frame to be visible.
      */
     public void init() {
-        menuBar.setAllFont(new Font("Consolas", Font.PLAIN, 16));
+        menuBar.setAllFont(new Font("Walkway SemiBold", Font.PLAIN, 16));
         this.setVisible(true);
     }
 
@@ -275,16 +284,13 @@ public class MainScreen extends JFrame {
     public ModuleWindow getModule(String state) {
         if (state.equals("recw")) {
             return recWindow;
+        } else if (state.equals("appw")) {
+            return appWindow;
+        } else if (state.equals("payw")) {
+            return payWindow;
         } else {
-            if (state.equals("appw")) {
-                return appWindow;
-            } else {
-                if (state.equals("payw")) {
-                    return payWindow;
-                }
-            }
+            return null;
         }
-        return null;
     }
 
     /**
@@ -360,6 +366,13 @@ public class MainScreen extends JFrame {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == homeBut) {
+                if (!state.equals("cover")) {
+                    modulePanel.removeAll();
+                    modulePanel.add(c, "grow");
+                    SwingUtilities.updateComponentTreeUI(modulePanel);
+                }
+            }
             if (e.getSource() == recBut) {
                 if (!state.equals("recw")) {
                     modulePanel.removeAll();
