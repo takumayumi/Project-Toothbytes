@@ -18,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
@@ -44,7 +45,7 @@ public class MainScreen extends JFrame {
     private Dimension defaultSize;
     private boolean fullScreen;
     private ButtonGroup navButtons;
-    private JButton homeBut, appBut, recBut, payBut, testButton;
+    private JToggleButton homeBut, appBut, recBut, payBut, testButton;
     private TBMenuBar menuBar;
     private JToolBar navBar, quickBar, statusBar;
     private JButton qAddPatientBut, qSetAppointmentBut;
@@ -157,26 +158,33 @@ public class MainScreen extends JFrame {
         
         // Nav bar.
         navBar = new JToolBar("TestBar");
+        navButtons = new ButtonGroup();
         
-        homeBut = new JButton();
+        homeBut = new JToggleButton();
         homeBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Home.png"));
         homeBut.setToolTipText("Home");
         homeBut.setBackground(WHITE);
 
-        recBut = new JButton();
+        recBut = new JToggleButton();
         recBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/PatientRecords.png"));
         recBut.setToolTipText("Dental Records");
         recBut.setBackground(WHITE);
 
-        appBut = new JButton();
+        appBut = new JToggleButton();
         appBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Appointments.png"));
         appBut.setToolTipText("Appointments");
         appBut.setBackground(WHITE);
 
-        payBut = new JButton();
+        payBut = new JToggleButton();
         payBut.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/Finances.png"));
         payBut.setToolTipText("Payments");
         payBut.setBackground(WHITE);
+        
+        
+        navButtons.add(homeBut);
+        navButtons.add(recBut);
+        navButtons.add(appBut);
+        navButtons.add(payBut);
         
         navBar.add(homeBut);
         navBar.add(recBut);

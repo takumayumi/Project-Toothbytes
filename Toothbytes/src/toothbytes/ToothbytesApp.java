@@ -14,6 +14,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import toothbytes.database.DBAccess;
 import toothbytes.model.Patient;
+import toothbytes.treatmentmodule.TreatmentWindow;
+import toothbytes.ui.LoginWindow;
 import toothbytes.ui.MainScreen;
 import toothbytes.ui.components.AppointmentsWindow;
 import toothbytes.ui.components.PaymentsWindow;
@@ -32,26 +34,27 @@ public class ToothbytesApp {
      * It connects to database, initializes the list of patients, instantiates 
      * the User Interfaces of the program Toothbytes and initializes them.
      */
-    public static void main(String[] args) throws FileNotFoundException, FontFormatException, IOException {
-        try {
 
-            DBAccess.connectDB();
-            patientList = DBAccess.initPatientList();
+    public static void main(String[] args) {
+
+        try {
+//            LoginWindow lw = new LoginWindow();
+//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//            SwingUtilities.updateComponentTreeUI(lw);
+//            lw.init();
+//            TreatmentWindow tw = new TreatmentWindow();
+//            tw.init();
             
             DBAccess.connectDB(); //connect to database
             patientList = DBAccess.initPatientList(); //initialize list of patients
-
             RecordsWindow rWin = new RecordsWindow(patientList);
             AppointmentsWindow aWin = new AppointmentsWindow();
             PaymentsWindow pWin = new PaymentsWindow();
-            
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/toothbytes/font/Walkway SemiBold.ttf")));
 
-            MainScreen ui = new MainScreen(rWin, aWin, pWin);
+            MainScreen ui = new MainScreen(rWin, aWin, pWin); //instantiate UI
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             SwingUtilities.updateComponentTreeUI(ui);
-            ui.init();
+            ui.init(); //initialize UI
         } catch (ClassNotFoundException |
                 InstantiationException |
                 IllegalAccessException |
@@ -59,7 +62,7 @@ public class ToothbytesApp {
                 SQLException ex) {
             Logger.getLogger(ToothbytesApp.class.getName()).log(Level.SEVERE, null, ex);
             java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//            System.err.println("Font not loaded.");
         }
+
     }
 }

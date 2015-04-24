@@ -9,8 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 import java.util.ArrayList;
-import javax.help.HelpBroker;
-import javax.help.HelpSet;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -124,22 +122,22 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
     
     public void help() {
         
-        String HS_FILE = "toothbytes.ui.toolbars.help/help.hs";
-        HelpSet helpSet;
-        HelpBroker helpBroker = null;
-        ClassLoader cl = getClass().getClassLoader();
-        
-        try {
-            URL url = HelpSet.findHelpSet(cl, HS_FILE);
-            helpSet = new HelpSet(null,url);
-            helpBroker = helpSet.createHelpBroker();
-            helpBroker.setDisplayed(true);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+//        String HS_FILE = "toothbytes.ui.toolbars.help/help.hs";
+//        HelpSet helpSet;
+//        HelpBroker helpBroker = null;
+//        ClassLoader cl = getClass().getClassLoader();
+//        
+//        try {
+//            URL url = HelpSet.findHelpSet(cl, HS_FILE);
+//            helpSet = new HelpSet(null,url);
+//            helpBroker = helpSet.createHelpBroker();
+//            helpBroker.setDisplayed(true);
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//        }
         
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        helpBroker.setSize(d);
+ //       helpBroker.setSize(d);
         
     }
     
