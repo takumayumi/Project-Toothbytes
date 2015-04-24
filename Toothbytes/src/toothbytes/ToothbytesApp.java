@@ -42,13 +42,6 @@ public class ToothbytesApp {
 
             DBAccess.connectDB();
             patientList = DBAccess.initPatientList();
-
-//            LoginWindow lw = new LoginWindow();
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//            SwingUtilities.updateComponentTreeUI(lw);
-//            lw.init();
-//            DentalChart dc = new DentalChart();
-//            dc.init();
             
             DBAccess.connectDB(); //connect to database
             patientList = DBAccess.initPatientList(); //initialize list of patients
@@ -57,14 +50,8 @@ public class ToothbytesApp {
             AppointmentsWindow aWin = new AppointmentsWindow();
             PaymentsWindow pWin = new PaymentsWindow();
             
-//            myStream = new BufferedInputStream(new FileInputStream(fontPath));
-//            ttfBase = Font.createFont(Font.TRUETYPE_FONT, myStream);
-//            fontChamp = ttfBase.deriveFont(Font.PLAIN, 16);   
-            
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Walkway SemiBold.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Walkway Bold.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Walkway Oblique.ttf")));
 
             MainScreen ui = new MainScreen(rWin, aWin, pWin);
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
