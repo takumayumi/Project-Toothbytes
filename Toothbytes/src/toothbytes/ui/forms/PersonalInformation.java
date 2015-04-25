@@ -1,19 +1,20 @@
 package toothbytes.ui.forms;
 
+import java.awt.Dialog;
 import java.util.regex.Pattern;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import toothbytes.database.AdditionalInfo;
 import toothbytes.database.MedicalCond;
 import toothbytes.database.PersonalInfo;
 
 public class PersonalInformation extends javax.swing.JPanel {
-    public JFrame ctb;
+    public JDialog ctb;
     public PersonalInfo pi;
     public AdditionalInfo ai;
     public MedicalCond mc;
     
-    public PersonalInformation(JFrame ctb) {
+    public PersonalInformation(JDialog ctb) {
         initComponents();
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -29,7 +30,7 @@ public class PersonalInformation extends javax.swing.JPanel {
         this.setVisible(true);
     }
     
-    public PersonalInformation(JFrame ctb, PersonalInfo pi, AdditionalInfo ai, MedicalCond mc){
+    public PersonalInformation(JDialog ctb, PersonalInfo pi, AdditionalInfo ai, MedicalCond mc){
         initComponents();
         this.ctb = ctb;
         this.pi = pi;
@@ -384,7 +385,8 @@ public class PersonalInformation extends javax.swing.JPanel {
     private void launchAdditionalInfo(){
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame tb = new JFrame();
+                JDialog tb = new JDialog();
+                tb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                 AdditionalInformation adi = null;
                 System.out.println("here");
                 try{
@@ -401,7 +403,7 @@ public class PersonalInformation extends javax.swing.JPanel {
                 tb.add(adi);
                 tb.pack();
                 tb.setVisible(true);
-                tb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                tb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 }
             }
         );

@@ -1,7 +1,8 @@
 package toothbytes.ui.forms;
 
+import java.awt.Dialog;
 import java.util.regex.Pattern;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import toothbytes.database.AdditionalInfo;
 import toothbytes.database.MedicalCond;
@@ -11,15 +12,15 @@ public class AdditionalInformation extends javax.swing.JPanel {
     private PersonalInfo pi;
     private AdditionalInfo ai;
     private MedicalCond mc;
-    private JFrame tb;
+    private JDialog tb;
        
-    public AdditionalInformation(JFrame tb, PersonalInfo pi) {
+    public AdditionalInformation(JDialog tb, PersonalInfo pi) {
         initComponents();
         this.pi = pi;
         this.tb = tb;
     }
     
-    public AdditionalInformation(JFrame tb, PersonalInfo pi, AdditionalInfo ai, MedicalCond mc) {
+    public AdditionalInformation(JDialog tb, PersonalInfo pi, AdditionalInfo ai, MedicalCond mc) {
         initComponents();
         this.tb = tb;
         this.pi = pi;
@@ -421,14 +422,15 @@ public class AdditionalInformation extends javax.swing.JPanel {
     private void launchMedicalCondition() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame tb = new JFrame();
+                JDialog tb = new JDialog();
+                tb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                 MedicalCondition mc = new MedicalCondition(tb, pi, ai);
                 System.out.println(mc.isVisible());
                 tb.setSize(mc.getPreferredSize());
                 tb.add(mc);
                 tb.pack();
                 tb.setVisible(true);
-                tb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                tb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 }
             }
         );
@@ -463,14 +465,14 @@ public class AdditionalInformation extends javax.swing.JPanel {
     private void launchPersonalInformation() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame tb = new JFrame();
+                JDialog tb = new JDialog();
                 PersonalInformation psi = new PersonalInformation(tb, pi, ai, mc);
                 System.out.println(psi.isVisible());
                 tb.setSize(psi.getPreferredSize());
                 tb.add(psi);
                 tb.pack();
                 tb.setVisible(true);
-                tb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                tb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 }
             }
         );

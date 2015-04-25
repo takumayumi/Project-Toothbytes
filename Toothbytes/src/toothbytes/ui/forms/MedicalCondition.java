@@ -1,21 +1,22 @@
 package toothbytes.ui.forms;
 
 import java.awt.Color;
+import java.awt.Dialog;
 import java.util.regex.Pattern;
 import javax.swing.ButtonGroup;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import toothbytes.database.AdditionalInfo;
 import toothbytes.database.PersonalInfo;
 import toothbytes.database.MedicalCond;
 
 public class MedicalCondition extends javax.swing.JPanel {
-    public JFrame tb;
+    public JDialog tb;
     public PersonalInfo pi;
     public AdditionalInfo ai;
     public MedicalCond mc;
     
-    public MedicalCondition(JFrame tb, PersonalInfo pi, AdditionalInfo ai) {
+    public MedicalCondition(JDialog tb, PersonalInfo pi, AdditionalInfo ai) {
         initComponents();
         q1Yes.setActionCommand("y");
         q1No.setActionCommand("n");
@@ -284,6 +285,11 @@ public class MedicalCondition extends javax.swing.JPanel {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/toothbytes/res/icons/btn/Back.png"))); // NOI18N
         jButton2.setText("Back");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/toothbytes/res/icons/btn/Cancel.png"))); // NOI18N
         jButton3.setText("Cancel");
@@ -757,6 +763,35 @@ public class MedicalCondition extends javax.swing.JPanel {
         // TODO add your handling code here:
         tb.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                JDialog tb = new JDialog();
+                tb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                AdditionalInformation adi = null;
+                System.out.println("here");
+                try{
+                    if(ai.getReason().isEmpty()){
+                        
+                    } else {
+                        adi = new AdditionalInformation(tb, pi, ai, mc);
+                    }
+                }catch(Exception e){
+                    adi = new AdditionalInformation(tb, pi);
+                }                
+                tb.setSize(adi.getPreferredSize());
+                System.out.println(adi.isVisible());
+                tb.add(adi);
+                tb.pack();
+                tb.setVisible(true);
+                tb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                }
+            }
+        );
+        tb.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     public boolean entriesValid() { 
         if(hasAnswer(q1) &&

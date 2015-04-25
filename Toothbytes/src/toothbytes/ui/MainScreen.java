@@ -2,6 +2,7 @@ package toothbytes.ui;
 
 import java.awt.Color;
 import static java.awt.Color.WHITE;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -15,6 +16,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -337,7 +339,8 @@ public class MainScreen extends JFrame {
                 java.awt.EventQueue.invokeLater(new Runnable() {
 
                     public void run() {
-                        JFrame ctb = new JFrame();
+                        JDialog ctb = new JDialog();
+                        ctb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                         PersonalInformation pi = new PersonalInformation(ctb);
                         System.out.println(pi.isVisible());
                         ctb.setSize(pi.getPreferredSize());
@@ -346,7 +349,7 @@ public class MainScreen extends JFrame {
                         ctb.setVisible(true);
                         ctb.setForeground(Color.white);
                         ctb.setBackground(Color.white);
-                        ctb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        ctb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     }
                 }
                 );
