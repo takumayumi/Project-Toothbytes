@@ -417,7 +417,7 @@ public class MedicalCondition extends javax.swing.JPanel {
 
         bloodPressureTF.setText("000/000");
 
-        bloodTypeCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "A-", "A+", "B", "B-", "B+", "O", "O-", "O+", "AB", "AB-", "AB+" }));
+        bloodTypeCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Blood Type", "A", "A-", "A+", "B", "B-", "B+", "O", "O-", "O+", "AB", "AB-", "AB+" }));
         bloodTypeCB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -441,25 +441,6 @@ public class MedicalCondition extends javax.swing.JPanel {
                                     .addComponent(q7Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(q8Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(q10Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(10, 10, 10)
-                                                .addComponent(q11CB1))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel13)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(bloodTypeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(q11CB2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(q11CB3))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(bloodPressureTF))))
                                     .addComponent(q1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addGap(21, 21, 21)
@@ -524,7 +505,28 @@ public class MedicalCondition extends javax.swing.JPanel {
                                                 .addComponent(q10Yes, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
                                                 .addComponent(q10No)))))
-                                .addGap(29, 29, 29)))
+                                .addGap(29, 29, 29))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(q11CB1))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel13)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bloodTypeCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(q11CB2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(q11CB3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(48, 48, 48)
+                                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bloodPressureTF)))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -681,63 +683,87 @@ public class MedicalCondition extends javax.swing.JPanel {
     private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
         grayTFBorders();
         if(entriesValid()) {
-            String q2ansTF ="";
-            String q3ansTF ="";
-            String q4ansTF ="";
-            String q5ansTF ="";
+            String q2ansTF ="No";
+            String q3ansTF ="No";
+            String q4ansTF ="No";
+            String q5ansTF ="No";
             String q11CB4ansTF="";
             
-            boolean q1ans = getAnswer(q1);
-            boolean q2ans = getAnswer(q2);
-                if(q2ans) {
-                    q2ansTF = q2YesTF.getText();
-                }
-            boolean q3ans = getAnswer(q3);
-                if(q3ans) {
-                    q3ansTF = q3YesTF.getText();
-                }
-            boolean q4ans = getAnswer(q4);
-                if(q4ans) {
-                    q4ansTF = q4YesTF.getText();
-                }
-            boolean q5ans = getAnswer(q5);
-                if(q5ans) {
-                    q5ansTF = q5YesTF.getText();
-                }
-            boolean q6ans = getAnswer(q6);
-            boolean q7ans = getAnswer(q7);
-            boolean q8ans = getAnswer(q8);
-            boolean q9ans = getAnswer(q9);
-            boolean q10ans = getAnswer(q10);
-            boolean q11CB1ans = q11CB1.isSelected();
-            boolean q11CB2ans = q11CB2.isSelected();
-            boolean q11CB3ans = q11CB3.isSelected();
-            boolean q11CB4ans = q11CB4.isSelected();
-                if(q11CB4ans) {
-                    q11CB4ansTF = q11CB4TF.getText();
-                }
-            String bloodType = bloodTypeCB.getSelectedItem().toString();
-            String bloodPressure = bloodPressureTF.getText();
-            boolean q12opt1ans = q12opt1.isSelected();
-            boolean q12opt2ans = q12opt2.isSelected();
-            boolean q12opt3ans = q12opt3.isSelected();
-            boolean q12opt4ans = q12opt4.isSelected();
-            boolean q12opt5ans = q12opt5.isSelected();
-            boolean q12opt6ans = q12opt6.isSelected();
-            boolean q12opt7ans = q12opt7.isSelected();
-            boolean q12opt8ans = q12opt8.isSelected();
-            boolean q12opt9ans = q12opt9.isSelected();
-            boolean q12opt10ans = q12opt10.isSelected();
-            boolean q12opt11ans = q12opt11.isSelected();
-            boolean q12opt12ans = q12opt12.isSelected();
-            boolean q12opt13ans = q12opt13.isSelected();
-            boolean q12opt14ans = q12opt14.isSelected();
-            boolean q12opt15ans = q12opt15.isSelected();
+            String q1ans = getAnswer(q1);
             
-            mc = new MedicalCond(q1ans, q2ans, q2ansTF, q3ans, q3ansTF, q4ans, q4ansTF, q5ans, q5ansTF, q6ans, q7ans, q8ans, q9ans, q10ans,
-                    q11CB1ans, q11CB2ans, q11CB3ans, q11CB4ans, q11CB4ansTF, q12opt1ans, q12opt2ans, q12opt3ans, q12opt4ans,
-                    q12opt5ans, q12opt6ans, q12opt7ans, q12opt8ans, q12opt9ans, q12opt10ans, q12opt11ans, q12opt12ans, q12opt13ans,
-                    q12opt14ans, q12opt15ans);
+            if(getAnswer(q2).equalsIgnoreCase("Yes")) {
+                q2ansTF = q2YesTF.getText();
+            }
+            
+            if(getAnswer(q3).equalsIgnoreCase("Yes")) {
+                    q3ansTF = q3YesTF.getText();
+            }
+            
+            if(getAnswer(q4).equalsIgnoreCase("Yes")) {
+                q4ansTF = q4YesTF.getText();
+            }
+            
+            if(getAnswer(q5).equalsIgnoreCase("Yes")){
+                q5ansTF = q5YesTF.getText();
+            }
+            
+            String q6ans = getAnswer(q6);
+            String q7ans = getAnswer(q7);
+            String q8ans = getAnswer(q8);
+            String q9ans = getAnswer(q9);
+            String q10ans = getAnswer(q10);
+            String q11 = "";
+            if(q11CB1.isSelected()){
+                q11 = "Local Anesthetic ";
+            } else if (q11CB2.isSelected()){
+                q11 = q11 + "Penicillin, Antibiotics ";
+            } else if (q11CB3.isSelected()){
+                q11 = q11 + "Aspirin ";
+            } else if (q11CB4.isSelected()){
+                q11 = q11 + q11CB4TF.getText();
+            }
+            
+            if(bloodTypeCB.getSelectedIndex() != 0){
+                String bloodType = bloodTypeCB.getSelectedItem().toString();
+            }
+            
+            String bloodPressure = bloodPressureTF.getText();
+            
+            String q12 = "";
+            
+            if(q12opt1.isSelected()){
+                q12 = "High Blood Pressure ";
+            } else if (q12opt2.isSelected()){
+                q12 = q12 + "Low Blood Pressure ";
+            } else if (q12opt3.isSelected()){
+                q12 = q12 + "Epileps / Convulsion ";
+            } else if (q12opt4.isSelected()){
+                q12 = q12 + "AIDS / HIV ";
+            } else if (q12opt5.isSelected()){
+                q12 = q12 + "Sexually Transmitted Disease ";
+            } else if (q12opt6.isSelected()){
+                q12 = q12 + "Stomach Troubles / Ulcer ";
+            } else if (q12opt7.isSelected()){
+                q12 = q12 + "Fainting Seizures ";
+            } else if (q12opt8.isSelected()){
+                q12 = q12 + "Rapid Weight Loss ";
+            } else if(q12opt9.isSelected()){
+                q12 = q12 + "Radiation Theraphy ";
+            } else if (q12opt10.isSelected()){
+                q12 = q12 + "Joint Replacement / Implant ";
+            } else if (q12opt11.isSelected()){
+                q12 = q12 + "Heart Disease ";
+            } else if (q12opt12.isSelected()){
+                q12 = q12 + "Hepatitis ";
+            } else if (q12opt13.isSelected()){
+                q12 = q12 + "Cancer / Tumors ";
+            } else if (q12opt14.isSelected()){
+                q12 = q12 + "Asthma ";
+            } else if (q12opt15.isSelected()){
+                q12 = q12 + "Heart Attacks";
+            }
+            
+            mc = new MedicalCond( );
             
             updateDatabase();
             
@@ -859,11 +885,11 @@ public class MedicalCondition extends javax.swing.JPanel {
         }   
     }
     
-    public boolean getAnswer(ButtonGroup btnGrp) {
+    public String getAnswer(ButtonGroup btnGrp) {
         if(btnGrp.getSelection().getActionCommand() == "y") {
-            return true;
+            return "Yes";
         }else{
-            return false;
+            return "No";
         }
     }
 

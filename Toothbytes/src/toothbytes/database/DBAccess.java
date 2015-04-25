@@ -55,7 +55,7 @@ public class DBAccess {
             conn = (JDBCConnection) JDBCDriver.getConnection(dbConn, null);
             stmt = (JDBCStatement) conn.createStatement();
             rs = (JDBCResultSet) stmt.executeQuery("CALL IDENTITY();");
-            
+            rs.next();
             int i = rs.getInt(1);
             //return sReturn;
         }catch(Exception e){
@@ -79,6 +79,7 @@ public class DBAccess {
             conn = (JDBCConnection) JDBCDriver.getConnection(dbConn, null);
             stmt = (JDBCStatement) conn.createStatement();
             rs = (JDBCResultSet) stmt.executeQuery(s);
+            rs.next();
             //ALTER TABLE Dental_Records ADD COLUMN toothStatus VARCHAR(45) NULL;
         } catch(Exception e){
             System.out.println(e);

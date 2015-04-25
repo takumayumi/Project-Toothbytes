@@ -143,12 +143,13 @@ public class AdditionalInformation extends javax.swing.JPanel {
             }
         });
 
-        effectiveDateMonthCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        effectiveDateMonthCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
         effectiveDateMonthCB.setEnabled(false);
 
-        effectiveDateDayCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        effectiveDateDayCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
         effectiveDateDayCB.setEnabled(false);
 
+        effectiveDateYearTF.setText("Year");
         effectiveDateYearTF.setEnabled(false);
 
         imagePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -258,10 +259,10 @@ public class AdditionalInformation extends javax.swing.JPanel {
                                     .addComponent(dentalInsuranceTF)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(effectiveDateMonthCB, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(22, 22, 22)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(effectiveDateDayCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(22, 22, 22)
-                                        .addComponent(effectiveDateYearTF, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(effectiveDateYearTF))
                                     .addComponent(guardiansNameTF)
                                     .addComponent(occupationTF, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(17, 17, 17))))

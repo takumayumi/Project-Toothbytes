@@ -1,5 +1,7 @@
 package toothbytes.database;
 
+import java.util.Calendar;
+
 /**
  * <h1>PersonalInfo</h1>
  * The {@code PersonalInfo} class retrieves and updates the data the user 
@@ -11,12 +13,12 @@ public class PersonalInfo {
     String surname;
     String givenName;
     String mi;
+    String patientPhoto;
     String gender;
-    int birthYear;
-    int age;
-    String nationality;
-    String religion;  
+    Calendar birthDate;
     String occupation;
+    String nickname;  
+    String civilStatus;
     String homeAddress;   
     String telephoneNo;
     String officeNo;
@@ -34,15 +36,15 @@ public class PersonalInfo {
      * @param   givenName
      *          First name of the patient.
      * @param   middleInitial
-     *          Middle initial of the patienet.
+     *          Middle initial of the patient.
      * @param   gender
      *          Gender of the patient.
-     * @param   birthYear
+     * @param   birthDate
      *          Date of birth of the patient.
-     * @param   nationality
-     *          Nationality of the patient.
-     * @param   religion
-     *          Religion of the patient.
+     * @param   civilStatus
+     *          Civil Status of the patient.
+     * @param   nickname
+     *          Nickname of the patient.
      * @param   occupation
      *          Occupation of the patient.
      * @param   homeAddress
@@ -59,17 +61,17 @@ public class PersonalInfo {
      *          Fax number of the patient.
      */
     public PersonalInfo(String surname, String givenName, String middleInitial, 
-        String gender, int birthYear, String nationality, String religion, 
+        String gender, Calendar birthDate, String civilStatus, String nickname, 
         String occupation, String homeAddress, String telephoneNo, 
-        String officeNo, String emailAdd, String cellphoneNo, String faxNo) {
+        String officeNo, String emailAdd, String cellphoneNo, String faxNo, String patientPhoto) {
         
         this.surname = surname;
         this.givenName = givenName;
         mi = middleInitial;
         this.gender = gender;
-        this.birthYear = birthYear;
-        this.nationality = nationality;
-        this.religion = religion;
+        this.birthDate = birthDate;
+        this.civilStatus = civilStatus;
+        this.nickname = nickname;
         this.occupation = occupation;
         this.homeAddress = homeAddress;
         this.telephoneNo = telephoneNo;
@@ -77,6 +79,7 @@ public class PersonalInfo {
         this.emailAdd = emailAdd;
         this.cellphoneNo = cellphoneNo;
         this.faxNo = faxNo;
+        this.patientPhoto = patientPhoto;
     }
     
     /**
@@ -87,15 +90,9 @@ public class PersonalInfo {
      * @return  Identity value while inserting records into database.
      */
     public int UpdatePersonalInfo(int medicalHistoryID) {
-        String PersonalInfoUpdate = "INSERT INTO Patient " + "(patientID, "
-            + "medicalHistoryID, patient_LastName, patient_FirstName, "
-            + "patient_MiddleInitial, birthdate, occupation, civilStatus, "
-            + "gender, nickname, homeAddress, homeNo, officeNo, faxNo, cellNo, "
-            + "emailAddress) VALUES (DEFAULT, " + medicalHistoryID + ", "
-            + surname + ", " + givenName + ", " + ", " + mi + ", " + birthYear 
-            + ", " + occupation + ", NULL, " + gender + ", NULL, " + homeAddress 
-            + ", " + telephoneNo + ", " + officeNo + ", " + faxNo + ", " 
-            + cellphoneNo + ", " + emailAdd + ");";
+        String PersonalInfoUpdate = "INSERT INTO PATIENT VALUES(DEFAULT, '"+surname+"', '"+givenName+"', '"+mi+"', "
+                + "'"+patientPhoto+"', '"+birthDate+"', '"+occupation+"', '"+civilStatus+"', '"+gender+"', '"+nickname+"', "
+                + "'"+homeAddress+"', '"+telephoneNo+"', '"+officeNo+"', '"+faxNo+"', '"+cellphoneNo+"', '"+emailAdd+"')";
         
         DBAccess.dbQuery(PersonalInfoUpdate);
         return DBAccess.CallIdentity();
@@ -137,24 +134,24 @@ public class PersonalInfo {
      * Returns the date of birth of the patient.
      * @return  Birthday.
      */
-    public int getBirthYear() {
-        return birthYear;
+    public Calendar getBirthDate() {
+        return birthDate;
     }
     
     /**
-     * Returns the nationality of the patient.
-     * @return  Nationality.
+     * Returns the civil status of the patient.
+     * @return  Civil Status.
      */
-    public String getNationality() {
-        return nationality;
+    public String getCivilStatus() {
+        return civilStatus;
     }
     
     /**
-     * Returns the religion of the patient.
-     * @return  Religion.
+     * Returns the nickname of the patient.
+     * @return  Nickname.
      */
-    public String getReligion() {
-        return religion;
+    public String getNickname() {
+        return nickname;
     }
     
     /**
