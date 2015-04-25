@@ -1,5 +1,6 @@
 package toothbytes.ui.toolbars;
 
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
@@ -11,6 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -48,14 +50,15 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
                 java.awt.EventQueue.invokeLater(new Runnable() {
 
                     public void run() {
-                        JFrame ctb = new JFrame();
+                        JDialog ctb = new JDialog();
                         PersonalInformation pi = new PersonalInformation(ctb);
+                        ctb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                         System.out.println(pi.isVisible());
                         ctb.setSize(pi.getPreferredSize());
                         ctb.add(pi);
                         ctb.pack();
                         ctb.setVisible(true);
-                        ctb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        ctb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     }
                 });
             }
