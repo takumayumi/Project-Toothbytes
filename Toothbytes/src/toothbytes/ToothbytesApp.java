@@ -10,7 +10,7 @@ import toothbytes.database.DBAccess;
 import toothbytes.model.Patient;
 import toothbytes.ui.MainScreen;
 import toothbytes.ui.components.AppointmentsWindow;
-import toothbytes.ui.components.PaymentsWindow;
+import toothbytes.ui.components.PaymentWindow;
 import toothbytes.ui.components.RecordsWindow;
 
 /**
@@ -40,7 +40,7 @@ public class ToothbytesApp {
             patientList = DBAccess.initPatientList(); //initialize list of patients
             RecordsWindow rWin = new RecordsWindow(patientList);
             AppointmentsWindow aWin = new AppointmentsWindow();
-            PaymentsWindow pWin = new PaymentsWindow();
+            PaymentWindow pWin = new PaymentWindow();
 
             MainScreen ui = new MainScreen(rWin, aWin, pWin); //instantiate UI
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

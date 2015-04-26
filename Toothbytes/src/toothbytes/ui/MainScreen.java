@@ -27,7 +27,7 @@ import net.miginfocom.swing.MigLayout;
 import toothbytes.ui.components.AppointmentsWindow;
 import toothbytes.ui.components.Cover;
 import toothbytes.ui.components.ModuleWindow;
-import toothbytes.ui.components.PaymentsWindow;
+import toothbytes.ui.components.PaymentWindow;
 import toothbytes.ui.components.RecordsWindow;
 import toothbytes.ui.components.SidePanel;
 import toothbytes.ui.forms.PersonalInformation;
@@ -57,7 +57,7 @@ public class MainScreen extends JFrame {
     public static String time;
     private Cover c;
     
-    public MainScreen(RecordsWindow rw, AppointmentsWindow aw, PaymentsWindow pw) {
+    public MainScreen(RecordsWindow rw, AppointmentsWindow aw, PaymentWindow pw) {
         
         recWindow = rw;
         appWindow = aw;
