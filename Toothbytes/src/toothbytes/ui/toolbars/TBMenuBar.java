@@ -8,8 +8,11 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
@@ -124,27 +127,14 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
     }
     
     public void help() {
-        
-//        String HS_FILE = "toothbytes.ui.toolbars.help/help.hs";
-//        HelpSet helpSet;
-//        HelpBroker helpBroker = null;
-//        ClassLoader cl = getClass().getClassLoader();
-//        
-//        try {
-//            URL url = HelpSet.findHelpSet(cl, HS_FILE);
-//            helpSet = new HelpSet(null,url);
-//            helpBroker = helpSet.createHelpBroker();
-//            helpBroker.setDisplayed(true);
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//        }
-        
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
- //       helpBroker.setSize(d);
-        
+        String fileName = "src\\toothbytes\\help\\Toothbytes.chm";
+        String[] commands = {"cmd", "/c", fileName};
+        try {
+            Runtime.getRuntime().exec(commands);
+            //Runtime.getRuntime().exec("C:\\Users\\Riyasam\\Documents\\NetBeansProjects\\SwingTest\\src\\Test\\RealWorld.chm");
+        } catch (IOException ex) {
+            Logger.getLogger(TBMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    protected void menuhelp_actionPerformed(ActionEvent arg0) {
-        help();
-    }
 }

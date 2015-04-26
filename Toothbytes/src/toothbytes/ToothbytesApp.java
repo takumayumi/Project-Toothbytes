@@ -1,11 +1,5 @@
 package toothbytes;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -14,8 +8,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import toothbytes.database.DBAccess;
 import toothbytes.model.Patient;
-import toothbytes.treatmentmodule.TreatmentWindow;
-import toothbytes.ui.LoginWindow;
 import toothbytes.ui.MainScreen;
 import toothbytes.ui.components.AppointmentsWindow;
 import toothbytes.ui.components.PaymentsWindow;
@@ -34,7 +26,6 @@ public class ToothbytesApp {
      * It connects to database, initializes the list of patients, instantiates 
      * the User Interfaces of the program Toothbytes and initializes them.
      */
-
     public static void main(String[] args) {
 
         try {
