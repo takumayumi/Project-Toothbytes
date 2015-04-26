@@ -712,58 +712,62 @@ public class MedicalCondition extends javax.swing.JPanel {
             String q8ans = getAnswer(q8);
             String q9ans = getAnswer(q9);
             String q10ans = getAnswer(q10);
-            String q11 = "";
+            
+            String sq11 = "";
+            
             if(q11CB1.isSelected()){
-                q11 = "Local Anesthetic ";
+                sq11 = "Local Anesthetic ";
             } else if (q11CB2.isSelected()){
-                q11 = q11 + "Penicillin, Antibiotics ";
+                sq11 = sq11 + "Penicillin, Antibiotics ";
             } else if (q11CB3.isSelected()){
-                q11 = q11 + "Aspirin ";
+                sq11 = sq11 + "Aspirin ";
             } else if (q11CB4.isSelected()){
-                q11 = q11 + q11CB4TF.getText();
+                sq11 = sq11 + q11CB4TF.getText();
             }
             
+            String bloodType = null;
             if(bloodTypeCB.getSelectedIndex() != 0){
-                String bloodType = bloodTypeCB.getSelectedItem().toString();
+                bloodType = bloodTypeCB.getSelectedItem().toString();
             }
             
             String bloodPressure = bloodPressureTF.getText();
             
-            String q12 = "";
+            String sq12 = "";
             
             if(q12opt1.isSelected()){
-                q12 = "High Blood Pressure ";
+                sq12 = "High Blood Pressure ";
             } else if (q12opt2.isSelected()){
-                q12 = q12 + "Low Blood Pressure ";
+                sq12 = sq12 + "Low Blood Pressure ";
             } else if (q12opt3.isSelected()){
-                q12 = q12 + "Epileps / Convulsion ";
+                sq12 = sq12 + "Epileps / Convulsion ";
             } else if (q12opt4.isSelected()){
-                q12 = q12 + "AIDS / HIV ";
+                sq12 = sq12 + "AIDS / HIV ";
             } else if (q12opt5.isSelected()){
-                q12 = q12 + "Sexually Transmitted Disease ";
+                sq12 = sq12 + "Sexually Transmitted Disease ";
             } else if (q12opt6.isSelected()){
-                q12 = q12 + "Stomach Troubles / Ulcer ";
+                sq12 = sq12 + "Stomach Troubles / Ulcer ";
             } else if (q12opt7.isSelected()){
-                q12 = q12 + "Fainting Seizures ";
+                sq12 = sq12 + "Fainting Seizures ";
             } else if (q12opt8.isSelected()){
-                q12 = q12 + "Rapid Weight Loss ";
+                sq12 = sq12 + "Rapid Weight Loss ";
             } else if(q12opt9.isSelected()){
-                q12 = q12 + "Radiation Theraphy ";
+                sq12 = sq12 + "Radiation Theraphy ";
             } else if (q12opt10.isSelected()){
-                q12 = q12 + "Joint Replacement / Implant ";
+                sq12 = sq12 + "Joint Replacement / Implant ";
             } else if (q12opt11.isSelected()){
-                q12 = q12 + "Heart Disease ";
+                sq12 = sq12 + "Heart Disease ";
             } else if (q12opt12.isSelected()){
-                q12 = q12 + "Hepatitis ";
+                sq12 = sq12 + "Hepatitis ";
             } else if (q12opt13.isSelected()){
-                q12 = q12 + "Cancer / Tumors ";
+                sq12 = sq12 + "Cancer / Tumors ";
             } else if (q12opt14.isSelected()){
-                q12 = q12 + "Asthma ";
+                sq12 = sq12 + "Asthma ";
             } else if (q12opt15.isSelected()){
-                q12 = q12 + "Heart Attacks";
+                sq12 = sq12 + "Heart Attacks";
             }
             
-            mc = new MedicalCond( );
+            mc = new MedicalCond(q1ans, q2ansTF, q3ansTF, q4ansTF, q5ansTF, q6ans, q7ans, q8ans, q9ans,bloodType, bloodPressure, q10ans, sq11, sq12);
+            
             
             updateDatabase();
             
@@ -894,12 +898,9 @@ public class MedicalCondition extends javax.swing.JPanel {
     }
 
     public void updateDatabase() {
-       int medicalID = mc.Update();
-       System.out.println("medicalhere");
-       int personalID = pi.UpdatePersonalInfo(medicalID);
-       System.out.println("personalInfo");
-       boolean isOK = ai.UpdateAdditionalInfo(personalID);
-       System.out.println("Everything "+ isOK);
+       int personalID = pi.UpdatePersonalInfo();
+       ai.UpdateAdditionalInfo(personalID);
+       mc.Update(personalID);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField bloodPressureTF;

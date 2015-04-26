@@ -58,14 +58,8 @@
                                               <Component id="miTF" alignment="0" min="-2" pref="36" max="-2" attributes="0"/>
                                               <Component id="jLabel4" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
                                           </Group>
-                                          <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="genderCB" alignment="0" min="-2" pref="107" max="-2" attributes="0"/>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
-                                                  <Component id="jLabel5" min="-2" pref="55" max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
+                                          <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                                          <Component id="genderCB" min="-2" pref="132" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" attributes="0">
@@ -131,7 +125,6 @@
                   <Component id="jLabel2" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -214,11 +207,6 @@
         <Property name="text" type="java.lang.String" value="MI:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel5">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Gender:"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JTextField" name="surnameTF">
     </Component>
     <Component class="javax.swing.JTextField" name="givenNameTF">
@@ -228,9 +216,10 @@
     <Component class="javax.swing.JComboBox" name="genderCB">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
-            <StringItem index="0" value="Male"/>
-            <StringItem index="1" value="Female"/>
+          <StringArray count="3">
+            <StringItem index="0" value="Gender"/>
+            <StringItem index="1" value="Male"/>
+            <StringItem index="2" value="Female"/>
           </StringArray>
         </Property>
       </Properties>

@@ -1,6 +1,7 @@
 package toothbytes.ui.forms;
 
 import java.awt.Dialog;
+import java.util.Calendar;
 import java.util.regex.Pattern;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -28,17 +29,26 @@ public class AdditionalInformation extends javax.swing.JPanel {
         this.mc = mc;
         
         dentalInsuranceTF.setText(ai.getDentalInsurance());
-        effectiveDateYearTF.setText(ai.getEffectiveDateYear());
         guardiansNameTF.setText(ai.getGuardianName());
         occupationTF.setText(ai.getOccupation());
         referrerTF.setText(ai.getReferrer());
         reasonTF.setText(ai.getReason());
         previousDentistTF.setText(ai.getPreviousDentist());
-        lastDentalVisitYearTF.setText(ai.getLastDentalVisitYear());
         nameOfPhysicianTF.setText(ai.getPhysicianName());
         officeAddressTF.setText(ai.getOfficeNumber());
         specializationTF.setText(ai.getSpecialization());
         officeNumberTF.setText(ai.getOfficeNumber());
+        
+        //Dates
+        effectiveDateDayCB.setSelectedIndex(ai.getEffectiveDate().get(Calendar.DAY_OF_MONTH));
+        effectiveDateMonthCB.setSelectedIndex(ai.getEffectiveDate().get(Calendar.MONTH));
+        effectiveDateYearTF.setText(String.valueOf(ai.getEffectiveDate().get(Calendar.YEAR)));
+        
+        lastDentalVisitDayCB.setSelectedIndex(ai.getLastDentalVisit().get(Calendar.DAY_OF_MONTH));
+        lastDentalVisitMonthCB.setSelectedIndex(ai.getLastDentalVisit().get(Calendar.MONTH));
+        lastDentalVisitYearTF.setText(String.valueOf(ai.getLastDentalVisit().get(Calendar.YEAR)));
+        
+        
     }
     
     public boolean hasNumbers(String numberlessString){
@@ -179,9 +189,11 @@ public class AdditionalInformation extends javax.swing.JPanel {
 
         jLabel10.setText("Last Dental Visit:");
 
-        lastDentalVisitMonthCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        lastDentalVisitMonthCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
 
-        lastDentalVisitDayCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        lastDentalVisitDayCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Date", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+
+        lastDentalVisitYearTF.setText("Year");
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -392,30 +404,49 @@ public class AdditionalInformation extends javax.swing.JPanel {
         grayTFBorders();
         if(entriesValid()) {
             // Proceed to medical condition form
-            System.out.println("Entries are valid.");
-            String dentalInsurance = dentalInsuranceTF.getText();            
-            String effectiveDateYear = effectiveDateYearTF.getText();       
+            String dentalInsurance = dentalInsuranceTF.getText();    
             String guardiansName = guardiansNameTF.getText();              
             String occupation = occupationTF.getText();                     
             String referrer = referrerTF.getText();                         
             String reason = reasonTF.getText();                           
-            String previousDentist = previousDentistTF.getText();          
-            String lastDentalVisitYear = lastDentalVisitYearTF.getText();  
+            String previousDentist = previousDentistTF.getText();   
             String nameOfPhysician = nameOfPhysicianTF.getText();          
             String officeAddress = officeAddressTF.getText();             
             String specialization = specializationTF.getText();           
             String officeNumber = officeNumberTF.getText();    
             
-            ai = new AdditionalInfo(dentalInsurance, effectiveDateYear, guardiansName, occupation, referrer, reason, previousDentist,
-                                                lastDentalVisitYear, nameOfPhysician, officeAddress, specialization, officeNumber);
+            Calendar effectiveDate = Calendar.getInstance();
+            
+            if(!effectiveDateYearTF.getText().equalsIgnoreCase("Year") ||
+                    effectiveDateDayCB.getSelectedIndex() != 0 ||
+                    effectiveDateMonthCB.getSelectedIndex() != 0){
+                int effectiveDateDay = effectiveDateDayCB.getSelectedIndex();
+                int effectiveDateMonth = effectiveDateMonthCB.getSelectedIndex();
+                int effectiveDateYear = Integer.parseInt(effectiveDateYearTF.getText());
+                effectiveDate.set(effectiveDateYear, effectiveDateMonth, effectiveDateDay);
+            } else {
+                effectiveDate = null;
+            }
+                    
+            Calendar lastDentalVisit = Calendar.getInstance();
+            if(!lastDentalVisitYearTF.getText().equalsIgnoreCase("Year") ||
+                    lastDentalVisitDayCB.getSelectedIndex() != 0 ||
+                    lastDentalVisitMonthCB.getSelectedIndex() != 0){
+                int lastDentalVisitDay = lastDentalVisitDayCB.getSelectedIndex();
+                int lastDentalVisitMonth = lastDentalVisitMonthCB.getSelectedIndex();
+                int lastDentalVisitYear = Integer.parseInt(lastDentalVisitYearTF.getText());
+                lastDentalVisit.set(lastDentalVisitYear, lastDentalVisitMonth, lastDentalVisitDay);
+            } else {
+                lastDentalVisit = null;
+            }
+            
+            ai = new AdditionalInfo(dentalInsurance, effectiveDate, guardiansName, occupation, referrer, reason, previousDentist,
+                                                lastDentalVisit, nameOfPhysician, officeAddress, specialization, officeNumber);
             
             launchMedicalCondition();
         } else {
             if(reasonTF.getText().isEmpty()){reasonTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
-            if(!dentalInsuranceTF.getText().isEmpty()){
-                if(effectiveDateYearTF.getText().isEmpty() || hasLetters(effectiveDateYearTF.getText()) || hasSpecialCharacters(effectiveDateYearTF.getText()) ){effectiveDateYearTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}}
             if(hasLetters(officeNumberTF.getText())){officeNumberTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
-            if(hasLetters(lastDentalVisitYearTF.getText()) || hasSpecialCharacters(lastDentalVisitYearTF.getText())){lastDentalVisitYearTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             JOptionPane.showMessageDialog(null,"One or more fields are invalid. \nPlease recheck inputs.");
         }
     }//GEN-LAST:event_nextButtonActionPerformed
@@ -496,11 +527,9 @@ public class AdditionalInformation extends javax.swing.JPanel {
         String officeNumber = officeNumberTF.getText();                 //no letters
         
         if(!entriesNull(reason)&& 
-           !hasLetters(effectiveDateYear) && !hasSpecialCharacters(effectiveDateYear) &&
            !hasNumbers(guardiansName) && 
            !hasNumbers(referrer) &&
            !hasNumbers(previousDentist) &&
-           !hasLetters(lastDentalVisitYear) &&
            !hasNumbers(nameOfPhysician) &&
            !hasLetters(officeNumber)){
            return true;

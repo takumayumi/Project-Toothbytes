@@ -1,5 +1,7 @@
 package toothbytes.database;
 
+import java.util.Calendar;
+
 /**
  * <h1>AdditionalInfo</h1>
  * The {@code AdditionalInfo} class retrieves and updates the data the user 
@@ -8,26 +10,26 @@ package toothbytes.database;
  * used to the forms and database.
  */
 public class AdditionalInfo {
-    public String dentalInsurance;          
-    public String effectiveDateYear;      
-    public String guardiansName;            
-    public String occupation;                   
-    public String referrer;                        
-    public String reason;                             
-    public String previousDentist;           
-    public String lastDentalVisitYear;   
-    public String nameOfPhysician;          
-    public String officeAddress;            
-    public String specialization;             
-    public String officeNumber;                
+    private String dentalInsurance;          
+    private Calendar effectiveDate;      
+    private String guardiansName;            
+    private String occupation;                   
+    private String referrer;                        
+    private String reason;                             
+    private String previousDentist;           
+    private Calendar lastDentalVisit;   
+    private String nameOfPhysician;          
+    private String officeAddress;            
+    private String specialization;             
+    private String officeNumber;                
 
     /**
      * This method constructs the variables to be used in the Additional_Info 
      * table of Toothbytes database schema.
      * @param   dentalInsurance
      *          Dental insurance of the patient, if available.
-     * @param   effectiveDateYear
-     *          Last year of the dental insurance is effective.
+     * @param   effectiveDate
+     *          Last date of the dental insurance is effective.
      * @param   guardianName
      *          Guardian name of the patient if he/she is below 18 years old.
      * @param   occupation
@@ -39,8 +41,8 @@ public class AdditionalInfo {
      *          The reason of checkup on that day.
      * @param   previousDentist
      *          Name of the previous dentist of the patient, if available.
-     * @param   lastDentalVisitYear
-     *          Year when the patient last went to the dental clinic.
+     * @param   lastDentalVisit
+     *          date when the patient last went to the dental clinic.
      * @param   physicianName
      *          Name of the physician of the patient.
      * @param   officeAddress
@@ -51,16 +53,17 @@ public class AdditionalInfo {
      *          Phone or mobile number the physician of the patient on the 
      *          office or used for his/her work.
      */
-    public AdditionalInfo(String dentalInsurance, String effectiveDateYear, String guardianName, String occupation, String referrer, String reason,
-                        String previousDentist, String lastDentalVisitYear, String physicianName, String officeAddress, String specialization, String officeNumber) {
+    public AdditionalInfo(String dentalInsurance, Calendar effectiveDate, String guardianName, String occupation, String referrer, String reason,
+                        String previousDentist, Calendar lastDentalVisit, String physicianName, String officeAddress, String specialization, String officeNumber) {
+        
         this.dentalInsurance = dentalInsurance;
-        this.effectiveDateYear = effectiveDateYear;
+        this.effectiveDate = effectiveDate;
         this.guardiansName = guardianName;
         this.occupation = occupation;
         this.referrer = referrer;
         this.reason = reason;
         this.previousDentist = previousDentist;
-        this.lastDentalVisitYear = lastDentalVisitYear;
+        this.lastDentalVisit = lastDentalVisit;
         this.nameOfPhysician = physicianName;
         this.officeAddress = officeAddress;
         this.specialization = specialization;
@@ -76,16 +79,15 @@ public class AdditionalInfo {
      *          If the program failed to update or insert the data the user 
      *          input for the database.
      */
-    public boolean UpdateAdditionalInfo(int patientID) {
+    public void UpdateAdditionalInfo(int patientID) {
         try{
-            String additionalInfoUpdate = "INSERT INTO Additional_Info (additionalInfoID, patientID, dentalInsurance, effectiveDate, guardianName, guardianOccupation, referral, consulationReason,\n" +
-    "				previousDentist, lastDentalVisit, physicianName, physicianOffice, physicianSpecialty, physicianContactNo) \n" +
-    "                               VALUES (DEFAULT, "+patientID+", '"+dentalInsurance+"', '"+effectiveDateYear+"', '"+guardiansName+"', '"+occupation+"', '"+referrer+"', '"+reason+"',"
-                    + "             '"+previousDentist+"', '"+lastDentalVisitYear+"', '"+nameOfPhysician+"', '"+officeAddress+"', '"+specialization+"', '"+officeNumber+"')";
-            return true;
+            String additionalInfoUpdate = "INSERT INTO Additional_Info VALUES (DEFAULT, "+patientID+", '"+dentalInsurance+"', "
+                    + "'"+effectiveDate.get(Calendar.YEAR)+"-"+effectiveDate.get(Calendar.MONTH)+"-"+effectiveDate.get(Calendar.DAY_OF_MONTH) +"',"
+                    + " '"+guardiansName+"', '"+occupation+"', '"+referrer+"', '"+reason+"', '"+previousDentist+"', "
+                    + "'"+lastDentalVisit.get(Calendar.YEAR)+"-"+lastDentalVisit.get(Calendar.MONTH)+"-"+lastDentalVisit.get(Calendar.DAY_OF_MONTH)+"', '"+nameOfPhysician+"', '"+officeAddress+"', '"+specialization+"', '"+officeNumber+"')";
+            DBAccess.dbQuery(additionalInfoUpdate);
         }catch(Exception e) {
             System.out.println(e);
-            return false;
         }
 
     }
@@ -102,8 +104,8 @@ public class AdditionalInfo {
      * Returns last year of the dental insurance is effective.
      * @return  Effective date year.
      */
-    public String getEffectiveDateYear() {
-        return effectiveDateYear;
+    public Calendar getEffectiveDate() {
+        return effectiveDate;
     }
     
     /**
@@ -152,8 +154,8 @@ public class AdditionalInfo {
      * Returns the year when the patient last went to the dental clinic.
      * @return  Last dental visit year.
      */
-    public String getLastDentalVisitYear() {
-        return lastDentalVisitYear;
+    public Calendar getLastDentalVisit() {
+        return lastDentalVisit;
     }
     
     /**

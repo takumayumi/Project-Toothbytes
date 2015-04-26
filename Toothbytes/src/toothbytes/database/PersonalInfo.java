@@ -89,11 +89,11 @@ public class PersonalInfo {
      *          A foreign key from the Medical_History table.
      * @return  Identity value while inserting records into database.
      */
-    public int UpdatePersonalInfo(int medicalHistoryID) {
-        String PersonalInfoUpdate = "INSERT INTO PATIENT VALUES(DEFAULT, '"+surname+"', '"+givenName+"', '"+mi+"', "
-                + "'"+patientPhoto+"', '"+birthDate+"', '"+occupation+"', '"+civilStatus+"', '"+gender+"', '"+nickname+"', "
+    public int UpdatePersonalInfo() {
+        String PersonalInfoUpdate = "INSERT INTO PATIENT VALUES(DEFAULT, '"+surname+"', '"+givenName+"', '"+mi.charAt(0)+"', "
+                + "'"+patientPhoto+"', '"+birthDate.get(Calendar.YEAR)+"-"+birthDate.get(Calendar.MONTH)+"-"+birthDate.get(Calendar.DAY_OF_MONTH) +"', '"+occupation+"', '"+civilStatus+"', '"+gender.charAt(0)+"', '"+nickname+"', "
                 + "'"+homeAddress+"', '"+telephoneNo+"', '"+officeNo+"', '"+faxNo+"', '"+cellphoneNo+"', '"+emailAdd+"')";
-        
+        System.out.println(PersonalInfoUpdate);
         DBAccess.dbQuery(PersonalInfoUpdate);
         return DBAccess.CallIdentity();
     }

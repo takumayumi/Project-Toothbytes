@@ -8,7 +8,6 @@ package toothbytes.database;
  * used to the forms and database.
  */
 public class MedicalCond {
-    private int patientID;
     private String q1;
     private String q2;
     private String q3;
@@ -18,6 +17,8 @@ public class MedicalCond {
     private String q7;
     private String q8;
     private String q9;
+    private String bloodType;
+    private String bloodPressure;
     private String q10;
     private String q11;
     private String q12;
@@ -100,7 +101,7 @@ public class MedicalCond {
      */
     
     public MedicalCond(String q1, String q2, String q3, String q4, String q5, String q6, String q7, String q8, String q9,
-    String q10, String q11, String q12) {
+    String bloodType, String bloodPressure, String q10, String q11, String q12) {
         this.q1 = q1;
         this.q2 = q2;
         this.q3 = q3;
@@ -110,26 +111,22 @@ public class MedicalCond {
         this.q7 = q7;
         this.q8 = q8;
         this.q9 = q9;
+        this.bloodType = bloodType;
+        this.bloodPressure = bloodPressure;
         this.q10 = q10;
         this.q11 = q11;
         this.q12 = q12;
     }
-    
-    public void setPatientID(int i){
-        patientID = i;
-    }
-    
-    
-    
+     
     /**
      * This method injects data the user input that will update the 
      * Medical_History table from the Toothbytes database schema.
      * @return  Identity value while inserting records into database.
      */
-    public int Update() {
-        String UpdateMedicalCon = "INSERT INTO MEDICAL_HISTORY VALUES(DEFAULT, "+patientID+", )";
-        
+    public void Update(int patientID) {
+        String UpdateMedicalCon = "INSERT INTO MEDICAL_HISTORY VALUES(DEFAULT, "+patientID+", '"+q1+"', "
+                + "'"+q2+"', '"+q3+"', '"+q4+"', '"+q5+"', '"+q6+"', '"+q7+"', '"+q8+"', '"+q9+"', '"+bloodType+"', "
+                + "'"+bloodType+"', '"+bloodPressure+"', '"+q10+"', '"+q11+"', '"+q12+"', null)";
         DBAccess.dbQuery(UpdateMedicalCon);
-        return DBAccess.CallIdentity();
     }
 }
