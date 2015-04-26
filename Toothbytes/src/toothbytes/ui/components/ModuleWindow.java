@@ -2,7 +2,6 @@ package toothbytes.ui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.LayoutManager;
 import javax.swing.JComponent;
@@ -62,6 +61,10 @@ public class ModuleWindow extends JPanel{
      */
     public void addToMainPane(JComponent c, String s) {
         mainPanel.add(c, s);
+    }
+    
+    public void addPLV(PatientListViewer plv) {
+        this.add(plv, BorderLayout.WEST);
     }
     public void setAllFont(Font f) {
 
