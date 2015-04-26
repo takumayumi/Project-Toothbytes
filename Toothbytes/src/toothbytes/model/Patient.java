@@ -99,7 +99,7 @@ public class Patient implements Comparable<Patient>{
      * @return  Full name.
      */
     public String getFullName() {
-        return this.firstName + ", " + this.lastName + " " + this.midName + ". ";
+        return this.lastName + ", " + this.firstName + " " + this.midName + ". ";
     }
     
     /**
@@ -121,6 +121,6 @@ public class Patient implements Comparable<Patient>{
      * @return  Full name of the patient in String.
      */
     public String toString() {
-        return this.firstName + ", " + this.lastName + " " + this.midName + ". ";
+        return this.lastName + ", " + this.firstName + " " + this.midName + ". ";
     }
 }
