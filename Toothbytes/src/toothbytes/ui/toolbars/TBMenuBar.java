@@ -8,7 +8,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -135,6 +137,17 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
         } catch (IOException ex) {
             Logger.getLogger(TBMenuBar.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        String s;
+//        Process p;
+//        try {
+//            p = Runtime.getRuntime().exec("src\\toothbytes\\help\\Toothbytes.chm");
+//            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+//            p.waitFor();
+//            System.out.println("exit: " + p.exitValue());
+//            p.destroy();
+//        } catch (IOException | InterruptedException e) {
+//            Logger.getLogger(TBMenuBar.class.getName()).log(Level.SEVERE, null, e);
+//        }
     }
     
 }

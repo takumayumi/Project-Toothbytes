@@ -423,7 +423,6 @@ public class MainScreen extends JFrame {
                 toggleFullScreen();
             }
         }
-
     }
     
 }
