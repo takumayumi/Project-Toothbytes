@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import net.miginfocom.swing.MigLayout;
 import toothbytes.database.DBAccess;
 import toothbytes.model.Patient;
 import toothbytes.model.PatientX;
@@ -21,8 +22,18 @@ public class PaymentWindow extends ModuleWindow{
     private PatientListViewer plv;
     private PaymentViewer pv;
     private int currentId;
+    private MigLayout layout;
     
     public PaymentWindow(ArrayList<Patient> pList) {
+        layout = new MigLayout(
+                "filly, wrap 12",
+                "[fill]push[fill][fill]push[fill]push"
+                + "[fill]push[fill]push[fill]push[fill]push"
+                + "[fill]push[fill]push[fill]push[fill]" //12 columns
+        );
+        
+        super.setMainPaneLayout(layout);
+        
         plv = new PatientListViewer(pList);
         
         PatientListListener pll = new PatientListListener();
@@ -31,18 +42,16 @@ public class PaymentWindow extends ModuleWindow{
         currentId = 1;
         pv = new PaymentViewer(currentId);
         
-        this.addToMainPane(pv);
-        this.addPLV(plv);
+        super.addToMainPane(plv, "span 2, grow");
+        super.addToMainPane(pv, "span 10, grow");
     }
     
     public void ChangePaymentViewer(){
-        pv.removeAll();
-        this.remove(pv);
+        
+        this.removeMainComponent(1);
         pv = new PaymentViewer(currentId);
-        this.addToMainPane(pv);
-        SwingUtilities.updateComponentTreeUI(pv);
-        repaint();
-        revalidate();
+        super.addToMainPane(pv, "span 10, grow");
+        SwingUtilities.updateComponentTreeUI(this);
     }
     
     public class PatientListListener implements ListSelectionListener {

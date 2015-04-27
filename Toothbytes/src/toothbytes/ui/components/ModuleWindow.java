@@ -66,6 +66,10 @@ public class ModuleWindow extends JPanel{
     public void addPLV(PatientListViewer plv) {
         this.add(plv, BorderLayout.WEST);
     }
+    
+    public void removeMainComponent(int i) {
+        mainPanel.remove(i);
+    }
     public void setAllFont(Font f) {
 
     }

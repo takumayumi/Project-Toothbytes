@@ -1,8 +1,10 @@
 package toothbytes.ui.components;
 
-import toothbytes.ui.components.PatientListViewer;
-import toothbytes.ui.components.ModuleWindow;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import toothbytes.util.DataMan;
  * see the list of patients and their respective attributes.
  */
 public class RecordsWindow extends ModuleWindow {
-
+    private Graphics2D g2d;
     private PatientListViewer plv;
     private JTabbedPane tabsPane;
     private JPanel dentalViewer, infoViewer, gallery;
@@ -42,13 +44,13 @@ public class RecordsWindow extends ModuleWindow {
     public RecordsWindow(ArrayList<Patient> pList) {
         layout = new MigLayout(
                 "filly, wrap 12",
-                "[fill]push[fill]push[fill]push[fill]push"
+                "[fill]push[fill][fill]push[fill]push"
                 + "[fill]push[fill]push[fill]push[fill]push"
                 + "[fill]push[fill]push[fill]push[fill]" //12 columns
         );
         formLayout = new MigLayout(
                 "wrap 12",
-                "10px[fill]push[fill]push[fill]20px[fill]push"
+                "[fill]push[fill]push[fill]push[fill]push"
                 + "[fill]push[fill]push[fill]push[fill]push"
                 + "[fill]push[fill]push[fill]push[fill]", //12 columns
                 "[fill]push[fill]push[fill]push[fill]push"
@@ -113,34 +115,64 @@ public class RecordsWindow extends ModuleWindow {
         this.current = p;
         
         File f = new File("src/toothbytes/res/photos/" + p.getId() + ".jpg");
+        
         JLabel photo = new JLabel();
-        JLabel name = new JLabel(p.getFirstName() + " " + p.getMidName() + ". " + p.getLastName());
-        JLabel lblName = new JLabel("Name:");
+        
+        JLabel[] name = new JLabel[]{new JLabel(p.getLastName()), new JLabel(p.getFirstName()), new JLabel(p.getMidName())};
+        for(JLabel n : name) {
+            n.setFont(new Font("Calibri", Font.BOLD, 14));
+        }
+        
         JLabel age = new JLabel(DataMan.getAge(p.getBdate())+"");
+        
         JLabel lblAge = new JLabel("Age:");
+        
         SimpleDateFormat format1 = new SimpleDateFormat("MM-dd-yyyy");
+        
         String bday = format1.format(p.getBdate().getTime());
+        
         JLabel bdate = new JLabel(bday);
+        
         JLabel lblBdate = new JLabel("Birthdate:");
+        
         JLabel occupation = new JLabel(p.getOccupation());
+        
         JLabel lblOccupation = new JLabel("Occupation:");
+        
         JLabel civstat = new JLabel(p.getCivilStatus());
+        
         JLabel lblCivstat = new JLabel("Civil Status:");
+        
         JLabel gender = new JLabel(p.getGender()+"");
+        
         JLabel lblGender = new JLabel("Gender:");
+        
         JLabel nName = new JLabel(p.getNickname());
+        
         JLabel lblNname = new JLabel("Nickname:");
+        
         JLabel homeadd = new JLabel(p.getHomeAddress());
+        
         JLabel lblHomeadd = new JLabel("Home Address:");
+        
         JLabel homeno = new JLabel(p.getHomeNo());
+        
         JLabel lblHomeno = new JLabel("Home Number:");
+        
         JLabel officeno = new JLabel(p.getOfficeNo());
+        
         JLabel lblOfficeno = new JLabel("Office Number:");
+        
         JLabel faxno = new JLabel(p.getFaxNo());
+        
         JLabel lblFaxno = new JLabel("Fax Number:");
+        
         JLabel cellno = new JLabel(p.getCellNo());
+        
         JLabel lblCellno = new JLabel("Cellphone Number:");
+        
         JLabel eAdd = new JLabel(p.getEmailAdd());
+        
         JLabel lblEadd = new JLabel("Email Address:");
         
         if(f.exists()) {
@@ -149,12 +181,14 @@ public class RecordsWindow extends ModuleWindow {
             photo.setIcon(new ImageIcon("src/toothbytes/res/photos/patient.png"));
         }
         
-        infoViewer.add(photo, "span 3");
+        infoViewer.add(photo, "skip 13, span 2");
         
-        infoViewer.add(lblName, "skip 12, span 2");
-        infoViewer.add(name, "span 7");
+        infoViewer.add(name[0], "span 2");
+        infoViewer.add(name[1], "skip1, span 2");
+        infoViewer.add(name[2], "skip1, span 1");
         
         infoViewer.add(lblAge, "skip 3, span 2");
+        
         infoViewer.add(age, "span 7");
         
         infoViewer.add(lblBdate, "skip 3, span 2");
@@ -214,4 +248,11 @@ public class RecordsWindow extends ModuleWindow {
         }
 
     }
+    
+//    public void paint(Graphics g) {
+//        g2d = (Graphics2D) g;
+//        
+//        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+//                    RenderingHints.VALUE_ANTIALIAS_ON);
+//    }
 }
