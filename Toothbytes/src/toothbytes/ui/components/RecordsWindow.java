@@ -1,14 +1,16 @@
 package toothbytes.ui.components;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -20,6 +22,7 @@ import net.miginfocom.swing.MigLayout;
 import toothbytes.database.DBAccess;
 import toothbytes.model.Patient;
 import toothbytes.model.PatientX;
+import toothbytes.treatmentmodule.TreatmentWindow;
 import toothbytes.util.DataMan;
 
 /**
@@ -92,10 +95,21 @@ public class RecordsWindow extends ModuleWindow {
         super.addToMainPane(tabsPane, "span 10, grow");
     }
 
-    
+    JButton checkup;
     public void showDental(Patient p) {
-        //dental chart
-        //table listing treatments and condition
+        
+        checkup = new JButton("Start Checkup!");
+        checkup.setIcon(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\BeginTreatment.png"));
+        checkup.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TreatmentWindow tw = new TreatmentWindow(p.getFullName());
+                tw.init();
+            
+            }
+        });
+        dentalViewer.add(checkup, BorderLayout.CENTER);
     }
     
 
