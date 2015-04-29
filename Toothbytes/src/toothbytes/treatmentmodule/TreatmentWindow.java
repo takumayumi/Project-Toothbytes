@@ -102,33 +102,33 @@ public class TreatmentWindow extends JFrame {
             }
 
         });
-        undo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!history.isEmpty()) {
-                    int i = history.pop().getNumber();
-                    if (i > 16) {
-                        lower[i - 17].changeState(history.pop().state);
-                        repaint();
-                    } else {
-                        upper[i - 1] = history.pop();
-                        repaint();
-                    }
-                } else {
-                    int i = history.peek().getNumber();
-                    if (i > 16) {
-                        history.pop();
-                        lower[i - 17].changeState(0);
-                        repaint();
-                    } else {
-                        history.pop();
-                        upper[i - 17].changeState(0);
-                        repaint();
-                    }
-                }
-            }
-
-        });
+//        undo.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                if (!history.isEmpty()) {
+//                    int i = history.pop().getNumber();
+//                    if (i > 16) {
+//                        lower[i - 17].changeState(history.pop().state);
+//                        repaint();
+//                    } else {
+//                        upper[i - 1] = history.pop();
+//                        repaint();
+//                    }
+//                } else {
+//                    int i = history.peek().getNumber();
+//                    if (i > 16) {
+//                        history.pop();
+//                        lower[i - 17].changeState(0);
+//                        repaint();
+//                    } else {
+//                        history.pop();
+//                        upper[i - 17].changeState(0);
+//                        repaint();
+//                    }
+//                }
+//            }
+//
+//        });
         bar = new JToolBar();
         bar.add(new JLabel("Patient: "+patient+"\t"));
         bar.add(undo);
@@ -343,16 +343,19 @@ public class TreatmentWindow extends JFrame {
         }
 
         public void changeState(int s) {
-            history.push(this);
-            this.state = s;
-            int year = LocalDateTime.now().getYear();
-            int month = LocalDateTime.now().getMonthValue();
-            int day = LocalDateTime.now().getDayOfMonth();
-            switch (state) {
+            if(this.state != s) {
+                history.push(this);
+                this.state = s;
+                int year = LocalDateTime.now().getYear();
+                int month = LocalDateTime.now().getMonthValue();
+                int day = LocalDateTime.now().getDayOfMonth();
+            
+                switch (state) {
+                    
                 case 0:
 
                     this.setToolTipText("Normal");
-                    
+
 
                     if (loaded) {
                         theTable.setValueAt(month + "-" + day + "-" + year, row, 0);
@@ -366,6 +369,7 @@ public class TreatmentWindow extends JFrame {
                     }
 
                     break;
+                    
                 case 1:
 
                     this.setToolTipText("Decayed");
@@ -380,6 +384,7 @@ public class TreatmentWindow extends JFrame {
                         row+=1;
                     }
                     break;
+                    
                 case 2:
 
                     this.setToolTipText("Unerupted");
@@ -394,6 +399,7 @@ public class TreatmentWindow extends JFrame {
                         row+=1;
                     }
                     break;
+                    
                 case 3:
 
                     this.setToolTipText("Missing");
@@ -408,6 +414,7 @@ public class TreatmentWindow extends JFrame {
                         row+=1;
                     }
                     break;
+                    
                 case 4:
 
                     this.setToolTipText("Amalagam");
@@ -422,6 +429,7 @@ public class TreatmentWindow extends JFrame {
                         row+=1;
                     }
                     break;
+                    
                 case 5:
 
                     this.setToolTipText("Jacket Crown");
@@ -436,6 +444,7 @@ public class TreatmentWindow extends JFrame {
                         row+=1;
                     }
                     break;
+                    
                 case 6:
 
                     this.setToolTipText("Extraction");
@@ -450,7 +459,9 @@ public class TreatmentWindow extends JFrame {
                         row+=1;
                     }
                     break;
+                }
             }
+            
 
             repaint();
         }

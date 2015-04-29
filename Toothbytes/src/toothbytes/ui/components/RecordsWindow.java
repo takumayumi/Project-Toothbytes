@@ -97,6 +97,11 @@ public class RecordsWindow extends ModuleWindow {
 
     JButton checkup;
     public void showDental(Patient p) {
+        //if there is a selected patient clear the viewer
+        if(this.current != null) {
+            dentalViewer.removeAll();
+        }
+        
         
         checkup = new JButton("Start Checkup!");
         checkup.setIcon(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\BeginTreatment.png"));
@@ -110,6 +115,7 @@ public class RecordsWindow extends ModuleWindow {
             }
         });
         dentalViewer.add(checkup, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dentalViewer);
     }
     
 

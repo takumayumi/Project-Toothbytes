@@ -379,6 +379,7 @@ public class MainScreen extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == homeBut) {
                 if (!state.equals("cover")) {
+                    state = "cover";
                     modulePanel.removeAll();
                     modulePanel.add(c, "grow");
                     SwingUtilities.updateComponentTreeUI(modulePanel);
