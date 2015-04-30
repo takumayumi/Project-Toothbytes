@@ -15,6 +15,8 @@ import org.hsqldb.jdbc.JDBCResultSet;
 import org.hsqldb.jdbc.JDBCStatement;
 import toothbytes.model.Patient;
 import toothbytes.model.PatientX;
+import toothbytes.model.PaymentX;
+import toothbytes.model.RecordsX;
 
 /**
  * <h1>DBAccess</h1>
@@ -133,6 +135,42 @@ public class DBAccess {
         return p;
         } catch (SQLException | ParseException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public static ArrayList<PaymentX> getPaymentData(int id){
+        try{
+            ArrayList<PaymentX> paymentX = new ArrayList<>();
+            String getPayment = "SELECT * FROM PAYMENT WHERE DENTALRECORDID = "+id;
+            rs = (JDBCResultSet) stmt.executeQuery(getPayment);
+            
+            while(rs.next()){
+                PaymentX px = new PaymentX(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDouble(4));
+                paymentX.add(px);
+            }
+            
+            return paymentX;
+            
+        }catch(Exception e){
+            System.out.println("getPaymentData Error: "+e);
+            return null;
+        }
+    }
+    
+    public static ArrayList<RecordsX> getRecordsData(int id){
+        try{
+            ArrayList<RecordsX> recordsX = new ArrayList<>();
+            String getRecords = "SELECT * FROM DENTAL_RECORDS WHERE PATIENTID = "+id;
+            rs = (JDBCResultSet) stmt.executeQuery(getRecords);
+            
+            while(rs.next()){
+                RecordsX rx = new RecordsX(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6), rs.getDouble(7), rs.getDouble(7));
+                recordsX.add(rx);
+            }
+            return recordsX;
+        }catch(Exception e){
+            System.out.println("getRecordsData Error: "+e);
             return null;
         }
     }
