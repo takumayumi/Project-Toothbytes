@@ -142,7 +142,7 @@ public class DBAccess {
     public static ArrayList<PaymentX> getPaymentData(int id){
         try{
             ArrayList<PaymentX> paymentX = new ArrayList<>();
-            String getPayment = "SELECT * FROM PAYMENT WHERE DENTALRECORDID = "+id;
+            String getPayment = "SELECT * FROM PAYMENTS WHERE DENTALRECORDID = "+id;
             rs = (JDBCResultSet) stmt.executeQuery(getPayment);
             
             while(rs.next()){
@@ -162,10 +162,11 @@ public class DBAccess {
         try{
             ArrayList<RecordsX> recordsX = new ArrayList<>();
             String getRecords = "SELECT * FROM DENTAL_RECORDS WHERE PATIENTID = "+id;
+            
             rs = (JDBCResultSet) stmt.executeQuery(getRecords);
             
             while(rs.next()){
-                RecordsX rx = new RecordsX(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6), rs.getDouble(7), rs.getDouble(7));
+                RecordsX rx = new RecordsX(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6), rs.getDouble(7), rs.getDouble(8));
                 recordsX.add(rx);
             }
             return recordsX;
