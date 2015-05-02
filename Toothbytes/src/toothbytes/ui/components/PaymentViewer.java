@@ -251,9 +251,9 @@ public class PaymentViewer extends JPanel{
                             .addComponent(addressLabel)
                             .addComponent(homeNoLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(emailAddressLabel)
-                            .addComponent(cellphoneNo))
+                        .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cellphoneNo)
+                            .addComponent(emailAddressLabel))
                         .addContainerGap(22, Short.MAX_VALUE))
                     .addComponent(patientPhotoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
@@ -339,9 +339,7 @@ public class PaymentViewer extends JPanel{
                 .addContainerGap()
                 .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(personalInformationPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BillingPanelLayout.createSequentialGroup()
-                        .addComponent(transactionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(0, 0, 0))
+                    .addComponent(transactionPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(detailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -401,9 +399,8 @@ public class PaymentViewer extends JPanel{
         @Override
         public void mouseClicked(MouseEvent e){
             DecimalFormat df = new DecimalFormat("#.00");
-            int row = detailsTable.getSelectedRow();
-            String date = String.valueOf(detailsTable.getModel().getValueAt(1, 1));
-            System.out.println(row);
+            int row = transactionsTable.getSelectedRow();
+            String date = String.valueOf(transactionsTable.getModel().getValueAt(row, 0));
             paymentX = DBAccess.getPaymentData(patientID);
             
             for(int i = 0; i < paymentX.size(); i++){
@@ -414,7 +411,11 @@ public class PaymentViewer extends JPanel{
                     detailsTable.getModel().setValueAt(recordsX.get(i).getToothNo(), i, 1);
                     detailsTable.getModel().setValueAt(df.format(recordsX.get(i).getAmountCharged()), i, 2);
                     detailsTable.getModel().setValueAt(df.format(amountPaid), i, 3);
-                    detailsTable.getModel().setValueAt(df.format(recordsX.get(i).getBalance()), i, 4);
+                    if(recordsX.get(i).getBalance() > 0){
+                        detailsTable.getModel().setValueAt(df.format(recordsX.get(i).getBalance()), i, 4);
+                    } else {
+                        detailsTable.getModel().setValueAt("-----", i, 4);
+                    }
                 }
             }
         }
