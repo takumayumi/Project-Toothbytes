@@ -62,7 +62,8 @@ public class TreatmentWindow extends JFrame {
     private JToggleButton normalB, missingB, uneruptedB, decayedB, amalB, jacketB, extractB;
     private ButtonGroup allButtons;
     private Stack<ToothComponent> undoStack, redoStack;
-    private boolean loaded = false;
+    private boolean canUndo = false;
+    private boolean canRedo = false;
     int row = 0;
     int col = 0;
     DefaultTableModel model;
@@ -97,6 +98,10 @@ public class TreatmentWindow extends JFrame {
         
         undo = new JButton(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\Undo.png"));
         redo = new JButton(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\Redo.png"));
+        
+        undo.setEnabled(canUndo);
+        redo.setEnabled(canRedo);
+        
         finish = new JButton(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\Save.png"));
         finish.addActionListener(new ActionListener() {
 
@@ -115,12 +120,15 @@ public class TreatmentWindow extends JFrame {
                 if (i > 16) {
                 
                     lower[i - 17].revertState(undoStack.pop().state);
-                    System.out.println(lower[i - 17].state);
                     
                 } else {
                     
                     upper[i - 1].revertState(undoStack.pop().state);
                     
+                }
+                
+                if(undoStack.empty()) {
+                    undo.setEnabled(false);
                 }
             }
         });
@@ -137,6 +145,10 @@ public class TreatmentWindow extends JFrame {
                     
                     upper[i - 1].changeState(redoStack.pop().state);
                     
+                }
+                
+                if(redoStack.empty()) {
+                    redo.setEnabled(false);
                 }
             }
         });
@@ -212,7 +224,6 @@ public class TreatmentWindow extends JFrame {
         p.add(treatPane, "span 1 1");
 
         this.setContentPane(p);
-        loaded = true;
     }
 
     public void setupTable() {
@@ -360,7 +371,7 @@ public class TreatmentWindow extends JFrame {
         public void revertState(int s) {
             ToothComponent temp = new ToothComponent(this.number, this.state);
             redoStack.push(temp);
-            
+            redo.setEnabled(true);
             this.state = s;
             paintState(s);
             revertTables();
@@ -371,6 +382,7 @@ public class TreatmentWindow extends JFrame {
                 
                 ToothComponent temp = new ToothComponent(this.number, this.state);
                 undoStack.push(temp);
+                undo.setEnabled(true);
                 
                 this.state = s;
                 
@@ -380,22 +392,12 @@ public class TreatmentWindow extends JFrame {
         }
         
         private void revertTables() {
-            System.out.println("Current reverting row: "+(model.getRowCount()-1));
-//            System.out.println("rows"+(model.getRowCount()-1));
-//            
-//            theTable.setValueAt("", model.getRowCount()-1, 0);
-//
-//            theTable.setValueAt("", model.getRowCount()-1, 1);
-//
-//            theTable.setValueAt("", model.getRowCount()-1, 2);
-            
             model.removeRow(model.getRowCount()-1);
             SwingUtilities.updateComponentTreeUI(theTable);
             SwingUtilities.updateComponentTreeUI(chartHolder);
         }
         
         private void updateTables() {
-            System.out.println("Updating tables at row: "+model.getRowCount());
             model.addRow(new Object[] { "", "", "", "" });
             
             int year = LocalDateTime.now().getYear();
@@ -407,7 +409,6 @@ public class TreatmentWindow extends JFrame {
             theTable.setValueAt(this.getNumber(), model.getRowCount()-1, 1);
 
             theTable.setValueAt(this.getToolTipText(), model.getRowCount()-1, 2);
-            System.out.println("Current row: "+(model.getRowCount()-1));
         }
         
         private void paintState(int state) {
