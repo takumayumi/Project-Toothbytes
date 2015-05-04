@@ -38,6 +38,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -57,10 +58,10 @@ public class TreatmentWindow extends JFrame {
     private ToothComponent[] upper, lower;
     private Image tooth, missing, unerupted, crown, extract;
     private int action;
-    private JButton undo, finish;
+    private JButton undo, redo, finish;
     private JToggleButton normalB, missingB, uneruptedB, decayedB, amalB, jacketB, extractB;
     private ButtonGroup allButtons;
-    private Stack<ToothComponent> history;
+    private Stack<ToothComponent> undoStack, redoStack;
     private boolean loaded = false;
     int row = 0;
     int col = 0;
@@ -86,13 +87,16 @@ public class TreatmentWindow extends JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         p = new JPanel(new MigLayout(
-                "wrap 8",
-                "[fill]push[fill]push[fill]push[fill]push[fill]push[fill]push[fill][fill]",
-                "[fill][fill][fill][fill]"
+            "wrap 8",
+            "[fill]push[fill]push[fill]push[fill]push[fill]push[fill]push[fill][fill]",
+            "[fill][fill][fill][fill]"
         ));
 
-        history = new Stack<>();
+        undoStack = new Stack<>();
+        redoStack = new Stack<>();
+        
         undo = new JButton(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\Undo.png"));
+        redo = new JButton(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\Redo.png"));
         finish = new JButton(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\Save.png"));
         finish.addActionListener(new ActionListener() {
 
@@ -102,36 +106,47 @@ public class TreatmentWindow extends JFrame {
             }
 
         });
-//        undo.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (!history.isEmpty()) {
-//                    int i = history.pop().getNumber();
-//                    if (i > 16) {
-//                        lower[i - 17].changeState(history.pop().state);
-//                        repaint();
-//                    } else {
-//                        upper[i - 1] = history.pop();
-//                        repaint();
-//                    }
-//                } else {
-//                    int i = history.peek().getNumber();
-//                    if (i > 16) {
-//                        history.pop();
-//                        lower[i - 17].changeState(0);
-//                        repaint();
-//                    } else {
-//                        history.pop();
-//                        upper[i - 17].changeState(0);
-//                        repaint();
-//                    }
-//                }
-//            }
-//
-//        });
+        
+        undo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int i = undoStack.peek().getNumber();
+                
+                if (i > 16) {
+                
+                    lower[i - 17].revertState(undoStack.pop().state);
+                    System.out.println(lower[i - 17].state);
+                    
+                } else {
+                    
+                    upper[i - 1].revertState(undoStack.pop().state);
+                    
+                }
+            }
+        });
+        
+        redo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int i = redoStack.peek().getNumber();
+                if (i > 16) {
+                
+                    lower[i - 17].changeState(redoStack.pop().state);
+                                        
+                } else {
+                    
+                    upper[i - 1].changeState(redoStack.pop().state);
+                    
+                }
+            }
+        });
+        
         bar = new JToolBar();
         bar.add(new JLabel("Patient: "+patient+"\t"));
+        bar.addSeparator(new Dimension(15,50));
         bar.add(undo);
+        bar.add(redo);
+        bar.addSeparator(new Dimension(15,50));
         bar.add(finish);
         p.add(bar, "north");
 
@@ -149,7 +164,7 @@ public class TreatmentWindow extends JFrame {
         model.addColumn("Tooth No.");
         model.addColumn("Condition");
         model.addColumn("Remarks");
-        model.addRow(new Object[] { "", "", "", "" });
+//        model.addRow(new Object[] { "", "", "", "" });
         theTable = new JTable(model);
         //setupTable();
         tableHolder = new JScrollPane(theTable);
@@ -272,7 +287,7 @@ public class TreatmentWindow extends JFrame {
             y = -10;
             this.number = number;
 
-            changeState(state);
+            this.state = state;
 
             this.addMouseListener(new MouseListener() {
 
@@ -341,131 +356,95 @@ public class TreatmentWindow extends JFrame {
             return new Ellipse2D.Float(
                     x1, y1, brushStrokeWidth, brushStrokeHeight);
         }
-
+        
+        public void revertState(int s) {
+            ToothComponent temp = new ToothComponent(this.number, this.state);
+            redoStack.push(temp);
+            
+            this.state = s;
+            paintState(s);
+            revertTables();
+        }
+        
         public void changeState(int s) {
             if(this.state != s) {
-                history.push(this);
+                
+                ToothComponent temp = new ToothComponent(this.number, this.state);
+                undoStack.push(temp);
+                
                 this.state = s;
-                int year = LocalDateTime.now().getYear();
-                int month = LocalDateTime.now().getMonthValue();
-                int day = LocalDateTime.now().getDayOfMonth();
+                
+                paintState(s);
+                updateTables();
+            }
+        }
+        
+        private void revertTables() {
+            System.out.println("Current reverting row: "+(model.getRowCount()-1));
+//            System.out.println("rows"+(model.getRowCount()-1));
+//            
+//            theTable.setValueAt("", model.getRowCount()-1, 0);
+//
+//            theTable.setValueAt("", model.getRowCount()-1, 1);
+//
+//            theTable.setValueAt("", model.getRowCount()-1, 2);
             
-                switch (state) {
-                    
+            model.removeRow(model.getRowCount()-1);
+            SwingUtilities.updateComponentTreeUI(theTable);
+            SwingUtilities.updateComponentTreeUI(chartHolder);
+        }
+        
+        private void updateTables() {
+            System.out.println("Updating tables at row: "+model.getRowCount());
+            model.addRow(new Object[] { "", "", "", "" });
+            
+            int year = LocalDateTime.now().getYear();
+            int month = LocalDateTime.now().getMonthValue();
+            int day = LocalDateTime.now().getDayOfMonth();
+            
+            theTable.setValueAt(month + "-" + day + "-" + year, model.getRowCount()-1, 0);
+
+            theTable.setValueAt(this.getNumber(), model.getRowCount()-1, 1);
+
+            theTable.setValueAt(this.getToolTipText(), model.getRowCount()-1, 2);
+            System.out.println("Current row: "+(model.getRowCount()-1));
+        }
+        
+        private void paintState(int state) {
+            
+            switch (state) {
+                
                 case 0:
-
                     this.setToolTipText("Normal");
-
-
-                    if (loaded) {
-                        theTable.setValueAt(month + "-" + day + "-" + year, row, 0);
-
-                        theTable.setValueAt(this.getNumber(), row, 1);
-
-                        theTable.setValueAt("NORMAL", row, 2);
-
-                        model.addRow(new Object[] { "", "", "", "" });
-                        row+=1;
-                    }
-
                     break;
                     
                 case 1:
-
                     this.setToolTipText("Decayed");
-                    if (loaded) {
-                        theTable.setValueAt(month + "-" + day + "-" + year, row, 0);
-
-                        theTable.setValueAt(this.getNumber(), row, 1);
-
-                        theTable.setValueAt("DECAYED", row, 2);
-
-                        model.addRow(new Object[] { "", "", "", "" });
-                        row+=1;
-                    }
                     break;
                     
                 case 2:
-
                     this.setToolTipText("Unerupted");
-                    if (loaded) {
-                        theTable.setValueAt(month + "-" + day + "-" + year, row, 0);
-
-                        theTable.setValueAt(this.getNumber(), row, 1);
-
-                        theTable.setValueAt("UNERUPTED", row, 2);
-
-                        model.addRow(new Object[] { "", "", "", "" });
-                        row+=1;
-                    }
                     break;
                     
                 case 3:
-
                     this.setToolTipText("Missing");
-                    if (loaded) {
-                        theTable.setValueAt(month + "-" + day + "-" + year, row, 0);
-
-                        theTable.setValueAt(this.getNumber(), row, 1);
-
-                        theTable.setValueAt("MISSING", row, 2);
-
-                        model.addRow(new Object[] { "", "", "", "" });
-                        row+=1;
-                    }
                     break;
                     
                 case 4:
-
                     this.setToolTipText("Amalagam");
-                    if (loaded) {
-                        theTable.setValueAt(month + "-" + day + "-" + year, row, 0);
-
-                        theTable.setValueAt(this.getNumber(), row, 1);
-
-                        theTable.setValueAt("AMALGAM", row, 2);
-
-                        model.addRow(new Object[] { "", "", "", "" });
-                        row+=1;
-                    }
                     break;
                     
                 case 5:
-
                     this.setToolTipText("Jacket Crown");
-                    if (loaded) {
-                        theTable.setValueAt(month + "-" + day + "-" + year, row, 0);
-
-                        theTable.setValueAt(this.getNumber(), row, 1);
-
-                        theTable.setValueAt("JACKET", row, 2);
-
-                        model.addRow(new Object[] { "", "", "", "" });
-                        row+=1;
-                    }
                     break;
                     
                 case 6:
-
                     this.setToolTipText("Extraction");
-                    if (loaded) {
-                        theTable.setValueAt(month + "-" + day + "-" + year, row, 0);
-
-                        theTable.setValueAt(this.getNumber(), row, 1);
-
-                        theTable.setValueAt("EXTRACTED", row, 2);
-
-                        model.addRow(new Object[] { "", "", "", "" });
-                        row+=1;
-                    }
                     break;
                 }
-            }
-            
-
             repaint();
         }
-
+        
         public void paint(Graphics g) {
             graphicSettings = (Graphics2D) g;
 
