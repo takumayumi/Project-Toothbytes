@@ -9,6 +9,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import toothbytes.database.DBAccess;
 import toothbytes.model.PatientX;
 import toothbytes.model.PaymentX;
@@ -24,9 +26,27 @@ public class PaymentViewer extends JPanel{
     public PaymentViewer(int patientID) {
         initComponents();
         this.patientID = patientID;
+        setRightAlign();
         setPatientInfo();
         setTransactionsTable();
         
+    }
+    
+    private void setRightAlign(){
+        DefaultTableCellRenderer rightRenderer;
+        rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+        
+        //Transactions Table
+        transactionsTable.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
+        transactionsTable.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
+        transactionsTable.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+        transactionsTable.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+        
+        //Details Table
+        detailsTable.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+        detailsTable.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+        detailsTable.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
     }
     
     private void setPatientInfo(){
@@ -111,7 +131,7 @@ public class PaymentViewer extends JPanel{
     private void setTransactionsTable(){
         recordsX = DBAccess.getRecordsData(patientID);
         
-        DecimalFormat df = new DecimalFormat("#.00");
+        DecimalFormat df = new DecimalFormat("#,###.00");
         
         for(int x = 0; x < recordsX.size(); x++){
             RecordsX rx = new RecordsX();
@@ -125,7 +145,17 @@ public class PaymentViewer extends JPanel{
             double totalAmountPaid = rx.getAmountCharged() - rx.getBalance();
             transactionsTable.getModel().setValueAt(rx.getTreatmentDate(), x, 0);
             transactionsTable.getModel().setValueAt(df.format(rx.getAmountCharged()), x, 1);
-            transactionsTable.getModel().setValueAt(df.format(totalAmountPaid), x, 2);
+            try{
+                if(totalAmountPaid > 0){
+                   transactionsTable.getModel().setValueAt(df.format(totalAmountPaid), x, 2); 
+                } else {
+                    transactionsTable.getModel().setValueAt("-----", x, 2);
+                }
+                
+            }catch(Exception e){
+                transactionsTable.getModel().setValueAt("-----", x, 2);
+            }
+           
             
             if(rx.getBalance() != 0){
                 transactionsTable.getModel().setValueAt(df.format(rx.getBalance()), x, 3);
@@ -398,7 +428,7 @@ public class PaymentViewer extends JPanel{
     private MouseListener tableClickListener = new MouseAdapter(){
         @Override
         public void mouseClicked(MouseEvent e){
-            DecimalFormat df = new DecimalFormat("#.00");
+            DecimalFormat df = new DecimalFormat("#,###.00");
             int row = transactionsTable.getSelectedRow();
             String date = String.valueOf(transactionsTable.getModel().getValueAt(row, 0));
             paymentX = DBAccess.getPaymentData(patientID);
@@ -410,7 +440,12 @@ public class PaymentViewer extends JPanel{
                     detailsTable.getModel().setValueAt(recordsX.get(i).getProcedure(), i, 0);
                     detailsTable.getModel().setValueAt(recordsX.get(i).getToothNo(), i, 1);
                     detailsTable.getModel().setValueAt(df.format(recordsX.get(i).getAmountCharged()), i, 2);
-                    detailsTable.getModel().setValueAt(df.format(amountPaid), i, 3);
+                    if(amountPaid > 0){
+                        detailsTable.getModel().setValueAt(df.format(amountPaid), i, 3);
+                    } else {
+                        detailsTable.getModel().setValueAt("-----", i, 3);
+                    }
+                    
                     if(recordsX.get(i).getBalance() > 0){
                         detailsTable.getModel().setValueAt(df.format(recordsX.get(i).getBalance()), i, 4);
                     } else {

@@ -128,7 +128,7 @@ public class MainScreen extends JFrame {
                     String sMin = String.valueOf(minute);
                     String hourFormat = "AM";
                     
-                    String date = year + "/" + month + "/" + day;
+                    String date = month + " / " + day + " / " + year;
                     
                     if(hour > 12){
                         hour = hour - 12;
@@ -150,7 +150,7 @@ public class MainScreen extends JFrame {
                     time = sHour + " : " + sMin + " " + hourFormat;
                     
                     
-                    test.setText("<html>"+time +"<br>"+ date + "/<html>");
+                    test.setText("<html> "+time +"<br>"+ date + "</html>");
                 }
             }, 1000, 1000);
         
