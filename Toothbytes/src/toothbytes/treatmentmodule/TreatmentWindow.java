@@ -57,7 +57,7 @@ public class TreatmentWindow extends JFrame {
     private ToothComponent[] upper, lower;
     private Image tooth, missing, unerupted, crown, extract;
     private int action;
-    private JButton undo, redo, finish;
+    private JButton camera, undo, redo, finish;
     private JToggleButton normalB, missingB, uneruptedB, decayedB, amalB, jacketB, extractB;
     private ButtonGroup allButtons;
     private Stack<ToothComponent> undoStack, redoStack;
@@ -94,7 +94,8 @@ public class TreatmentWindow extends JFrame {
 
         undoStack = new Stack<>();
         redoStack = new Stack<>();
-        
+
+        camera = new JButton(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\Camera.png"));
         undo = new JButton(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\Undo.png"));
         redo = new JButton(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\Redo.png"));
         
@@ -102,6 +103,16 @@ public class TreatmentWindow extends JFrame {
         redo.setEnabled(canRedo);
         
         finish = new JButton(new ImageIcon("src\\toothbytes\\res\\icons\\btn\\Save.png"));
+        
+        camera.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //activate camera
+            }
+
+        });
+        
         finish.addActionListener(new ActionListener() {
 
             @Override
@@ -154,8 +165,9 @@ public class TreatmentWindow extends JFrame {
         
         bar = new JToolBar();
         bar.add(new JLabel("Patient: "+patient+"\t"));
-        bar.addSeparator(new Dimension(15,50));
         bar.add(undo);
+        bar.addSeparator(new Dimension(15,50));
+        bar.add(camera);
         bar.add(redo);
         bar.addSeparator(new Dimension(15,50));
         bar.add(finish);
