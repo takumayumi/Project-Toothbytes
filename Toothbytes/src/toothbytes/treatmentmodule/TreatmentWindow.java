@@ -40,9 +40,8 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -51,7 +50,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public class TreatmentWindow extends JFrame {
 
-    private JPanel p, chart, conditionPane, treatPane, treatmentPane;
+    private JPanel p, chart, treatPane;
     private JScrollPane chartHolder, tableHolder;
     private JToolBar bar;
     private JTable theTable;
@@ -66,7 +65,7 @@ public class TreatmentWindow extends JFrame {
     private boolean canRedo = false;
     int row = 0;
     int col = 0;
-    DefaultTableModel model;
+    DefaultTableModel tableModel;
 
     public TreatmentWindow(String patient) {
         action = 0;
@@ -170,14 +169,9 @@ public class TreatmentWindow extends JFrame {
         chartHolder = new JScrollPane(chart);
         chartHolder.setBorder(new TitledBorder("Dental Chart"));
         
-        model = new DefaultTableModel(); 
+        tableModel = new DefaultTableModel(); 
+        setupTable();
         
-        model.addColumn("Date");
-        model.addColumn("Tooth No.");
-        model.addColumn("Condition");
-        model.addColumn("Remarks");
-//        model.addRow(new Object[] { "", "", "", "" });
-        theTable = new JTable(model);
         //setupTable();
         tableHolder = new JScrollPane(theTable);
 
@@ -227,15 +221,29 @@ public class TreatmentWindow extends JFrame {
     }
 
     public void setupTable() {
-        JTableHeader th = theTable.getTableHeader();
-        TableColumnModel tcm = th.getColumnModel();
-        tcm.getColumn(0).setHeaderValue("Date");
-        tcm.getColumn(1).setHeaderValue("Tooth No.");
-        tcm.getColumn(1).setPreferredWidth(50);
-        tcm.getColumn(2).setHeaderValue("Condition");
-        tcm.getColumn(3).setHeaderValue("Remarks");
-
-        th.repaint();
+        tableModel.addColumn("Date");
+        tableModel.addColumn("Tooth No.");
+        tableModel.addColumn("Condition");
+        tableModel.addColumn("Remarks");
+        
+        theTable = new JTable(tableModel);
+        
+        theTable.getColumnModel().getColumn(0).setMinWidth(100);
+        theTable.getColumnModel().getColumn(1).setMinWidth(60);
+        theTable.getColumnModel().getColumn(2).setMinWidth(100);
+        
+        theTable.getColumnModel().getColumn(0).setMaxWidth(200);
+        theTable.getColumnModel().getColumn(1).setMaxWidth(100);
+        theTable.getColumnModel().getColumn(2).setMaxWidth(300);
+        
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        
+        theTable.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
+        theTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
     }
 
     public void setupChart() {
@@ -392,23 +400,23 @@ public class TreatmentWindow extends JFrame {
         }
         
         private void revertTables() {
-            model.removeRow(model.getRowCount()-1);
+            tableModel.removeRow(tableModel.getRowCount()-1);
             SwingUtilities.updateComponentTreeUI(theTable);
             SwingUtilities.updateComponentTreeUI(chartHolder);
         }
         
         private void updateTables() {
-            model.addRow(new Object[] { "", "", "", "" });
+            tableModel.addRow(new Object[] { "", "", "", "" });
             
             int year = LocalDateTime.now().getYear();
             int month = LocalDateTime.now().getMonthValue();
             int day = LocalDateTime.now().getDayOfMonth();
             
-            theTable.setValueAt(month + "-" + day + "-" + year, model.getRowCount()-1, 0);
+            theTable.setValueAt(month + "-" + day + "-" + year, tableModel.getRowCount()-1, 0);
 
-            theTable.setValueAt(this.getNumber(), model.getRowCount()-1, 1);
+            theTable.setValueAt(this.getNumber(), tableModel.getRowCount()-1, 1);
 
-            theTable.setValueAt(this.getToolTipText(), model.getRowCount()-1, 2);
+            theTable.setValueAt(this.getToolTipText(), tableModel.getRowCount()-1, 2);
         }
         
         private void paintState(int state) {
