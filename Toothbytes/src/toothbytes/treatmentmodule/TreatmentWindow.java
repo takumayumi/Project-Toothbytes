@@ -15,6 +15,7 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
@@ -26,6 +27,8 @@ import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -38,6 +41,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -122,7 +126,7 @@ public class TreatmentWindow extends JFrame {
 
         });
         
-        undo.addActionListener(new ActionListener() {
+        Action undoAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int i = undoStack.peek().getNumber();
@@ -141,9 +145,9 @@ public class TreatmentWindow extends JFrame {
                     undo.setEnabled(false);
                 }
             }
-        });
+        };
         
-        redo.addActionListener(new ActionListener() {
+        Action redoAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int i = redoStack.peek().getNumber();
@@ -161,13 +165,25 @@ public class TreatmentWindow extends JFrame {
                     redo.setEnabled(false);
                 }
             }
-        });
+        };
+        
+        //hotkeys settings
+        undo.addActionListener(undoAction);
+        redo.addActionListener(redoAction);
+        
+        KeyStroke undoKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK);
+        KeyStroke redoKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK);
+        
+        undo.getInputMap().put(undoKeyStroke, "undoIt");
+        undo.getActionMap().put("undoIt", undoAction);
+        redo.getInputMap().put(redoKeyStroke, "redoIt");
+        redo.getActionMap().put("redoIt", redoAction);
         
         bar = new JToolBar();
         bar.add(new JLabel("Patient: "+patient+"\t"));
-        bar.add(undo);
-        bar.addSeparator(new Dimension(15,50));
         bar.add(camera);
+        bar.addSeparator(new Dimension(15,50));
+        bar.add(undo);
         bar.add(redo);
         bar.addSeparator(new Dimension(15,50));
         bar.add(finish);
@@ -181,10 +197,18 @@ public class TreatmentWindow extends JFrame {
         chartHolder = new JScrollPane(chart);
         chartHolder.setBorder(new TitledBorder("Dental Chart"));
         
-        tableModel = new DefaultTableModel(); 
-        setupTable();
+        tableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                if(col == 3) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }; 
         
-        //setupTable();
+        setupTable();
         tableHolder = new JScrollPane(theTable);
 
         setupChart();
@@ -256,6 +280,7 @@ public class TreatmentWindow extends JFrame {
         
         theTable.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
         theTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        theTable.getTableHeader().setReorderingAllowed(false);
     }
 
     public void setupChart() {
