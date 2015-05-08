@@ -22,6 +22,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     public SettingsWindow() throws Exception {
         initComponents();
         accountX = new ArrayList<>();
+        accountX = DBAccess.getAccountsData();
         servicesX = new ArrayList<>();
         getComboBox();
         service = new Services();
@@ -30,14 +31,15 @@ public class SettingsWindow extends javax.swing.JDialog {
         accountID.setText(String.valueOf(currentAccountID));
     }
     
-    
     public void getAccountDetails() throws Exception{
         try{
             currentAccount.setAccountID(accountX.get(currentAccountID).getAccountID());
             currentAccount.setUsername(accountX.get(currentAccountID).getUsername());
             currentAccount.setPassword(accountX.get(currentAccountID).getPassword());
-        } catch (Exception e){
             
+            accountUsername.setText(currentAccount.getUsername());
+        } catch (Exception e){
+            System.out.println("AccountDetails Error: "+e);
         }
     }
     
@@ -549,8 +551,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     }//GEN-LAST:event_saveButtonNewActionPerformed
 
     private void accountUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountUsernameActionPerformed
-        // TODO add your handling code here:
-        //String uname = rs.getString("")
+  
     }//GEN-LAST:event_accountUsernameActionPerformed
 
     private void accountPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountPasswordActionPerformed
