@@ -24,12 +24,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import toothbytes.ui.About;
+import toothbytes.ui.components.SettingsWindow;
 import toothbytes.ui.forms.PersonalInformation;
 
 public class TBMenuBar extends JMenuBar implements ActionListener {
 
     JMenu viewMenu, fileMenu, settingsMenu, helpMenu;
-    JMenuItem addPatientFileItem, helpContents, aboutContents;
+    JMenuItem addPatientFileItem, helpContents, aboutContents, settingsView;
     JCheckBoxMenuItem fullScreenViewItem;
     ArrayList<JMenuItem> menuItems = new ArrayList<JMenuItem>();
 
@@ -87,6 +88,36 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
         // Settings menu
         settingsMenu = new JMenu("Settings");
         this.add(settingsMenu);
+        settingsView = new JMenuItem("View additional settings");
+        settingsMenu.add(settingsView);
+         
+        /*addPatientFileItem = new JMenuItem("New Patient", new ImageIcon(
+                "src/toothbytes/res/icons/btn/AddNewPatient_s.png"));
+        
+        addPatientFileItem.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_ENTER, ActionEvent.CTRL_MASK));*/
+        
+        settingsView.addActionListener(new ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                System.out.println("Pressed");
+                java.awt.EventQueue.invokeLater(new Runnable() {
+
+                    public void run() {
+                        try {
+                            
+                            SettingsWindow sw = new SettingsWindow();
+                            sw.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                            sw.setSize(sw.getPreferredSize());
+                            sw.pack();
+                            sw.setVisible(true);
+                        } catch (Exception ex) {
+                            Logger.getLogger(TBMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    
+                });
+            }
+        });
         
         // Help menu
         helpMenu = new JMenu("Help");

@@ -13,10 +13,12 @@ import org.hsqldb.jdbc.JDBCConnection;
 import org.hsqldb.jdbc.JDBCDriver;
 import org.hsqldb.jdbc.JDBCResultSet;
 import org.hsqldb.jdbc.JDBCStatement;
+import toothbytes.model.Accounts;
 import toothbytes.model.Patient;
 import toothbytes.model.PatientX;
 import toothbytes.model.PaymentX;
 import toothbytes.model.RecordsX;
+import toothbytes.model.Services;
 
 /**
  * <h1>DBAccess</h1>
@@ -173,6 +175,101 @@ public class DBAccess {
         }catch(Exception e){
             System.out.println("getRecordsData Error: "+e);
             return null;
+        }
+    }
+    
+    public static ArrayList<Accounts> getAccountsData(){
+        try{
+            ArrayList<Accounts> accountsX = new ArrayList<>();
+            String getAccounts = "SELECT * FROM ACCOUNTS";
+            
+            rs = (JDBCResultSet) stmt.executeQuery(getAccounts);
+            
+            while(rs.next()){
+                Accounts account = new Accounts(rs.getInt(1),rs.getString(2),rs.getString(3));
+                accountsX.add(account);
+            }
+            
+            return accountsX;
+        }catch(Exception e){
+            System.out.println("getAccountsData Error: " + e);
+            return null;
+        }
+    }
+    
+    public static ArrayList<Services> getServicesData(){
+        try{
+            ArrayList<Services> servicesX = new ArrayList<>();
+            String getServices = "SELECT * FROM SERVICES";
+            
+            rs = (JDBCResultSet) stmt.executeQuery(getServices);
+            
+            while(rs.next()){
+                Services service = new Services(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4), rs.getDouble(5),rs.getBoolean(6));
+                servicesX.add(service);
+            }
+            
+            return servicesX;
+        }catch(Exception e){
+            System.out.println("getServicesData Error: " + e);
+            return null;
+        }
+    }
+    
+    public static void updateAccountsData(Accounts account){
+        String updateUsername = "UPDATE ACCOUNTS SET USERNAME = '"+account.getUsername()+"' WHERE accountsID = "+account.getAccountID()+";";
+        String updatePassword = "UPDATE ACCOUNTS SET PASSWORD = '"+account.getPassword()+"' WHERE accountsID = "+account.getAccountID()+";";
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(updateUsername);
+            rs.next();
+        }catch(Exception e){
+            System.out.println("updateAccountsData Username Error: "+e);
+        }
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(updatePassword);
+            rs.next();
+        }catch(Exception e){
+            System.out.println("updateAccountsData Password Error: "+e);
+        }
+    }
+    
+    public static void updateServicesData(Services service){
+        String updateServiceType = "UPDATE SERVICES SET SERVICETYPE = '"+service.getServiceType()+"' WHERE SERVICEID = "+service.getServiceID()+";";
+        String updateServiceFee = "UPDATE SERVICES SET SERVICEFEE = "+service.getServiceFee()+" WHERE SERVICEID = "+service.getServiceID()+";";
+        String updateServiceAvailable = "UPDATE SERVICES SET SERVICEAVAILABLE = "+service.getServiceAvailable()+" WHERE SERVICEID = "+service.getServiceID()+";";
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(updateServiceType);
+            rs.next();
+        }catch(Exception e){
+            System.out.println("updateServicesData ServiceType error: "+e);
+        }
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(updateServiceFee);
+            rs.next();
+        }catch(Exception e){
+            System.out.println("updateServicesData ServiceFee error: "+e);
+        }
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(updateServiceAvailable);
+            rs.next();
+        }catch(Exception e){
+            System.out.println("updateServicesData ServiceAvailable error: "+e);
+        }
+    }
+    
+    public static void addServicesData(Services service){
+        String addServiceData = "INSERT INTO SERVICES VALUES(DEFAULT, '"+service.getServiceType()+"', 'DEFAULT', 'DEFAULT', "+service.getServiceFee()+", "+service.getServiceAvailable()+")";
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(addServiceData);
+            rs.next();
+            System.out.println(addServiceData);
+        }catch(Exception e){
+            System.out.println("addServicesData Error: "+e);
         }
     }
 }
