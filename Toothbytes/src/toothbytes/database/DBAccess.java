@@ -19,6 +19,7 @@ import toothbytes.model.PatientX;
 import toothbytes.model.PaymentX;
 import toothbytes.model.RecordsX;
 import toothbytes.model.Services;
+import toothbytes.model.Appointment;
 
 /**
  * <h1>DBAccess</h1>
@@ -271,5 +272,38 @@ public class DBAccess {
         }catch(Exception e){
             System.out.println("addServicesData Error: "+e);
         }
+    }
+    
+    public static ArrayList<Appointment> getAppointmentData(){
+        String getAppointmentData = "SELECT * FROM APPOINTMENT";
+        ArrayList<Appointment> appointmentX = new ArrayList<>();
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(getAppointmentData);
+            
+            while(rs.next()){
+                Appointment appointment = new Appointment(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+                appointmentX.add(appointment);
+            }
+            return appointmentX;
+        }catch(Exception e){
+            System.out.println("getAppointmentData Error: "+e);
+            return null;
+        }
+    }
+    
+    public static String getPatientName(int patientID){
+        String getPatientName = "SELECT * FROM PATIENT WHERE PATIENTID = "+patientID+";";
+        String patientName = "";
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(getPatientName);
+            rs.next();
+            patientName = rs.getString(2) +", " + rs.getString(3);
+            return patientName;
+        }catch(Exception e){
+            System.out.println("getPatientName Error: "+e);
+            return "";
+        }    
     }
 }

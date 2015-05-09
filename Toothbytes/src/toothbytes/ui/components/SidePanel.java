@@ -3,12 +3,19 @@ package toothbytes.ui.components;
 import java.awt.BorderLayout;
 import static java.awt.Color.WHITE;
 import java.awt.Font;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import toothbytes.database.DBAccess;
+import toothbytes.model.Appointment;
 
 /**
  * <h1>SidePanel</h1>
@@ -48,8 +55,49 @@ public class SidePanel extends JPanel{
         
         // PAYMENTS
         sidePayment = new JPanel();
-        sidePayment.setLayout(new BorderLayout());
         sideTabsPane.add("Payments Tracker", sidePayment);
+        sidePayment.setLayout(new BoxLayout(sidePayment,BoxLayout.Y_AXIS));
         sidePayment.setBackground(WHITE);
+        
+        ArrayList<Appointment> appointmentX = new ArrayList<>();
+        appointmentX = DBAccess.getAppointmentData();
+        
+        int x = 0;
+        
+        for(int i = 0; i < appointmentX.size(); i++){
+            try{
+                if(checker(appointmentX.get(i))){
+                    sidePayment.add(new PaymentSchedule(appointmentX.get(i)));
+                    if(x < 10){
+                        x++;
+                    } else {
+                        break;
+                    }
+                }
+            }catch(Exception e){
+                
+            }
+        }
+    }
+    
+    private boolean checker(Appointment appointment){
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            
+            Calendar now = Calendar.getInstance();
+            Calendar then = Calendar.getInstance();
+            
+            then.setTime(sdf.parse(appointment.getAppointmentDate()));
+            int time = then.compareTo(now);
+            
+            if(appointment.getAppointmentRemarks().equals("Payment") && time == 1){
+                return true;
+            } else {
+                return false;
+            }
+            
+        }catch(Exception e){
+            return false;
+        }
     }
 }
