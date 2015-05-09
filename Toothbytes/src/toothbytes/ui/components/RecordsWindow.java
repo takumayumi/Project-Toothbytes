@@ -96,10 +96,20 @@ public class RecordsWindow extends ModuleWindow {
     }
 
     JButton checkup;
+    JLabel chart;
     public void showDental(Patient p) {
         //if there is a selected patient clear the viewer
         if(this.current != null) {
             dentalViewer.removeAll();
+        }
+        
+        File last = new File("src\\toothbytes\\saves\\"+p.getId()+"\\latest.png");
+        if(last.exists()) {
+            chart = new JLabel();
+            chart.setIcon(new ImageIcon(last.getAbsolutePath()));
+            
+        } else {
+            chart = new JLabel("Chart for last treatment unavailable");
         }
         
         
@@ -109,12 +119,13 @@ public class RecordsWindow extends ModuleWindow {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                TreatmentWindow tw = new TreatmentWindow(p.getFullName());
+                TreatmentWindow tw = new TreatmentWindow(p);
                 tw.init();
             
             }
         });
-        dentalViewer.add(checkup, BorderLayout.CENTER);
+        dentalViewer.add(chart, BorderLayout.CENTER);
+        dentalViewer.add(checkup, BorderLayout.SOUTH);
         SwingUtilities.updateComponentTreeUI(dentalViewer);
     }
     
