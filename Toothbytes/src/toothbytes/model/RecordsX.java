@@ -5,6 +5,7 @@
  */
 package toothbytes.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -92,5 +93,15 @@ public class RecordsX {
     
     public void setBalance(double balance){
         this.balance = balance;
+    }
+    
+    public double getTotalBalance(ArrayList<RecordsX> recordsX){
+        double total = 0;
+        
+        for (RecordsX recordsX1 : recordsX) {
+            total = total + recordsX1.getBalance();
+        }
+        
+        return total;
     }
 }

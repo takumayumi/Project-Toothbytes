@@ -16,6 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import toothbytes.database.DBAccess;
 import toothbytes.model.Appointment;
+import toothbytes.model.PaymentX;
+import toothbytes.model.RecordsX;
 
 /**
  * <h1>SidePanel</h1>
@@ -90,7 +92,10 @@ public class SidePanel extends JPanel{
             then.setTime(sdf.parse(appointment.getAppointmentDate()));
             int time = then.compareTo(now);
             
-            if(appointment.getAppointmentRemarks().equals("Payment") && time == 1){
+            ArrayList<RecordsX> recordsX = DBAccess.getRecordsData(appointment.getPatientID());
+            double totalBalance = new RecordsX().getTotalBalance(recordsX);
+            
+            if(appointment.getAppointmentRemarks().equals("Payment") && time == 1 && totalBalance > 0){
                 return true;
             } else {
                 return false;

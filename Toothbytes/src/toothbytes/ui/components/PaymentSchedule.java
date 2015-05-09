@@ -5,8 +5,10 @@
  */
 package toothbytes.ui.components;
 
+import java.awt.Dialog;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import javax.swing.JDialog;
 import toothbytes.database.DBAccess;
 import toothbytes.model.Appointment;
 import toothbytes.model.RecordsX;
@@ -58,10 +60,14 @@ public class PaymentSchedule extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
         NameLabel = new javax.swing.JLabel();
         TimeLabel = new javax.swing.JLabel();
         AmountLabel = new javax.swing.JLabel();
         DateLabel = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+
+        jButton1.setText("jButton1");
 
         NameLabel.setText("Name");
 
@@ -70,6 +76,13 @@ public class PaymentSchedule extends javax.swing.JPanel {
         AmountLabel.setText("Remaining Balance");
 
         DateLabel.setText("Date");
+
+        jButton2.setText("Pay");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -83,10 +96,12 @@ public class PaymentSchedule extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(TimeLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(NameLabel)
-                            .addComponent(AmountLabel))
-                        .addGap(0, 50, Short.MAX_VALUE)))
+                        .addComponent(NameLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(AmountLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -99,10 +114,43 @@ public class PaymentSchedule extends javax.swing.JPanel {
                     .addComponent(DateLabel)
                     .addComponent(TimeLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AmountLabel)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AmountLabel)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable(){
+            public void run(){
+                JDialog miniBill = new JDialog();
+                MiniBilling miniBilling = new MiniBilling(miniBill, appointment.getPatientID());
+                miniBill.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                miniBill.setSize(miniBilling.getPreferredSize());
+                miniBill.add(miniBilling);
+                miniBill.pack();
+                miniBill.setVisible(true);
+                miniBill.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            }
+        });
+        
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
+
+                    public void run() {
+                        JDialog ctb = new JDialog();
+                        PersonalInformation pi = new PersonalInformation(ctb);
+                        ctb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                        System.out.println(pi.isVisible());
+                        ctb.setSize(pi.getPreferredSize());
+                        ctb.add(pi);
+                        ctb.pack();
+                        ctb.setVisible(true);
+                        ctb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    }
+                });*/
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -110,5 +158,7 @@ public class PaymentSchedule extends javax.swing.JPanel {
     private javax.swing.JLabel DateLabel;
     private javax.swing.JLabel NameLabel;
     private javax.swing.JLabel TimeLabel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     // End of variables declaration//GEN-END:variables
 }

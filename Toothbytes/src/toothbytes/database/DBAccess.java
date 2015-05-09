@@ -62,7 +62,7 @@ public class DBAccess {
             rs = (JDBCResultSet) stmt.executeQuery("CALL IDENTITY();");
             rs.next();
             int i = rs.getInt(1);
-            //return sReturn;
+            return i;
         }catch(Exception e){
            System.out.println(e);
         }
@@ -305,5 +305,27 @@ public class DBAccess {
             System.out.println("getPatientName Error: "+e);
             return "";
         }    
+    }
+    
+    public static int getLastNo(String table){
+        String getLastNo = "SELECT 1 FROM "+table+";";
+        int no = 0;
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(getLastNo);
+            while(rs.next()){
+                no++;
+            }
+            
+            return no;
+        }catch(Exception e){
+            System.out.println("getLastNo Error: "+e);
+            return 0;
+        }
+    }
+    
+    public static void billingUpdate(PaymentX paymentX, double balance){
+        String updatePayment = "INSERT INTO PAYMENT VALUES(DEFAULT, '"+paymentX.getDentalRecordID()+"', '"+paymentX.getPaymentDate()+"', '"+paymentX.getAmountPaid()+"');";
+        String updateRecords = "UPDATE DENTALRECORDS SET BALANCE = " + balance + " WHERE DENTALRECORDID = "+paymentX.getDentalRecordID();
     }
 }
