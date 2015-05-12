@@ -1,0 +1,13 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=Toothbytes.chm
+Contents file=Table of Contents.hhc
+Default Font=Segoe UI,10,0
+Display compile progress=No
+Index file=Index.hhk
+Language=0x3409 English (Philippines)
+Title=Toothbytes
+
+
+[INFOTYPES]
+
