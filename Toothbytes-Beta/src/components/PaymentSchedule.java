@@ -7,9 +7,11 @@ package components;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import javax.swing.JDialog;
 import models.RecordsX;
 import utilities.DBAccess;
 import models.Appointment;
+import window.forms.MiniBilling;
 
 public class PaymentSchedule extends javax.swing.JPanel {
 
@@ -54,10 +56,19 @@ public class PaymentSchedule extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton3 = new javax.swing.JButton();
         NameLabel = new javax.swing.JLabel();
         TimeLabel = new javax.swing.JLabel();
         AmountLabel = new javax.swing.JLabel();
         DateLabel = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+
+        jButton3.setText("Finish");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         NameLabel.setText("Name");
 
@@ -66,6 +77,13 @@ public class PaymentSchedule extends javax.swing.JPanel {
         AmountLabel.setText("Remaining Balance");
 
         DateLabel.setText("Date");
+
+        jButton4.setText("Pay");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -79,10 +97,12 @@ public class PaymentSchedule extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(TimeLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(NameLabel)
-                            .addComponent(AmountLabel))
-                        .addGap(0, 50, Short.MAX_VALUE)))
+                        .addComponent(NameLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(AmountLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addComponent(jButton4)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -95,16 +115,39 @@ public class PaymentSchedule extends javax.swing.JPanel {
                     .addComponent(DateLabel)
                     .addComponent(TimeLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AmountLabel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AmountLabel)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable(){
+            public void run(){
+                JDialog mb = new JDialog();
+                MiniBilling miniBill = new MiniBilling(mb, appointment.getPatientID());
+                
+                mb.setSize(miniBill.getPreferredSize());
+                mb.add(miniBill);
+                mb.pack();
+                mb.setVisible(true);
+                mb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            }
+        });
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AmountLabel;
     private javax.swing.JLabel DateLabel;
     private javax.swing.JLabel NameLabel;
     private javax.swing.JLabel TimeLabel;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     // End of variables declaration//GEN-END:variables
 }

@@ -314,4 +314,38 @@ public class DBAccess {
             return "";
         }    
     }
+    
+    public static int getLastNo(String table){
+        String getLastNo = "SELECT 1 FROM "+table+";";
+        int no = 0;
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(getLastNo);
+            while(rs.next()){
+                no++;
+            }
+            
+            return no;
+        }catch(Exception e){
+            System.out.println("getLastNo Error: "+e);
+            return 0;
+        }
+    }
+    
+    public static void billingUpdate(PaymentX paymentX, double balance){
+        String updatePayment = "INSERT INTO PAYMENTS VALUES(DEFAULT, '"+paymentX.getDentalRecordID()+"', CURRENT_DATE, "+paymentX.getAmountPaid()+");";
+        String updateRecords = "UPDATE DENTAL_RECORDS SET BALANCE = " + balance + " WHERE DENTALRECORDID = "+paymentX.getDentalRecordID()+";";
+        
+        System.out.println(updatePayment);
+        System.out.println(updateRecords);
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(updatePayment);
+            rs.next();
+            
+            rs = (JDBCResultSet) stmt.executeQuery(updateRecords);
+            rs.next();
+        }catch(Exception e){
+            System.out.println("billing Update Error: "+e);
+        }
+    }
 }

@@ -27,7 +27,7 @@ public class PaymentX {
         return this.paymentID;
     }
     
-    public int getPatientID(){
+    public int getDentalRecordID(){
         return this.dentalRecordID;
     }
     
