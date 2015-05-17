@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import javax.swing.JDialog;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JFrame;
@@ -20,6 +21,7 @@ import models.PatientX;
 import models.PaymentX;
 import models.RecordsX;
 import utilities.DBAccess;
+import window.forms.MiniBilling;
 import window.forms.SetPaymentSchedule;
 
 public class PaymentViewer extends JPanel{
@@ -403,31 +405,7 @@ public class PaymentViewer extends JPanel{
     }// </editor-fold>//GEN-END:initComponents
 
     private void transactionsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionsTableMouseClicked
-        evt.getButton();
-        JPopupMenu menu = new JPopupMenu("Popup");
-        menu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-            }
-        });
-        JMenuItem menuItem1 = new JMenuItem("Set schedule of payment");
-        menuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                JFrame paymentSchedContainer = new JFrame();
-                paymentSchedContainer.setSize(440, 480);
-                paymentSchedContainer.setLocationRelativeTo(null);
-                paymentSchedContainer.setResizable(false);
-                SetPaymentSchedule paymentSched = new SetPaymentSchedule();
-                paymentSchedContainer.add(paymentSched);
-                paymentSchedContainer.setVisible(true);
-                paymentSched.setVisible(true);
-            }
-        });
-        menu.add(menuItem1);
-        if(evt.getButton() == 3){
-            menu.show(evt.getComponent(), evt.getX(), evt.getY());
-            menu.setVisible(true);
-        }
-        evt.consume();
+
     }//GEN-LAST:event_transactionsTableMouseClicked
     
     private MouseListener tableClickListener = new MouseAdapter(){
@@ -458,9 +436,49 @@ public class PaymentViewer extends JPanel{
                     }
                 }
             }
+            
+            detailsTable.addMouseListener(tableRightClicked);
         }
     };
     
+    private MouseListener tableRightClicked = new MouseAdapter(){
+      @Override
+      public void mouseClicked(MouseEvent e){
+          
+              JPopupMenu detailTableMenu = new JPopupMenu("Payment Plans");
+              
+              JMenuItem directPay = new JMenuItem("Pay selected item.");
+              directPay.addMouseListener(new java.awt.event.MouseAdapter(){
+                  public void mousePressed(java.awt.event.MouseEvent evt){
+                      java.awt.EventQueue.invokeLater(new Runnable(){
+                        public void run(){
+                            JDialog mb = new JDialog();
+                            MiniBilling miniBill = new MiniBilling(mb, patientID);
+
+                            mb.setSize(miniBill.getPreferredSize());
+                            mb.add(miniBill);
+                            mb.pack();
+                            mb.setVisible(true);
+                            mb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                        }
+                    });
+                  }
+              });
+              detailTableMenu.add(directPay);
+              
+              JMenuItem setPaymentSchedule = new JMenuItem("Set payment schedule.");
+              setPaymentSchedule.addMouseListener(new java.awt.event.MouseAdapter(){
+                  public void mousePressed(java.awt.event.MouseEvent evt){
+                      
+                  }
+              });
+              
+          if(e.getButton() == 3){ 
+              detailTableMenu.show(e.getComponent(), e.getX(), e.getY());
+              detailTableMenu.setVisible(true);
+          }
+      }
+    };
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BillingPanel;

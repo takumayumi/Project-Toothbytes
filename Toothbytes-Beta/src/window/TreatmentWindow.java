@@ -5,6 +5,7 @@
 */
 package window;
 
+import components.Camera;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -116,7 +117,11 @@ public class TreatmentWindow extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //activate camera
+                java.awt.EventQueue.invokeLater(new Runnable(){
+                    public void run(){
+                        Camera camera = new Camera(patient.getId());
+                    }
+                });
             }
 
         });
