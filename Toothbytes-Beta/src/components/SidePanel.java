@@ -63,7 +63,7 @@ public class SidePanel extends JPanel{
         sidePayment.setBackground(WHITE);
         
         ArrayList<Appointment> appointmentX = new ArrayList<>();
-        appointmentX = DBAccess.getAppointmentData();
+        appointmentX = DBAccess.getAppointmentData("");
         
         int x = 0;
         

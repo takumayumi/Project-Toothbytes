@@ -5,6 +5,7 @@
 */
 package window;
 
+import components.CalendarWindow;
 import window.AppointmentsWindow;
 import components.Cover;
 import components.ModuleWindow;
@@ -62,7 +63,7 @@ public class MainScreen extends JFrame {
     public static String time;
     private Cover c;
     
-    public MainScreen(RecordsWindow rw, AppointmentsWindow aw, PaymentWindow pw) {
+    public MainScreen(RecordsWindow rw, CalendarWindow aw, PaymentWindow pw) {
         
         recWindow = rw;
         appWindow = aw;

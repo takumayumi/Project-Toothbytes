@@ -5,6 +5,7 @@
 */
 package Toothbytes;
 
+import components.CalendarWindow;
 import window.AppointmentsWindow;
 import components.PaymentWindow;
 import components.RecordsWindow;
@@ -37,7 +38,7 @@ public class ToothbytesApp {
             DBAccess.connectDB(); //connect to database
             patientList = DBAccess.initPatientList(); //initialize list of patients
             RecordsWindow rWin = new RecordsWindow(patientList);
-            AppointmentsWindow aWin = new AppointmentsWindow();
+            CalendarWindow aWin = new CalendarWindow();
             PaymentWindow pWin = new PaymentWindow(patientList);
 
             MainScreen ui = new MainScreen(rWin, aWin, pWin); //instantiate UI

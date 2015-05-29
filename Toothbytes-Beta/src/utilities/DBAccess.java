@@ -282,8 +282,8 @@ public class DBAccess {
         }
     }
     
-    public static ArrayList<Appointment> getAppointmentData(){
-        String getAppointmentData = "SELECT * FROM APPOINTMENT";
+    public static ArrayList<Appointment> getAppointmentData(String condition){
+        String getAppointmentData = "SELECT * FROM APPOINTMENT" + condition;
         ArrayList<Appointment> appointmentX = new ArrayList<>();
         
         try{
