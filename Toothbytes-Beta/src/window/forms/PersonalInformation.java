@@ -386,7 +386,6 @@ public class PersonalInformation extends javax.swing.JPanel {
                 JDialog tb = new JDialog();
                 tb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                 AdditionalInformation adi = null;
-                System.out.println("here");
                 try{
                     if(ai.getReason().isEmpty()){
                         

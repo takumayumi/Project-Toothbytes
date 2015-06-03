@@ -4,6 +4,7 @@
  *
 */
 package components;
+import java.awt.Dialog;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -313,7 +314,15 @@ public class PaymentViewer extends JPanel{
             new String [] {
                 "Treatment Done", "Tooth No.", "Amount Charged", "Amount Paid", "Outstanding Balance"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         detailsTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(detailsTable);
 
@@ -348,7 +357,15 @@ public class PaymentViewer extends JPanel{
             new String [] {
                 "Date", "Total Amount Charged", "Total Amount Paid", "Total Balance", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         transactionsTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         transactionsTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -454,7 +471,7 @@ public class PaymentViewer extends JPanel{
                         public void run(){
                             JDialog mb = new JDialog();
                             MiniBilling miniBill = new MiniBilling(mb, patientID);
-
+                            mb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                             mb.setSize(miniBill.getPreferredSize());
                             mb.add(miniBill);
                             mb.pack();
