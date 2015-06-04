@@ -10,10 +10,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import models.Appointment;
+import models.Patient;
+import models.PatientX;
+import utilities.DBAccess;
 
 /**
  *
@@ -26,6 +30,7 @@ public class SetAppointment extends javax.swing.JPanel {
      */
     
     private Appointment appointment;
+    private ArrayList<PatientX> patientList = DBAccess.getPatientXData("");
     private Calendar now = Calendar.getInstance();
     private int monthMod = now.get(Calendar.MONTH);
     private int yearMod = now.get(Calendar.YEAR);
@@ -35,6 +40,7 @@ public class SetAppointment extends javax.swing.JPanel {
     public SetAppointment() {
         initComponents();
         setMonthValues();
+        setPatientValues();
     }
     
     public SetAppointment(Appointment appointment){
@@ -43,8 +49,21 @@ public class SetAppointment extends javax.swing.JPanel {
         String[] appDate = appointment.getAppointmentDate().split("-");
         now.set(Integer.parseInt(appDate[0]), Integer.parseInt(appDate[1]), Integer.parseInt(appDate[2]));
         
-        //set patient
-        
+        setPatientValues();
+        setAppointmentValues();
+    }
+    
+    public SetAppointment(int patientID, String reason){
+        initComponents();
+        setMonthValues();
+
+        setPatientValues();
+        findPatient(patientID);
+        sptReason.setText(reason);
+        sptReason.setEnabled(false);
+    }
+    
+    public void setAppointmentValues(){
         String[] startHour = appointment.getAppointmentTime().split(":");
         sptStartHour.setText(startHour[0]);
         sptStartMin.setText(startHour[1]);
@@ -71,6 +90,21 @@ public class SetAppointment extends javax.swing.JPanel {
         sptReason.setText(appointment.getAppointmentRemarks());
     }
         
+    public void setPatientValues(){
+        for(int i = 0; i < patientList.size(); i++){
+            sptPatient.addItem(patientList.get(i).getFullName());
+            System.out.println(patientList.get(i).getFullName());
+        }
+    }
+    
+    public void findPatient(int patientID){
+        for(int i = 0; i < patientList.size(); i ++){
+            if(patientList.get(i).getId() == patientID){
+                sptPatient.setSelectedItem(patientList.get(i).getFullName());
+            }
+        }
+    }
+    
     public void setMonthValues(){
         if(monthMod > 11){
            yearMod = yearMod + 1;

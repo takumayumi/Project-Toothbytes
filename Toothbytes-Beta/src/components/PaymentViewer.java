@@ -5,6 +5,8 @@
 */
 package components;
 import java.awt.Dialog;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -23,6 +25,7 @@ import models.PaymentX;
 import models.RecordsX;
 import utilities.DBAccess;
 import window.forms.MiniBilling;
+import window.forms.SetAppointment;
 import window.forms.SetPaymentSchedule;
 
 public class PaymentViewer extends JPanel{
@@ -465,8 +468,10 @@ public class PaymentViewer extends JPanel{
               JPopupMenu detailTableMenu = new JPopupMenu("Payment Plans");
               
               JMenuItem directPay = new JMenuItem("Pay selected item.");
-              directPay.addMouseListener(new java.awt.event.MouseAdapter(){
-                  public void mousePressed(java.awt.event.MouseEvent evt){
+              directPay.addActionListener(new ActionListener() {
+
+                  @Override
+                  public void actionPerformed(ActionEvent e) {
                       java.awt.EventQueue.invokeLater(new Runnable(){
                         public void run(){
                             JDialog mb = new JDialog();
@@ -483,12 +488,26 @@ public class PaymentViewer extends JPanel{
               });
               detailTableMenu.add(directPay);
               
+              
               JMenuItem setPaymentSchedule = new JMenuItem("Set payment schedule.");
               setPaymentSchedule.addMouseListener(new java.awt.event.MouseAdapter(){
                   public void mousePressed(java.awt.event.MouseEvent evt){
-                      
+                      java.awt.EventQueue.invokeLater(new Runnable(){
+                        public void run(){
+                            JDialog mb = new JDialog();
+                            SetAppointment sA = new SetAppointment(patientID, "Payment");
+                            mb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                            mb.setSize(sA.getPreferredSize());
+                            mb.add(sA);
+                            mb.pack();
+                            mb.setVisible(true);
+                            mb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                        }
+                    });
                   }
               });
+              
+              detailTableMenu.add(setPaymentSchedule);
               
           if(e.getButton() == 3){ 
               detailTableMenu.show(e.getComponent(), e.getX(), e.getY());

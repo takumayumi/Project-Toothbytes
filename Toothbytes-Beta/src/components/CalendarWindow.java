@@ -132,18 +132,11 @@ public class CalendarWindow extends ModuleWindow {
             
             
         });
+        
 //        for(int i = 0; i < 6; i++){
 //            cdwCalendar.getColumnModel().getColumn(i).setCellRenderer(new ImageRenderer());
 //        }
         
-//        cdwCalendar.addMouseListener(new java.awt.event.MouseAdapter() {
-//            public void mouseClicked(java.awt.event.MouseEvent evt) {
-//                cdwCalendarMouseClicked(evt);
-//            }
-//            public void mouseReleased(java.awt.event.MouseEvent evt) {
-//                cdwCalendarMouseReleased(evt);
-//            }
-//        });
         cdwCalendar.setRowHeight(408/6);
         cdwCalendar.setAutoscrolls(false);
         cdwCalendar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -152,11 +145,12 @@ public class CalendarWindow extends ModuleWindow {
     class ImageRenderer extends DefaultTableCellRenderer{
         public Component getTableCellRendererComponent(JTable table,Object value, boolean isSelected,boolean hasFocus, int row, int column){
             JLabel label = new JLabel();
-            
+            JLabel image = new JLabel(teeth);
             try{
                 String[] input = String.valueOf(value).split(",");
                 teeth.setDescription(input[1]);
-                label = new JLabel(input[0], teeth ,JLabel.CENTER);
+                label = new JLabel(input[0] ,JLabel.LEFT);
+                label.add(image);
             }catch(Exception e){
                 label.setText(String.valueOf(value));
             }
@@ -195,8 +189,6 @@ public class CalendarWindow extends ModuleWindow {
         int appointmentCount = 0;
         
         for(int i = 0; i < appointmentList.size(); i++){
-            System.out.println("From list: "+appointmentList.get(i).getAppointmentDate());
-            System.out.println("Given date: "+date);
             if(date.equals(appointmentList.get(i).getAppointmentDate())){
                 appointmentCount++;
                 System.out.println(appointmentCount);
@@ -327,7 +319,7 @@ public class CalendarWindow extends ModuleWindow {
                 .addGap(6, 6, 6)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -347,11 +339,14 @@ public class CalendarWindow extends ModuleWindow {
     }//GEN-LAST:event_cdwCalendarMouseClicked
 
     private void cdwCalendarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cdwCalendarMouseReleased
+        int x = 0;
+        int y = 0;
+        
         if(evt.getButton() == MouseEvent.BUTTON1){
             popupMenuGen();
-            int x = cdwCalendar.getSelectedRow();
-            int y = cdwCalendar.getSelectedColumn();
-                        
+            x = cdwCalendar.getSelectedRow();
+            y = cdwCalendar.getSelectedColumn();
+                      
             Object value = cdwCalendar.getModel().getValueAt(x, y);
             String date = "";
             try{
@@ -369,8 +364,6 @@ public class CalendarWindow extends ModuleWindow {
                         date = yearMod+"-"+(now.get(Calendar.MONTH)+1)+"-"+z[0];
                     }
                 }
-                
-                
                                
                 try{
                     int appointmentNo = Integer.parseInt(z[1]);
@@ -404,7 +397,8 @@ public class CalendarWindow extends ModuleWindow {
                 System.out.println("CalendarWindow - cdwCalendarMouseClick Error: "+e);
             }
         }
-        if(evt.getButton()== 3){
+        System.out.println(cdwCalendar.getModel().getValueAt(x, y).toString().isEmpty());
+        if(evt.getButton()== 3 && !cdwCalendar.getModel().getValueAt(x, y).toString().isEmpty()){
             selectionPopup.show(evt.getComponent(), evt.getX(), evt.getY());
             selectionPopup.setVisible(true);
         }

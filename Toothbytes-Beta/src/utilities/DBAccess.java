@@ -335,9 +335,7 @@ public class DBAccess {
     public static void billingUpdate(PaymentX paymentX, double balance){
         String updatePayment = "INSERT INTO PAYMENTS VALUES(DEFAULT, '"+paymentX.getDentalRecordID()+"', CURRENT_DATE, "+paymentX.getAmountPaid()+");";
         String updateRecords = "UPDATE DENTAL_RECORDS SET BALANCE = " + balance + " WHERE DENTALRECORDID = "+paymentX.getDentalRecordID()+";";
-        
-        System.out.println(updatePayment);
-        System.out.println(updateRecords);
+
         try{
             rs = (JDBCResultSet) stmt.executeQuery(updatePayment);
             rs.next();
@@ -347,5 +345,29 @@ public class DBAccess {
         }catch(Exception e){
             System.out.println("billing Update Error: "+e);
         }
+    }
+    
+    public static ArrayList<PatientX> getPatientXData(String addtl){
+        ArrayList<PatientX> patientX = new ArrayList<>();
+        String query = "SELECT * FROM PATIENT" + addtl;
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(query);
+            while(rs.next()){
+                Calendar cal;
+                try{
+                    cal = Calendar.getInstance();
+                    cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5)));
+                }catch(Exception e){
+                    cal = null;
+                }
+                PatientX px = new PatientX(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), cal, 
+                        rs.getString(6), rs.getString(7), rs.getString(8).charAt(0), rs.getString(9), rs.getString(10), rs.getString(11), 
+                        rs.getString(12), rs.getString(13), rs.getString(14), rs.getString(15));
+                patientX.add(px);
+            }
+        }catch(Exception e){
+            System.out.println("DBAccess - getPatientXData Error: "+e);
+        }
+        return patientX;
     }
 }
