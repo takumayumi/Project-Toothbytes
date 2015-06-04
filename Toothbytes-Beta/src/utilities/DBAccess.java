@@ -370,4 +370,15 @@ public class DBAccess {
         }
         return patientX;
     }
+    
+    public static void addAppointmentData(Appointment appointment)throws Exception{
+        String query = "INSERT INTO APPOINTMENT VALUES(DEFAULT, "+appointment.getPatientID()+", '"+appointment.getAppointmentDate()+"', '"+appointment.getAppointmentTime()+":00', '"+appointment.getAppointmentEndTime()+":00', '"+appointment.getAppointmentRemarks()+"');";
+        System.out.println(query);
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(query);
+            rs.next();
+        }catch(Exception e){
+            System.out.println("DBAccess - addAppointmentData Error: " + e);
+        }
+    }
 }

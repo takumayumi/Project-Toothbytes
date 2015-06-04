@@ -6,14 +6,17 @@
 package window.forms;
 
 import java.awt.Color;
+import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import models.Appointment;
 import models.Patient;
 import models.PatientX;
@@ -170,6 +173,69 @@ public class SetAppointment extends javax.swing.JPanel {
         });
         sptMiniCalendar.setAutoscrolls(false);
         sptMiniCalendar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+    
+    public Appointment getAppointmentValues(){
+        Appointment appointment = new Appointment();
+        
+        int patientIDx = 0;
+        String appointmentDate = "";
+        String appointmentTime = "";
+        String appointmentEndTime = "";
+        String appointmentRemarks = "";
+        
+        for(int i = 0; i < patientList.size(); i++){
+            if(patientList.get(i).getFullName().equals(sptPatient.getSelectedItem())){
+                patientIDx = patientList.get(i).getId();
+            }
+        }
+        
+        int calendarX = sptMiniCalendar.getSelectedRow();
+        int calendarY = sptMiniCalendar.getSelectedColumn();
+        
+        String appointmentDay = "";
+        
+        try{
+            appointmentDay = sptMiniCalendar.getModel().getValueAt(calendarX, calendarY).toString();
+        }catch(Exception e){
+            System.out.println("SetAppointment - getAppointmentValues Error: "+ e);
+        }
+        
+        if(Integer.parseInt(appointmentDay) < 10){
+            if(now.get(Calendar.MONTH) < 10){
+                appointmentDate = now.get(Calendar.YEAR) + "-0" + (now.get(Calendar.MONTH)+1) + "-0" + appointmentDay;
+            } else {
+                appointmentDate = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH)+1) + "-0" + appointmentDay;
+            }
+        } else {
+            if(now.get(Calendar.MONTH) < 10){
+                appointmentDate = now.get(Calendar.YEAR) + "-0" + (now.get(Calendar.MONTH)+1) + "-" + appointmentDay;
+            } else {
+                appointmentDate = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH)+1) + "-" + appointmentDay;
+            }
+        }
+        
+        appointmentTime = sptStartHour.getText() + ":" + sptStartMin.getText();
+        
+        int appointmentEndMinute = Integer.parseInt(sptStartMin.getText()) + Integer.parseInt(sptDurMin.getText());
+        int appointmentEndHour = Integer.parseInt(sptStartHour.getText()) + Integer.parseInt(sptDurHour.getText());
+        
+        if(appointmentEndMinute > 60){
+            appointmentEndHour++;
+            appointmentEndMinute = appointmentEndMinute - 60;
+        }
+        
+        appointmentEndTime = appointmentEndHour + ":" + appointmentEndMinute;
+        
+        appointmentRemarks = sptReason.getText();
+        
+        appointment.setPatientID(patientIDx);
+        appointment.setAppointmentDate(appointmentDate);
+        appointment.setAppointmentTime(appointmentTime);
+        appointment.setAppointmentEndTime(appointmentEndTime);
+        appointment.setAppointmentRemarks(appointmentRemarks);
+        
+        return appointment;
     }
     
     /**
@@ -445,11 +511,22 @@ public class SetAppointment extends javax.swing.JPanel {
     }//GEN-LAST:event_sptDurMinMouseClicked
 
     private void sptCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sptCancelActionPerformed
-        System.out.close();
+        Window w = SwingUtilities.getWindowAncestor(this);
+        w.dispose();
+        
     }//GEN-LAST:event_sptCancelActionPerformed
 
     private void sptSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sptSaveActionPerformed
-        //Save to database
+        appointment = getAppointmentValues();
+        try{
+            DBAccess.addAppointmentData(appointment);
+            JOptionPane.showInputDialog(null,"Appointment Added");
+        }catch(Exception e){
+            System.out.println("SetAppointment - sptSaveActionPerformed Error: " + e);
+        }        
+        
+        Window w = SwingUtilities.getWindowAncestor(this);
+        w.dispose();
     }//GEN-LAST:event_sptSaveActionPerformed
 
 

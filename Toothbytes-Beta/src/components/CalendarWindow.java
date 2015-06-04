@@ -338,14 +338,11 @@ public class CalendarWindow extends ModuleWindow {
         
     }//GEN-LAST:event_cdwCalendarMouseClicked
 
-    private void cdwCalendarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cdwCalendarMouseReleased
-        int x = 0;
-        int y = 0;
-        
+    public void setMenuMode(java.awt.event.MouseEvent evt){
         if(evt.getButton() == MouseEvent.BUTTON1){
             popupMenuGen();
-            x = cdwCalendar.getSelectedRow();
-            y = cdwCalendar.getSelectedColumn();
+            int x = cdwCalendar.getSelectedRow();
+            int y = cdwCalendar.getSelectedColumn();
                       
             Object value = cdwCalendar.getModel().getValueAt(x, y);
             String date = "";
@@ -397,8 +394,21 @@ public class CalendarWindow extends ModuleWindow {
                 System.out.println("CalendarWindow - cdwCalendarMouseClick Error: "+e);
             }
         }
-        System.out.println(cdwCalendar.getModel().getValueAt(x, y).toString().isEmpty());
-        if(evt.getButton()== 3 && !cdwCalendar.getModel().getValueAt(x, y).toString().isEmpty()){
+    }
+    
+    private void cdwCalendarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cdwCalendarMouseReleased
+        int x = cdwCalendar.getSelectedRow();
+        int y = cdwCalendar.getSelectedColumn();
+        
+        boolean check = false;
+        try{
+            String value = cdwCalendar.getModel().getValueAt(x, y).toString();
+            check = true;
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        
+        if(evt.getButton()== 3 && check){
             selectionPopup.show(evt.getComponent(), evt.getX(), evt.getY());
             selectionPopup.setVisible(true);
         }
