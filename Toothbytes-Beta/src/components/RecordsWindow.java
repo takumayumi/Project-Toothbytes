@@ -7,16 +7,20 @@ package components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import static java.awt.Color.WHITE;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -26,6 +30,17 @@ import javax.swing.event.ListSelectionListener;
 import models.Patient;
 import models.PatientX;
 import net.miginfocom.swing.MigLayout;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import org.hsqldb.jdbc.JDBCConnection;
+import org.hsqldb.jdbc.JDBCDriver;
 import utilities.DBAccess;
 import utilities.DataMan;
 import window.TreatmentWindow;
@@ -43,6 +58,11 @@ public class RecordsWindow extends ModuleWindow {
     private MigLayout layout, formLayout;
     private JScrollPane scrollInfo, scrollDental, scrollGallery;
     private PatientX current;
+    private JButton patientRepBut;
+    
+    final String BUTTON_DIR = "res/buttons/";
+    private static JDBCConnection conn = null;
+    private static String dir = "data/db";
 
     /**
      * This constructor layouts the Records Window.
@@ -265,7 +285,39 @@ public class RecordsWindow extends ModuleWindow {
         infoViewer.add(lblEadd, "skip 3, span 2");
         infoViewer.add(eAdd, "span 7");
         
+        patientRepBut = new JButton(new ImageIcon(BUTTON_DIR + "ReportGenPatient-30x30.png"));
+        patientRepBut.setBackground(WHITE);
+        patientRepBut.setToolTipText("Print Patient Records");
+        
+        PatientRecordsReport prr = new PatientRecordsReport();
+        infoViewer.add(patientRepBut);
+        patientRepBut.addActionListener(prr);
+        
         SwingUtilities.updateComponentTreeUI(infoViewer);
+    }
+    
+    public void printPatientRecords(){        
+        try{
+            Class.forName("org.hsqldb.jdbcDriver");
+            String dbConn = "jdbc:hsqldb:file:"+dir+";user=root";
+            conn = (JDBCConnection) JDBCDriver.getConnection(dbConn, null);
+            File path = new File("Reports/patientRecords.jrxml");
+            String reportPath = path.getCanonicalPath();
+            JasperDesign jd = JRXmlLoader.load(reportPath);
+            String sql = "SELECT patientPhoto, CONCAT(pa.patient_FirstName, ' ', pa.patient_MiddleInitial, '.', ' ', pa.patient_LastName) AS \"PATIENT NAME\", nickname, gender, birthdate, occupation, civilStatus, cellNo, homeNo, officeNo, faxNo, emailAddress, homeAddress, treatmentDate, procedure, amountCharged, balance  FROM patient pa\n" +
+                        "JOIN dental_records dr ON pa.patientID = dr.patientID\n" +
+                        "JOIN payments py ON dr.dentalRecordID = py.dentalRecordID\n" +
+                        "WHERE patientID =" + current.getId();                                         
+            JRDesignQuery newQuery = new JRDesignQuery();
+            newQuery.setText(sql);
+            jd.setQuery(newQuery);
+            JasperReport jrCompile = JasperCompileManager.compileReport(jd);
+            JasperPrint jpPrint = JasperFillManager.fillReport(jrCompile, null, conn);
+            JasperViewer.viewReport(jpPrint, false);
+            conn.close();
+        }catch(IOException | ClassNotFoundException | SQLException | JRException error){
+            JOptionPane.showMessageDialog(null,error);
+        }
     }
     
     /**
@@ -283,6 +335,22 @@ public class RecordsWindow extends ModuleWindow {
                 showInfo(px);
                 showDental(p);
             }
+        }
+    }
+    
+    public class PatientRecordsReport implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == patientRepBut) {
+                java.awt.EventQueue.invokeLater(new Runnable() {
+
+                    public void run() {
+                        printPatientRecords();
+                    }
+                }
+                );
+            }         
         }
     }
 }

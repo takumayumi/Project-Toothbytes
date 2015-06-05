@@ -8,6 +8,7 @@ package Toothbytes;
 import components.CalendarWindow;
 import components.PaymentWindow;
 import components.RecordsWindow;
+import components.ReportsGenWindow;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -37,12 +38,12 @@ public class ToothbytesApp {
         try {
             DBAccess.connectDB(); //connect to database
             patientList = DBAccess.initPatientList(); //initialize list of patients
-            
             RecordsWindow rWin = new RecordsWindow(patientList);
             CalendarWindow aWin = new CalendarWindow();
             PaymentWindow pWin = new PaymentWindow(patientList);
+            ReportsGenWindow rgWin = new ReportsGenWindow();
 
-            MainScreen ui = new MainScreen(rWin, aWin, pWin); //instantiate UI
+            MainScreen ui = new MainScreen(rWin, aWin, pWin, rgWin); //instantiate UI
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             SwingUtilities.updateComponentTreeUI(ui);
             ui.init(); //initialize UI

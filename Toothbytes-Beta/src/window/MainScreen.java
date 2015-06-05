@@ -12,6 +12,7 @@ import components.LoginDialog;
 import components.ModuleWindow;
 import components.PaymentWindow;
 import components.RecordsWindow;
+import components.ReportsGenWindow;
 import components.SidePanel;
 import components.TBMenuBar;
 import java.awt.Color;
@@ -41,14 +42,15 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
+import window.AppointmentsWindow;
 import window.forms.PersonalInformation;
 import window.forms.SetAppointment;
 
 /**
  * <h1>MainScreen</h1>
  * The {@code MainScreen} class constructs the main window of Toothbytes. It
- * layouts the panels, buttons, menu bar, toolbars, and module windows of the
- * program.
+ * layouts the panels, buttons, menu bar, toolbars, and module windows of 
+ * the program.
  */
 public class MainScreen extends JFrame {
 
@@ -58,19 +60,19 @@ public class MainScreen extends JFrame {
     private Dimension defaultSize;
     private boolean fullScreen;
     private ButtonGroup navButtons;
-    private JToggleButton homeBut, appBut, recBut, payBut, testButton;
+    private JToggleButton homeBut, appBut, recBut, payBut, repgenBut, testButton;
     private TBMenuBar menuBar;
     private JToolBar navBar, quickBar, statusBar;
     private JButton qAddPatientBut, qSetAppointmentBut;
     private String state;
-    private ModuleWindow recWindow, appWindow, payWindow;
+    private ModuleWindow recWindow, appWindow, payWindow,repWindow;
     private SidePanel sp;
     public static String time;
     private Cover c;
     private LoginDialog ld;
     private ExitDialog ed;
 
-    public MainScreen(RecordsWindow rw, CalendarWindow aw, PaymentWindow pw) {
+    public MainScreen(RecordsWindow rw, CalendarWindow aw, PaymentWindow pw, ReportsGenWindow rgw) {
         //Dialogs
         ld = new LoginDialog(this);
         ed = new ExitDialog(this);
@@ -78,6 +80,7 @@ public class MainScreen extends JFrame {
         recWindow = rw;
         appWindow = aw;
         payWindow = pw;
+        repWindow = rgw;
 
         state = "cover";
 
@@ -198,15 +201,22 @@ public class MainScreen extends JFrame {
         payBut.setToolTipText("Payments");
         payBut.setBackground(WHITE);
 
+        repgenBut = new JToggleButton();
+        repgenBut.setIcon(new ImageIcon(BUTTON_DIR+"GenerateReport.png"));
+        repgenBut.setToolTipText("Generate Reports");
+        repgenBut.setBackground(WHITE);
+        
         navButtons.add(homeBut);
         navButtons.add(recBut);
         navButtons.add(appBut);
         navButtons.add(payBut);
+        navButtons.add(repgenBut);
 
         navBar.add(homeBut);
         navBar.add(recBut);
         navBar.add(appBut);
         navBar.add(payBut);
+        navBar.add(repgenBut);
         navBar.setBackground(WHITE);
 
         NavigationHandler nh = new NavigationHandler();
@@ -214,6 +224,7 @@ public class MainScreen extends JFrame {
         recBut.addActionListener(nh);
         appBut.addActionListener(nh);
         payBut.addActionListener(nh);
+        repgenBut.addActionListener(nh);
 
         navBar.setOrientation(JToolBar.VERTICAL);
         navBar.setFloatable(false);
@@ -237,10 +248,10 @@ public class MainScreen extends JFrame {
         quickBar = new JToolBar("QuickBar");
         quickBar.setBackground(WHITE);
 
-        qAddPatientBut = new JButton(new ImageIcon(BUTTON_DIR + "AddNewPatient.png"));
+        qAddPatientBut = new JButton(new ImageIcon(BUTTON_DIR+"AddNewPatient.png"));
         qAddPatientBut.setBackground(WHITE);
         qAddPatientBut.setToolTipText("Add Patient");
-        qSetAppointmentBut = new JButton(new ImageIcon(BUTTON_DIR + "AddNewAppointment.png"));
+        qSetAppointmentBut = new JButton(new ImageIcon(BUTTON_DIR+"AddNewAppointment.png"));
         qSetAppointmentBut.setBackground(WHITE);
         qSetAppointmentBut.setToolTipText("Set Appointment");
 
@@ -333,6 +344,8 @@ public class MainScreen extends JFrame {
             return appWindow;
         } else if (state.equals("payw")) {
             return payWindow;
+        } else if (state.equals("repw")){
+            return repWindow;
         } else {
             return null;
         }
@@ -448,6 +461,12 @@ public class MainScreen extends JFrame {
                     loadModule(getModule("payw"), "payw");
                 }
             }
+            if (e.getSource() == repgenBut) {
+                if (!state.equals("repw")) {
+                    modulePanel.removeAll();
+                    loadModule(getModule("repw"), "repw");
+        }
+    }
         }
     }
 
