@@ -38,6 +38,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import window.forms.PersonalInformation;
+import window.forms.SetAppointment;
 
 /**
  * <h1>MainScreen</h1>
@@ -364,7 +365,18 @@ public class MainScreen extends JFrame {
             }
 
             if (e.getSource() == qSetAppointmentBut) {
-
+                java.awt.EventQueue.invokeLater(new Runnable(){
+                    public void run(){
+                        JDialog sA = new JDialog();
+                        SetAppointment  nA = new SetAppointment();
+                        sA.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                        sA.setSize(nA.getPreferredSize());
+                        sA.add(nA);
+                        sA.pack();
+                        sA.setVisible(true);
+                        sA.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    }
+                });
             }
         }
 
