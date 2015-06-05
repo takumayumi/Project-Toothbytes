@@ -50,10 +50,26 @@ public class SetAppointment extends javax.swing.JPanel {
         initComponents();
         this.appointment = appointment;
         String[] appDate = appointment.getAppointmentDate().split("-");
-        now.set(Integer.parseInt(appDate[0]), Integer.parseInt(appDate[1]), Integer.parseInt(appDate[2]));
+        monthMod = Integer.parseInt(appDate[1])-1;
+        yearMod = Integer.parseInt(appDate[0]);
         
+        setMonthValues();
         setPatientValues();
+        findPatient(appointment.getPatientID());
         setAppointmentValues();
+        now.set(Integer.parseInt(appDate[0]), Integer.parseInt(appDate[1])-1, Integer.parseInt(appDate[2]));
+        sptMiniCalendar.changeSelection(now.get(Calendar.DAY_OF_WEEK_IN_MONTH)-1, now.get(Calendar.DAY_OF_WEEK)-1, true, false);
+    }
+    
+    public SetAppointment(String date){
+        initComponents();
+        String[] dateArr = date.split("-");
+        monthMod = Integer.parseInt(dateArr[1]);
+        yearMod = Integer.parseInt(dateArr[0]);
+        setMonthValues();
+        setPatientValues();
+        now.set(Integer.parseInt(dateArr[0]), Integer.parseInt(dateArr[1]), Integer.parseInt(dateArr[2]));
+        sptMiniCalendar.changeSelection(now.get(Calendar.DAY_OF_WEEK_IN_MONTH)-1, now.get(Calendar.DAY_OF_WEEK)-1, true, false);
     }
     
     public SetAppointment(int patientID, String reason){
@@ -75,16 +91,18 @@ public class SetAppointment extends javax.swing.JPanel {
         int durHour = Integer.parseInt(duration[0]);
         int durMin = Integer.parseInt(duration[1]);
         
-        if(durHour > Integer.parseInt(startHour[0])){
+        if(durHour >= Integer.parseInt(startHour[0])){
             durHour = durHour - Integer.parseInt(startHour[0]);
         } else {
-            durHour = Integer.parseInt(startHour[0]) - durHour;
+            durHour = durHour + 12;
+            durHour = durHour - Integer.parseInt(startHour[0]);
         }
         
-        if(durMin > Integer.parseInt(startHour[1])){
+        if(durMin >= Integer.parseInt(startHour[1])){
             durMin = durMin - Integer.parseInt(startHour[1]);
         } else {
-            durMin = Integer.parseInt(startHour[1]) - durMin;
+            durMin = durMin + 60;
+            durMin = durMin - Integer.parseInt(startHour[1]);
         }
         
         sptDurHour.setText(String.valueOf(durHour));
@@ -110,7 +128,7 @@ public class SetAppointment extends javax.swing.JPanel {
     
     public void setMonthValues(){
         if(monthMod > 11){
-           yearMod = yearMod + 1;
+            yearMod = yearMod + 1;
             now.set(Calendar.YEAR, yearMod);
             now.set(Calendar.MONTH, 0);
             monthMod = 0;

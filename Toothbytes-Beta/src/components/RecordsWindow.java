@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -43,7 +44,6 @@ import org.hsqldb.jdbc.JDBCConnection;
 import org.hsqldb.jdbc.JDBCDriver;
 import utilities.DBAccess;
 import utilities.DataMan;
-import window.TreatmentWindow;
 
 /**
  * <h1>RecordsWindow</h1>
@@ -120,6 +120,11 @@ public class RecordsWindow extends ModuleWindow {
         super.addToMainPane(plv, "span 2, grow");
         super.addToMainPane(tabsPane, "span 10, grow");
     }
+    
+    private JFrame getFrame() {
+        JFrame f =  (JFrame)this.getParent();
+        return f;
+    }
 
     private final String ICON_DIR = "res/buttons/";
     JButton checkup;
@@ -146,8 +151,7 @@ public class RecordsWindow extends ModuleWindow {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                TreatmentWindow tw = new TreatmentWindow(p);
-                tw.init();
+                TreatmentWindow tw = new TreatmentWindow(getFrame(), p);
             
             }
         });
