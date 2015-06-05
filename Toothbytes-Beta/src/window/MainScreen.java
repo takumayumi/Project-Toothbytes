@@ -39,11 +39,9 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
 import window.forms.PersonalInformation;
 import window.forms.SetAppointment;
-
 /**
  * <h1>MainScreen</h1>
  * The {@code MainScreen} class constructs the main window of Toothbytes. It
