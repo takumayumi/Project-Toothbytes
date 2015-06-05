@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c8a7594e-595c-4e09-aa02-3fbd0f7ac4a4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[SELECT dp.procedure, YEAR(paymentDate) AS "Year", MONTHNAME(paymentDate) AS "Month", pay.amountPaid AS "Amount Paid" FROM payments pay
+JOIN dental_records dp ON pay.dentalRecordID = dp.dentalRecordID
+WHERE YEAR(pay.paymentDate) BETWEEN '2014' AND '2015'
+GROUP BY dp.procedure, YEAR(pay.paymentDate), MONTHNAME(pay.paymentDate), pay.amountPaid]]>
+	</queryString>
+	<field name="PROCEDURE" class="java.lang.String"/>
+	<field name="Year" class="java.lang.Integer"/>
+	<field name="Month" class="java.lang.String"/>
+	<field name="Amount Paid" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="83" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="66" backcolor="#000000" uuid="a74c157d-5aa3-40ba-aacc-a49201066924"/>
+				<staticText>
+					<reportElement style="Title" x="0" y="0" width="802" height="66" uuid="8d5d6417-a3fc-429c-9d5e-aa3e96423258"/>
+					<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="36" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Dr. Ruben Pascual General Dentistry]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="5" width="802" height="20" uuid="408c23c1-a224-4d28-9f1b-20c5dab97bdc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Yearly Income]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="109" y="0" width="159" height="18" forecolor="#000000" uuid="1e707c73-6ef7-4c5a-9d5d-c09a9d73cf9c"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Procedure]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="268" y="0" width="159" height="18" forecolor="#000000" uuid="35ae733e-7046-49f8-88da-bf86a45296ba"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Year]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="427" y="0" width="159" height="18" forecolor="#000000" uuid="860944cf-bb8c-4ee7-b572-fad08a1b0144"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Month]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="586" y="0" width="130" height="18" forecolor="#000000" uuid="b7805403-1db6-4161-93ca-e84cc5e948b8"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount Paid]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="797" height="18" uuid="0219295f-2214-468e-8097-7562d4a2f058"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="109" y="0" width="159" height="18" uuid="731f195c-3eed-45fb-95a1-29ac1ee077a2"/>
+					<textElement>
+						<font fontName="SansSerif" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PROCEDURE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="268" y="0" width="159" height="18" uuid="e55bd861-f4d9-446e-9ab7-77c0d7986074"/>
+					<textElement>
+						<font fontName="SansSerif" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Year}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="427" y="0" width="159" height="18" uuid="c33ecf57-8413-4244-8227-076fc46174ba"/>
+					<textElement>
+						<font fontName="SansSerif" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Month}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="586" y="0" width="130" height="18" uuid="583752a4-f18b-480a-991b-48488c550ff1"/>
+					<textElement>
+						<font fontName="SansSerif" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Amount Paid}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="25" forecolor="#D0B48E" backcolor="#000000" uuid="f6a1fa01-cf06-4937-ba96-30c7b340d3da"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="757" y="3" width="40" height="20" forecolor="#FFFFFF" uuid="bd46a1da-d19d-46de-b754-84ac4e191566"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="677" y="3" width="80" height="20" forecolor="#FFFFFF" uuid="cb33c105-a057-42b0-a9cf-8ddffa6e2ccc"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="MMMMM dd, yyyy">
+					<reportElement style="Column header" x="8" y="3" width="197" height="20" forecolor="#FFFFFF" uuid="6081668e-13d3-4a4f-9bf0-b2440bf10968"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="301" splitType="Stretch">
+			<stackedBar3DChart>
+				<chart>
+					<reportElement x="109" y="82" width="606" height="203" uuid="e67a18ad-53f5-43aa-bb55-a590104c11b3"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{PROCEDURE}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Year}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{Amount Paid}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</stackedBar3DChart>
+			<staticText>
+				<reportElement x="77" y="123" width="22" height="65" uuid="382200a8-f4ab-46ed-9a20-c5efbc343001"/>
+				<textElement textAlignment="Center" rotation="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Income]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="109" y="43" width="174" height="20" uuid="80bdd2d6-484b-4734-9d46-917cd57543af"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Summary of Yearly Income ]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
