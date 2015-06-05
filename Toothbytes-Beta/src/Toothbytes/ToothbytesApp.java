@@ -6,7 +6,6 @@
 package Toothbytes;
 
 import components.CalendarWindow;
-import window.AppointmentsWindow;
 import components.PaymentWindow;
 import components.RecordsWindow;
 import java.sql.SQLException;
@@ -17,6 +16,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import models.Patient;
 import utilities.DBAccess;
+import components.LoginDialog;
 import window.MainScreen;
 
 /**
@@ -37,6 +37,7 @@ public class ToothbytesApp {
         try {
             DBAccess.connectDB(); //connect to database
             patientList = DBAccess.initPatientList(); //initialize list of patients
+            
             RecordsWindow rWin = new RecordsWindow(patientList);
             CalendarWindow aWin = new CalendarWindow();
             PaymentWindow pWin = new PaymentWindow(patientList);

@@ -2,12 +2,13 @@
  * Copyright (c) 2014, 2015, Project Toothbytes. All rights reserved.
  *
  *
-*/
+ */
 package window;
 
 import components.CalendarWindow;
-import window.AppointmentsWindow;
 import components.Cover;
+import components.ExitDialog;
+import components.LoginDialog;
 import components.ModuleWindow;
 import components.PaymentWindow;
 import components.RecordsWindow;
@@ -21,6 +22,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,15 +39,16 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
 import window.forms.PersonalInformation;
 import window.forms.SetAppointment;
 
 /**
  * <h1>MainScreen</h1>
- * The {@code MainScreen} class constructs the main window of Toothbytes. It 
- * layouts the panels, buttons, menu bar, toolbars, and module windows of 
- * the program.
+ * The {@code MainScreen} class constructs the main window of Toothbytes. It
+ * layouts the panels, buttons, menu bar, toolbars, and module windows of the
+ * program.
  */
 public class MainScreen extends JFrame {
 
@@ -63,28 +67,32 @@ public class MainScreen extends JFrame {
     private SidePanel sp;
     public static String time;
     private Cover c;
-    
+    private LoginDialog ld;
+    private ExitDialog ed;
+
     public MainScreen(RecordsWindow rw, CalendarWindow aw, PaymentWindow pw) {
+        //Dialogs
+        ld = new LoginDialog(this);
+        ed = new ExitDialog(this);
         
         recWindow = rw;
         appWindow = aw;
         payWindow = pw;
 
         state = "cover";
-        
+
         Font uiButtonFont = new Font("Walkway SemiBold", Font.PLAIN, 24);
         Color uiButtonColor = Color.WHITE;
-        
+
         // Frame configurations.
         defaultSize = generateSize();
         defaultSize.setSize(
                 defaultSize.getWidth(), defaultSize.getHeight() - 40);
-        
+
         this.setTitle("Toothbytes");
         this.setSize(defaultSize);
         this.setIconImage(new ImageIcon("src/Toothbytes/favicon.png").getImage());
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         fullScreen = false;
 
         // Menu bar.
@@ -92,7 +100,7 @@ public class MainScreen extends JFrame {
         menuBar.setBackground(Color.white);
         this.setJMenuBar(menuBar);
         menuBar.bindListenerToMenu(new MenuBarHandler(), 1);
-        
+
         // Layout configurations.
         framework = new MigLayout(
                 "filly, wrap 12", // Layout constraints.
@@ -106,97 +114,95 @@ public class MainScreen extends JFrame {
         mainPanel.setLayout(framework);
         mainPanel.setBackground(Color.white);
         this.setContentPane(mainPanel);
-             
+
         // Status Bar (bottom).
         statusBar = new JToolBar();
         statusBar.setBackground(Color.darkGray);
-        
-        mainPanel.add(statusBar, "south");
-        
-        JLabel test = new JLabel(time);
-        
-            Timer setTime = new Timer();
-            setTime.scheduleAtFixedRate(new TimerTask() {
 
-                /**
-                 * This method calls the time depending on the user's device 
-                 * and displays it on the status bar.
-                 */
-                @Override
-                public void run() {
-                    int hour = LocalDateTime.now().getHour();
-                    int minute = LocalDateTime.now().getMinute();
-                    
-                    int year = LocalDateTime.now().getYear();
-                    int month = LocalDateTime.now().getMonthValue();
-                    int day = LocalDateTime.now().getDayOfMonth();
-                    
-                    String sHour = String.valueOf(hour);
-                    String sMin = String.valueOf(minute);
-                    String hourFormat = "AM";
-                    
-                    String date = month + " / " + day + " / " + year;
-                    
-                    if(hour > 12){
-                        hour = hour - 12;
-                        hourFormat = "PM";
-                        sHour = String.valueOf(hour);
-                    } else if (hour == 0){
-                        hour = 12;
-                        sHour = "12";
-                    }
-                    
-                    if(hour < 10){
-                        sHour = "0"+sHour;
-                    }
-                    
-                    if(minute < 10){
-                        sMin = "0"+sMin;
-                    }
-                    
-                    time = sHour + " : " + sMin + " " + hourFormat;
-                    
-                    
-                    test.setText("<html> "+time +"<br>"+ date + "</html>");
+        mainPanel.add(statusBar, "south");
+
+        JLabel test = new JLabel(time);
+
+        Timer setTime = new Timer();
+        setTime.scheduleAtFixedRate(new TimerTask() {
+
+            /**
+             * This method calls the time depending on the user's device and
+             * displays it on the status bar.
+             */
+            @Override
+            public void run() {
+                int hour = LocalDateTime.now().getHour();
+                int minute = LocalDateTime.now().getMinute();
+
+                int year = LocalDateTime.now().getYear();
+                int month = LocalDateTime.now().getMonthValue();
+                int day = LocalDateTime.now().getDayOfMonth();
+
+                String sHour = String.valueOf(hour);
+                String sMin = String.valueOf(minute);
+                String hourFormat = "AM";
+
+                String date = month + " / " + day + " / " + year;
+
+                if (hour > 12) {
+                    hour = hour - 12;
+                    hourFormat = "PM";
+                    sHour = String.valueOf(hour);
+                } else if (hour == 0) {
+                    hour = 12;
+                    sHour = "12";
                 }
-            }, 1000, 1000);
-        
+
+                if (hour < 10) {
+                    sHour = "0" + sHour;
+                }
+
+                if (minute < 10) {
+                    sMin = "0" + sMin;
+                }
+
+                time = sHour + " : " + sMin + " " + hourFormat;
+
+                test.setText("<html> " + time + "<br>" + date + "</html>");
+            }
+        }, 1000, 1000);
+
         test.setForeground(Color.white);
         test.setFont(new Font("Tahoma", Font.PLAIN, 18));
         statusBar.add(test);
-        
+
         // Nav bar.
         final String BUTTON_DIR = "res/buttons/";
-        
+
         navBar = new JToolBar("TestBar");
         navButtons = new ButtonGroup();
-        
+
         homeBut = new JToggleButton();
-        homeBut.setIcon(new ImageIcon(BUTTON_DIR+"Home.png"));
+        homeBut.setIcon(new ImageIcon(BUTTON_DIR + "Home.png"));
         homeBut.setToolTipText("Home");
         homeBut.setBackground(WHITE);
 
         recBut = new JToggleButton();
-        recBut.setIcon(new ImageIcon(BUTTON_DIR+"PatientRecords.png"));
+        recBut.setIcon(new ImageIcon(BUTTON_DIR + "PatientRecords.png"));
         recBut.setToolTipText("Dental Records");
         recBut.setBackground(WHITE);
 
         appBut = new JToggleButton();
-        appBut.setIcon(new ImageIcon(BUTTON_DIR+"Appointments.png"));
+        appBut.setIcon(new ImageIcon(BUTTON_DIR + "Appointments.png"));
         appBut.setToolTipText("Appointments");
         appBut.setBackground(WHITE);
 
         payBut = new JToggleButton();
-        payBut.setIcon(new ImageIcon(BUTTON_DIR+"Finances.png"));
+        payBut.setIcon(new ImageIcon(BUTTON_DIR + "Finances.png"));
         payBut.setToolTipText("Payments");
         payBut.setBackground(WHITE);
-        
-        
+
         navButtons.add(homeBut);
         navButtons.add(recBut);
         navButtons.add(appBut);
         navButtons.add(payBut);
-        
+
         navBar.add(homeBut);
         navBar.add(recBut);
         navBar.add(appBut);
@@ -226,15 +232,15 @@ public class MainScreen extends JFrame {
         sp = new SidePanel();
         sp.setBackground(WHITE);
         mainPanel.add(sp, "east");
-        
+
         // Quick bar.
         quickBar = new JToolBar("QuickBar");
         quickBar.setBackground(WHITE);
 
-        qAddPatientBut = new JButton(new ImageIcon(BUTTON_DIR+"AddNewPatient.png"));
+        qAddPatientBut = new JButton(new ImageIcon(BUTTON_DIR + "AddNewPatient.png"));
         qAddPatientBut.setBackground(WHITE);
         qAddPatientBut.setToolTipText("Add Patient");
-        qSetAppointmentBut = new JButton(new ImageIcon(BUTTON_DIR+"AddNewAppointment.png"));
+        qSetAppointmentBut = new JButton(new ImageIcon(BUTTON_DIR + "AddNewAppointment.png"));
         qSetAppointmentBut.setBackground(WHITE);
         qSetAppointmentBut.setToolTipText("Set Appointment");
 
@@ -246,12 +252,31 @@ public class MainScreen extends JFrame {
         quickBar.add(qSetAppointmentBut);
 
         mainPanel.add(quickBar, "north");
+        
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+
+            public void windowOpened(WindowEvent e) {
+                
+                ld.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                ld.setVisible(true);
+                ld.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                
+            }
+
+            public void windowClosing(WindowEvent e) {
+                
+                ed.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                ed.setVisible(true);
+                ed.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            }
+        });
     }
 
     /**
      * This method tests the button action performed.
-     * @param   evt 
-     *          ActionEvent object.
+     *
+     * @param evt ActionEvent object.
      */
     public void testButtonActionPerformed(ActionEvent evt) {
         this.toggleFullScreen();
@@ -266,9 +291,10 @@ public class MainScreen extends JFrame {
     }
 
     /**
-     * This method takes the screen size of the computer for the computation of 
+     * This method takes the screen size of the computer for the computation of
      * the frame size.
-     * @return  Screen size of the user's device.
+     *
+     * @return Screen size of the user's device.
      */
     public Dimension generateSize() {
         return Toolkit.getDefaultToolkit().getScreenSize();
@@ -294,11 +320,11 @@ public class MainScreen extends JFrame {
     }
 
     /**
-     * This method returns a specific module window depending on the state 
+     * This method returns a specific module window depending on the state
      * chosen by the user.
-     * @param   state
-     *          A String representation.
-     * @return  Module window.
+     *
+     * @param state A String representation.
+     * @return Module window.
      */
     public ModuleWindow getModule(String state) {
         if (state.equals("recw")) {
@@ -313,13 +339,12 @@ public class MainScreen extends JFrame {
     }
 
     /**
-     * This method allows the program to load the module return by the 
-     * getModule method.
-     * @param   c
-     *          Object representation of ModuleWindow.
-     * @param   state
-     *          A String representation.
-     * @see     getModule
+     * This method allows the program to load the module return by the getModule
+     * method.
+     *
+     * @param c Object representation of ModuleWindow.
+     * @param state A String representation.
+     * @see getModule
      */
     public void loadModule(ModuleWindow c, String state) {
         this.state = state;
@@ -329,8 +354,8 @@ public class MainScreen extends JFrame {
 
     /**
      * This method allows a JComponent to be added into the side panel.
-     * @param   c 
-     *          Object representation of JComponent.
+     *
+     * @param c Object representation of JComponent.
      */
     public void addToSidePanel(JComponent c) {
         sidePanel.add(c, "grow");
@@ -384,20 +409,20 @@ public class MainScreen extends JFrame {
 
     /**
      * <h1>NavigationHandler</h1>
-     * The {@code NavigationHandler} class manages the navigation of the 
-     * module panel.
+     * The {@code NavigationHandler} class manages the navigation of the module
+     * panel.
      */
     public class NavigationHandler implements ActionListener {
 
         /**
-         * This method handles the action performed by the user within the 
+         * This method handles the action performed by the user within the
          * module panel.
-         * @param   e
-         *          Object representation of ActionEvent.
+         *
+         * @param e Object representation of ActionEvent.
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == homeBut) {
+            if (e.getSource() == homeBut) {
                 if (!state.equals("cover")) {
                     state = "cover";
                     modulePanel.removeAll();
@@ -433,10 +458,10 @@ public class MainScreen extends JFrame {
     public class MenuBarHandler implements ActionListener {
 
         /**
-         * The method handles the action performed by the user within the 
-         * menu bar.
-         * @param   e
-         *          Object representation of ActionEvent.
+         * The method handles the action performed by the user within the menu
+         * bar.
+         *
+         * @param e Object representation of ActionEvent.
          */
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -445,6 +470,6 @@ public class MainScreen extends JFrame {
             }
         }
     }
-    
+
 }
 //end of MainScreen
