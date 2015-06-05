@@ -111,7 +111,7 @@ public class DBAccess {
      * @see SQLException
      */
     public static ArrayList<Patient> initPatientList() throws SQLException {
-        rs = (JDBCResultSet) stmt.executeQuery("SELECT patientID, patient_FirstName, patient_LastName, patient_MiddleInitial FROM PATIENT");
+        rs = (JDBCResultSet) stmt.executeQuery("SELECT patientID, patient_LastName, patient_FirstName, patient_MiddleInitial FROM PATIENT");
         ArrayList<Patient> patientList = new ArrayList<Patient>();
         while (rs.next()) {
             Patient p = new Patient(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
