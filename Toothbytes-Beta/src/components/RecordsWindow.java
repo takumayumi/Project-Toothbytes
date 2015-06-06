@@ -64,17 +64,14 @@ public class RecordsWindow extends ModuleWindow {
     private MigLayout layout, formLayout, chartLayout;
     private JScrollPane scrollInfo, scrollDental, scrollGallery;
     private PatientX current;
-<<<<<<< Updated upstream
     private JButton patientRepBut;
     
     final String BUTTON_DIR = "res/buttons/";
     private static JDBCConnection conn = null;
     private static String dir = "data/db";
-=======
     private JTable theTable;
     private DefaultTableModel tableModel;
     private JFrame owner;
->>>>>>> Stashed changes
 
     /**
      * This constructor layouts the Records Window.
@@ -389,7 +386,6 @@ public class RecordsWindow extends ModuleWindow {
 
         infoViewer.add(lblEadd, "skip 3, span 2");
         infoViewer.add(eAdd, "span 7");
-<<<<<<< Updated upstream
         
         patientRepBut = new JButton(new ImageIcon(BUTTON_DIR + "ReportGenPatient-30x30.png"));
         patientRepBut.setBackground(WHITE);
@@ -425,13 +421,7 @@ public class RecordsWindow extends ModuleWindow {
             JOptionPane.showMessageDialog(null,error);
         }
     }
-    
-=======
 
-        SwingUtilities.updateComponentTreeUI(infoViewer);
-    }
-
->>>>>>> Stashed changes
     /**
      * <h1>PatientListListener</h1>
      * The {@code PatientListListener} class implements ListSelectionListener

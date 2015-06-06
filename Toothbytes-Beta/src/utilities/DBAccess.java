@@ -115,7 +115,7 @@ public class DBAccess {
         rs = (JDBCResultSet) stmt.executeQuery("SELECT PATIENTID, PATIENT_LASTNAME, PATIENT_FIRSTNAME, PATIENT_MIDDLEINITIAL FROM PATIENT");
         ArrayList<Patient> patientList = new ArrayList<Patient>();
         while (rs.next()) {
-            Patient p = new Patient(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+            Patient p = new Patient(rs.getInt(1), rs.getString(3), rs.getString(2), rs.getString(4));
             patientList.add(p);
         }
 

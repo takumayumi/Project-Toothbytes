@@ -206,6 +206,9 @@ public class PaymentViewer extends JPanel{
         jScrollPane1 = new javax.swing.JScrollPane();
         transactionsTable = new javax.swing.JTable();
 
+        BillingPanel.setBackground(new java.awt.Color(250, 255, 250));
+
+        personalInformationPanel.setBackground(new java.awt.Color(250, 255, 250));
         personalInformationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Patient Information"));
 
         patientPhotoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
@@ -225,23 +228,23 @@ public class PaymentViewer extends JPanel{
         patientNameLabel.setText("Last, First MI.");
 
         addressLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        addressLabel.setText("Address...");
+        addressLabel.setText("Address");
 
-        genderLabel.setText("Gender...");
+        genderLabel.setText("Gender");
 
-        ageLabel.setText("00 years old...");
+        ageLabel.setText("00 years old");
 
         occupationLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        occupationLabel.setText("Occupation...");
+        occupationLabel.setText("Occupation");
 
         emailAddressLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        emailAddressLabel.setText("EmailAddress...");
+        emailAddressLabel.setText("EmailAddress");
 
         cellphoneNo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cellphoneNo.setText("CellphoneNo...");
+        cellphoneNo.setText("CellphoneNo");
 
         homeNoLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        homeNoLabel.setText("HomeNo...");
+        homeNoLabel.setText("HomeNo");
 
         javax.swing.GroupLayout personalInformationPanelLayout = new javax.swing.GroupLayout(personalInformationPanel);
         personalInformationPanel.setLayout(personalInformationPanelLayout);
@@ -258,16 +261,13 @@ public class PaymentViewer extends JPanel{
                             .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(emailAddressLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(addressLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                         .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(personalInformationPanelLayout.createSequentialGroup()
-                                .addGap(135, 135, 135)
-                                .addComponent(occupationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, personalInformationPanelLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cellphoneNo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(homeNoLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap())))
+                            .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cellphoneNo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(homeNoLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(occupationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(personalInformationPanelLayout.createSequentialGroup()
                         .addComponent(ageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -299,6 +299,7 @@ public class PaymentViewer extends JPanel{
                     .addComponent(patientPhotoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
+        detailsPanel.setBackground(new java.awt.Color(250, 255, 250));
         detailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Details"));
 
         detailsTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -342,6 +343,7 @@ public class PaymentViewer extends JPanel{
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        transactionPanel.setBackground(new java.awt.Color(250, 255, 250));
         transactionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Transaction"));
 
         transactionsTable.setModel(new javax.swing.table.DefaultTableModel(
