@@ -13,8 +13,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
@@ -38,19 +38,16 @@ public class Tooth extends JComponent {
     private Graphics2D g2d;
     private Area markings = new Area();
 
-    private final Image NORMAL_STATE;
-    private final Image UNERUPTED_STATE;
-    private final Image MISSING_STATE;
-    private final Image LASER_STATE;
-    private final Image CROWN_STATE;
-    private final Image BRIDGE_STATE;
-    private final Image MISSING_BRIDGED_STATE;
+    private final Image NORMAL_STATE, UNERUPTED_STATE, MISSING_STATE,
+            LASER_STATE, CROWN_STATE, BRIDGE_STATE, MISSING_BRIDGED_STATE,
+            EXTRACTED_STATE;
 
     private int pointerX = -10;
     private int pointerY = -10;
-    
+
     private JPopupMenu pop;
     private JMenuItem popNormal, popUnerupted, popMissing;
+
     public Tooth(int number, String state) throws IOException {
         this.number = number;
         this.state = state;
@@ -58,19 +55,20 @@ public class Tooth extends JComponent {
         this.preState = null;
         this.setToolTipText(state);
 
-        NORMAL_STATE = ImageIO.read(new File("src/tbtests/normal.png"));
-        UNERUPTED_STATE = ImageIO.read(new File("src/tbtests/unerupted.png"));
-        MISSING_STATE = ImageIO.read(new File("src/tbtests/missing.png"));
-        LASER_STATE = ImageIO.read(new File("src/tbtests/laser.png"));
-        CROWN_STATE = ImageIO.read(new File("src/tbtests/crown.png"));
-        MISSING_BRIDGED_STATE = ImageIO.read(new File("src/tbtests/bridged.png"));
-        BRIDGE_STATE = ImageIO.read(new File("src/tbtests/bridge.png"));
+        NORMAL_STATE = ImageIO.read(new File("res/teeth/normal.png"));
+        UNERUPTED_STATE = ImageIO.read(new File("res/teeth/unerupted.png"));
+        MISSING_STATE = ImageIO.read(new File("res/teeth/missing.png"));
+        LASER_STATE = ImageIO.read(new File("res/teeth/laser.png"));
+        CROWN_STATE = ImageIO.read(new File("res/teeth/crown.png"));
+        MISSING_BRIDGED_STATE = ImageIO.read(new File("res/teeth/bridged.png"));
+        BRIDGE_STATE = ImageIO.read(new File("res/teeth/bridge.png"));
+        EXTRACTED_STATE = ImageIO.read(new File("res/teeth/extract.png"));
 
         MouseHandler mh = new MouseHandler();
         MouseMotionHandler mmh = new MouseMotionHandler();
         this.addMouseListener(mh);
         this.addMouseMotionListener(mmh);
-        
+
         pop = new JPopupMenu("Tooth Popup");
     }
 
@@ -81,19 +79,20 @@ public class Tooth extends JComponent {
         this.preState = null;
         this.setToolTipText(state);
 
-        NORMAL_STATE = ImageIO.read(new File("src/tbtests/normal.png"));
-        UNERUPTED_STATE = ImageIO.read(new File("src/tbtests/unerupted.png"));
-        MISSING_STATE = ImageIO.read(new File("src/tbtests/missing.png"));
-        LASER_STATE = ImageIO.read(new File("src/tbtests/laser.png"));
-        CROWN_STATE = ImageIO.read(new File("src/tbtests/crown.png"));
-        MISSING_BRIDGED_STATE = ImageIO.read(new File("src/tbtests/bridged.png"));
-        BRIDGE_STATE = ImageIO.read(new File("src/tbtests/bridge.png"));
+        NORMAL_STATE = ImageIO.read(new File("res/teeth/normal.png"));
+        UNERUPTED_STATE = ImageIO.read(new File("res/teeth/unerupted.png"));
+        MISSING_STATE = ImageIO.read(new File("res/teeth/missing.png"));
+        LASER_STATE = ImageIO.read(new File("res/teeth/laser.png"));
+        CROWN_STATE = ImageIO.read(new File("res/teeth/crown.png"));
+        MISSING_BRIDGED_STATE = ImageIO.read(new File("res/teeth/bridged.png"));
+        BRIDGE_STATE = ImageIO.read(new File("res/teeth/bridge.png"));
+        EXTRACTED_STATE = ImageIO.read(new File("res/teeth/extract.png"));
 
         MouseHandler mh = new MouseHandler();
         MouseMotionHandler mmh = new MouseMotionHandler();
         this.addMouseListener(mh);
         this.addMouseMotionListener(mmh);
-        
+
         pop = new JPopupMenu("Tooth Popup");
     }
 
@@ -131,7 +130,7 @@ public class Tooth extends JComponent {
                 this.repaint();
             }
 
-            if (preState.matches("decayed")) {
+            if (preState.matches("decayed") || preState.matches("filling")) {
                 markings.add(new Area(drawBrush(pointerX, pointerY, 4, 4)));
                 repaint();
             }
@@ -172,11 +171,7 @@ public class Tooth extends JComponent {
 
     }
 
-    public class MouseHandler implements MouseListener {
-
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent e) {
-        }
+    public class MouseHandler extends MouseAdapter {
 
         @Override
         public void mousePressed(java.awt.event.MouseEvent e) {
@@ -221,45 +216,57 @@ public class Tooth extends JComponent {
             g2d.drawString(String.valueOf(number), this.getWidth() / 2 - 8, 12);
         }
 
-        if (state.equals("normal")) {
-            g2d.drawImage(NORMAL_STATE, X_TOOTH, Y_TOOTH, null);
-            this.setForeground(new Color(50, 200, 90));
-        }
+        switch (state) {
+            case "normal":
+                g2d.drawImage(NORMAL_STATE, X_TOOTH, Y_TOOTH, null);
+                this.setForeground(new Color(50, 200, 90));
+                break;
+            case "missing":
+                g2d.drawImage(MISSING_STATE, X_TOOTH, Y_TOOTH, null);
+                this.setForeground(Color.BLACK);
+                break;
+            case "unerupted":
+                g2d.drawImage(UNERUPTED_STATE, X_TOOTH, Y_TOOTH, null);
+                this.setForeground(Color.PINK);
+                break;
+            case "crown":
+                g2d.drawImage(CROWN_STATE, X_TOOTH, Y_TOOTH, null);
+                this.setForeground(Color.darkGray);
+                break;
+            case "laser":
+                g2d.drawImage(LASER_STATE, X_TOOTH, Y_TOOTH, null);
+                this.setForeground(Color.GRAY);
+                break;
+            case "extraction":
+                g2d.drawImage(EXTRACTED_STATE, X_TOOTH, Y_TOOTH, null);
+                this.setForeground(Color.MAGENTA);
+                break;
+            case "bridge":
+                g2d.drawImage(BRIDGE_STATE, X_TOOTH, Y_TOOTH, null);
+                this.setForeground(Color.ORANGE);
+                break;
+            case "missing_bridged":
+                g2d.drawImage(MISSING_BRIDGED_STATE, X_TOOTH, Y_TOOTH, null);
+                this.setForeground(Color.cyan);
+                break;
+            case "decayed":
+                g2d.drawImage(NORMAL_STATE, X_TOOTH, Y_TOOTH, null);
+                g2d.setPaint(new Color(10, 10, 10));
+                //g2d.setComposite(AlphaComposite.getInstance(type, 0.5f));
+                this.setForeground(new Color(204, 0, 0));
 
-        if (state.equals("missing")) {
-            g2d.drawImage(MISSING_STATE, X_TOOTH, Y_TOOTH, null);
-            this.setForeground(Color.BLACK);
-        }
+                g2d.draw(markings);
+                g2d.fill(markings);
+                break;
+            case "filling":
+                g2d.drawImage(NORMAL_STATE, X_TOOTH, Y_TOOTH, null);
+                g2d.setPaint(new Color(0, 10, 60));
+                g2d.setComposite(AlphaComposite.getInstance(type, 0.5f));
+                this.setForeground(new Color(20, 30, 60));
 
-        if (state.equals("unerupted")) {
-            g2d.drawImage(UNERUPTED_STATE, X_TOOTH, Y_TOOTH, null);
-            this.setForeground(Color.PINK);
-        }
-        if (state.equals("crown")) {
-            g2d.drawImage(CROWN_STATE, X_TOOTH, Y_TOOTH, null);
-            this.setForeground(Color.PINK);
-        }
-        if (state.equals("laser")) {
-            g2d.drawImage(LASER_STATE, X_TOOTH, Y_TOOTH, null);
-            this.setForeground(Color.PINK);
-        }
-        if (state.equals("bridge")) {
-            g2d.drawImage(BRIDGE_STATE, X_TOOTH, Y_TOOTH, null);
-            this.setForeground(Color.PINK);
-        }
-        if (state.equals("missing_bridged")) {
-            g2d.drawImage(MISSING_BRIDGED_STATE, X_TOOTH, Y_TOOTH, null);
-            this.setForeground(Color.PINK);
-        }
-
-        if (state.equals("decayed")) {
-            g2d.drawImage(NORMAL_STATE, X_TOOTH, Y_TOOTH, null);
-            g2d.setPaint(new Color(10, 10, 10));
-            //g2d.setComposite(AlphaComposite.getInstance(type, 0.5f));
-            this.setForeground(new Color(204, 0, 0));
-
-            g2d.draw(markings);
-            g2d.fill(markings);
+                g2d.draw(markings);
+                g2d.fill(markings);
+                break;
         }
 
     }

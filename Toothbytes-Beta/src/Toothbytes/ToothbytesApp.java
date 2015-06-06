@@ -43,7 +43,12 @@ public class ToothbytesApp {
             PaymentWindow pWin = new PaymentWindow(patientList);
             ReportsGenWindow rgWin = new ReportsGenWindow();
 
+<<<<<<< Updated upstream
             MainScreen ui = new MainScreen(rWin, aWin, pWin, rgWin); //instantiate UI
+=======
+            MainScreen ui = new MainScreen(rWin, aWin, pWin); //instantiate UI
+            rWin.setOwner(ui);
+>>>>>>> Stashed changes
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             SwingUtilities.updateComponentTreeUI(ui);
             ui.init(); //initialize UI

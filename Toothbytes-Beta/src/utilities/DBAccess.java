@@ -25,6 +25,7 @@ import org.hsqldb.jdbc.JDBCDriver;
 import org.hsqldb.jdbc.JDBCResultSet;
 import org.hsqldb.jdbc.JDBCStatement;
 import models.Appointment;
+import models.Treatment;
 
 /**
  * <h1>DBAccess</h1>
@@ -111,7 +112,7 @@ public class DBAccess {
      * @see SQLException
      */
     public static ArrayList<Patient> initPatientList() throws SQLException {
-        rs = (JDBCResultSet) stmt.executeQuery("SELECT patientID, patient_LastName, patient_FirstName, patient_MiddleInitial FROM PATIENT");
+        rs = (JDBCResultSet) stmt.executeQuery("SELECT PATIENTID, PATIENT_LASTNAME, PATIENT_FIRSTNAME, PATIENT_MIDDLEINITIAL FROM PATIENT");
         ArrayList<Patient> patientList = new ArrayList<Patient>();
         while (rs.next()) {
             Patient p = new Patient(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
@@ -410,6 +411,32 @@ public class DBAccess {
         }
         
         return isValid;
+    }
+    
+    public static ArrayList<Treatment> getTreatmentList(int id) {
+        ArrayList<Treatment> tList = new ArrayList<Treatment>();
+        PreparedStatement queryTreatment = null;
+        Calendar cal = Calendar.getInstance();
+        
+        String query = "select TREATMENTDATE, TOOTHNO, PROCEDURE from DENTAL_RECORDS "+
+                "where PATIENTID = ?";
+        try {
+            queryTreatment = conn.prepareStatement(query);
+            queryTreatment.setInt(1, id);
+//            isValid = findCredential.execute();
+            rs = (JDBCResultSet)queryTreatment.executeQuery();
+            
+            while (rs.next()) {
+                cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(1)));
+                Treatment temp = new Treatment(cal, rs.getString(2), rs.getString(3));
+                tList.add(temp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tList;
     }
     
     public static void closeDB() {
