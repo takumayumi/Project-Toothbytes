@@ -61,10 +61,12 @@ public class CalendarDay extends javax.swing.JPanel {
 
         jLabel1.setText("Day");
 
+        setBackground(new java.awt.Color(250, 255, 250));
         setPreferredSize(new java.awt.Dimension(100, 200));
 
         dayDateTime.setText("Date // Day");
 
+        MiniHolder.setBackground(new java.awt.Color(250, 255, 250));
         MiniHolder.setLayout(new javax.swing.BoxLayout(MiniHolder, javax.swing.BoxLayout.LINE_AXIS));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

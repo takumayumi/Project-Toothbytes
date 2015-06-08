@@ -116,7 +116,9 @@ public class MiniBilling extends javax.swing.JPanel {
 
         jButton2.setText("Pay");
 
-        jLabel1.setFont(new java.awt.Font("Cooper Std Black", 0, 18)); // NOI18N
+        setBackground(new java.awt.Color(250, 255, 250));
+
+        jLabel1.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Ruben T. Pascual Jr.");
 

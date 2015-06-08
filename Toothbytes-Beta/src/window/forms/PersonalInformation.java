@@ -222,6 +222,7 @@ public class PersonalInformation extends javax.swing.JPanel {
         jLabel20.setForeground(new java.awt.Color(255, 0, 0));
         jLabel20.setText("*");
 
+        jLabel21.setForeground(new java.awt.Color(255, 0, 0));
         jLabel21.setText("*");
 
         jLabel22.setForeground(new java.awt.Color(255, 0, 0));

@@ -406,9 +406,11 @@ public class RecordsWindow extends ModuleWindow {
             File path = new File("Reports/patientRecords.jrxml");
             String reportPath = path.getCanonicalPath();
             JasperDesign jd = JRXmlLoader.load(reportPath);
-            String sql = "SELECT patientPhoto, CONCAT(pa.patient_FirstName, ' ', pa.patient_MiddleInitial, '.', ' ', pa.patient_LastName) AS \"PATIENT NAME\", nickname, gender, birthdate, occupation, civilStatus, cellNo, homeNo, officeNo, faxNo, emailAddress, homeAddress, treatmentDate, procedure, amountCharged, balance  FROM patient pa\n" +
+            String sql = "SELECT patientPhoto, CONCAT(pa.patient_LastName, ',', ' ', pa.patient_FirstName, ' ', pa.patient_MiddleInitial, '.') AS \"PATIENT NAME\", nickname, gender, birthdate, occupation, civilStatus, cellNo, emailAddress, homeNo, homeAddress, officeNo, faxNo, treatmentDate, procedure, amountCharged, balance, \n" +
+                        "q1_goodhealth, q2_condition, q3_seriousillness, q4_hospitalized, q5_prescription, q6_tobacco, q7_drugs, q8_pregnant, q8_nursing, q8_birthcontrol, q9_allergy, q9_otherallergy, q10_bloodtype, q11_bloodpressure, q12_illness, q12_otherillness FROM patient pa\n" +
                         "JOIN dental_records dr ON pa.patientID = dr.patientID\n" +
                         "JOIN payments py ON dr.dentalRecordID = py.dentalRecordID\n" +
+                        "JOIN medical_history md ON pa.patientID = md.patientID\n" +
                         "WHERE patientID =" + current.getId();                                         
             JRDesignQuery newQuery = new JRDesignQuery();
             newQuery.setText(sql);

@@ -136,7 +136,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
         cancelButton = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(250, 250, 250));
+        setBackground(new java.awt.Color(250, 255, 250));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

@@ -208,10 +208,10 @@ public class CalendarWindow extends ModuleWindow {
             }
         });
 
-        cdwMonth.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        cdwMonth.setFont(new java.awt.Font("Vijaya", 0, 26)); // NOI18N
         cdwMonth.setText("Month");
 
-        cdwYear.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        cdwYear.setFont(new java.awt.Font("Vijaya", 0, 26)); // NOI18N
         cdwYear.setText("Year");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -232,7 +232,7 @@ public class CalendarWindow extends ModuleWindow {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cdwPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cdwNext)
@@ -293,7 +293,7 @@ public class CalendarWindow extends ModuleWindow {
                 .addGap(6, 6, 6)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents

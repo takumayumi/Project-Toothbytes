@@ -285,6 +285,8 @@ public class SetAppointment extends javax.swing.JPanel {
         sptCharLeft = new javax.swing.JLabel();
         sptYear = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(250, 255, 250));
+
         sptPatient.setEditable(true);
         sptPatient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Patient" }));
 
@@ -329,6 +331,7 @@ public class SetAppointment extends javax.swing.JPanel {
             }
         });
 
+        sptMonth.setFont(new java.awt.Font("Vijaya", 1, 18)); // NOI18N
         sptMonth.setText("Month");
 
         sptReason.setText("Reason");
@@ -394,6 +397,7 @@ public class SetAppointment extends javax.swing.JPanel {
 
         sptCharLeft.setText("254");
 
+        sptYear.setFont(new java.awt.Font("Vijaya", 1, 18)); // NOI18N
         sptYear.setText("Year");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -409,7 +413,7 @@ public class SetAppointment extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(sptPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addGap(44, 44, 44)
                 .addComponent(sptMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(sptYear)
@@ -447,12 +451,13 @@ public class SetAppointment extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(sptPatient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sptMonth)
-                    .addComponent(sptNext)
-                    .addComponent(sptPrevious)
-                    .addComponent(sptYear))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(sptPrevious, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                        .addComponent(sptMonth)
+                        .addComponent(sptYear))
+                    .addComponent(sptNext, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -472,10 +477,10 @@ public class SetAppointment extends javax.swing.JPanel {
                     .addComponent(jLabel3)
                     .addComponent(sptCharLeft))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sptCancel)
-                    .addComponent(sptSave))
-                .addGap(20, 20, 20))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(sptCancel, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(sptSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -538,7 +543,7 @@ public class SetAppointment extends javax.swing.JPanel {
         appointment = getAppointmentValues();
         try{
             DBAccess.addAppointmentData(appointment);
-            JOptionPane.showInputDialog(null,"Appointment Added");
+            JOptionPane.showMessageDialog(this,"Appointment Added");
         }catch(Exception e){
             System.out.println("SetAppointment - sptSaveActionPerformed Error: " + e);
         }        

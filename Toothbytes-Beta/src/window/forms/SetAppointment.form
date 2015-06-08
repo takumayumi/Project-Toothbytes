@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+      <Color blue="fa" green="ff" red="fa" type="rgb"/>
+    </Property>
+  </Properties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -26,7 +31,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="sptPrevious" min="-2" pref="130" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
               <Component id="sptMonth" min="-2" pref="80" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="sptYear" min="-2" max="-2" attributes="0"/>
@@ -71,12 +76,14 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="sptPatient" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="sptMonth" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="sptNext" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="sptPrevious" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="sptYear" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                      <Component id="sptPrevious" alignment="3" pref="25" max="32767" attributes="0"/>
+                      <Component id="sptMonth" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="sptYear" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="sptNext" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="149" max="-2" attributes="0"/>
@@ -100,11 +107,11 @@
                   <Component id="sptCharLeft" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="sptCancel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="sptSave" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="sptCancel" pref="32" max="32767" attributes="0"/>
+                  <Component id="sptSave" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -210,6 +217,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="sptMonth">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Vijaya" size="18" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Month"/>
       </Properties>
     </Component>
@@ -301,6 +311,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="sptYear">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Vijaya" size="18" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Year"/>
       </Properties>
     </Component>
