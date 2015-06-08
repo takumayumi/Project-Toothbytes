@@ -64,7 +64,7 @@ INSERT INTO BLOCKS VALUES(0,2147483647,0)
 SET SCHEMA PUBLIC
 INSERT INTO ACCOUNTS VALUES(0,'pascual','12345')
 INSERT INTO ACCOUNTS VALUES(1,'asdf','asdf')
-INSERT INTO ADDITIONAL_INFO VALUES(1,1,'Maxicare','2015-08-06','Ruby Dasalla','Call Center Agent','Smile Dental Clinic','Why not?','Danilo Hermosa','2015-05-03','Charlotte Chua','09208694661','Pediatrician','09208694661')
+INSERT INTO ADDITIONAL_INFO VALUES(1,1,'Maxicare','2014-05-10','Ruby Dasalla','Call Center Agent','Smile Dental Clinic','NULL','Danilo Hermosa','2015-04-14','Charlotte Chua','Assumption Road','Pediatrician','09208694661')
 INSERT INTO ADDITIONAL_INFO VALUES(2,2,'Philhealth','2014-12-27','Eduard Gonzales','Doctor','NULL','NULL','NULL','2015-04-14','Charlotte Chua','Assumption Road','Pediatrician','09208694661')
 INSERT INTO ADDITIONAL_INFO VALUES(3,3,'NULL',NULL,'NULL','NULL','NULL','NULL','NULL','2015-03-30','Mary Curry','Second Floor, Baguio Centermall','General Practice','4421000')
 INSERT INTO ADDITIONAL_INFO VALUES(4,4,'Maxicare','2012-09-22','Christian Angagan','Technician','NULL','NULL','NULL','2014-12-05','Charlotte Chua','Assumption Road','Pediatrician','09208694661')

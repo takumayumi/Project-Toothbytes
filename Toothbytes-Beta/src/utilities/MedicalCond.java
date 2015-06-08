@@ -5,6 +5,8 @@
 */
 package utilities;
 
+import java.util.Calendar;
+
 /**
  * <h1>MedicalCond</h1>
  * The {@code MedicalCond} class retrieves and updates the data the user 
@@ -13,6 +15,7 @@ package utilities;
  * used to the forms and database.
  */
 public class MedicalCond {
+    private int medicalConditionID, patientID;
     private String q1;
     private String q2;
     private String q3;
@@ -20,13 +23,16 @@ public class MedicalCond {
     private String q5;
     private String q6;
     private String q7;
-    private String q8;
+    private String q8a;
+    private String q8b;
+    private String q8c;
     private String q9;
     private String bloodType;
     private String bloodPressure;
     private String q10;
     private String q11;
     private String q12;
+    private Calendar dateTaken;
     
     public MedicalCond() {}
     
@@ -105,7 +111,30 @@ public class MedicalCond {
      * 
      */
     
-    public MedicalCond(String q1, String q2, String q3, String q4, String q5, String q6, String q7, String q8, String q9,
+    public MedicalCond(int medicalCondID, int patientID, String q1, String q2, String q3, String q4, String q5, String q6, String q7, String q8a, String q8b, String q8c, String q9,
+    String bloodType, String bloodPressure, String q10, String q11, String q12, Calendar dateTaken) {
+        this.medicalConditionID = medicalCondID;
+        this.patientID = patientID;
+        this.q1 = q1;
+        this.q2 = q2;
+        this.q3 = q3;
+        this.q4 = q4;
+        this.q5 = q5;
+        this.q6 = q6;
+        this.q7 = q7;
+        this.q8a = q8a;
+        this.q8b = q8b;
+        this.q8c = q8c;
+        this.q9 = q9;
+        this.bloodType = bloodType;
+        this.bloodPressure = bloodPressure;
+        this.q10 = q10;
+        this.q11 = q11;
+        this.q12 = q12;
+        this.dateTaken = dateTaken;
+    }
+    
+    public MedicalCond(String q1, String q2, String q3, String q4, String q5, String q6, String q7, String q8a, String q8b, String q8c, String q9,
     String bloodType, String bloodPressure, String q10, String q11, String q12) {
         this.q1 = q1;
         this.q2 = q2;
@@ -114,7 +143,9 @@ public class MedicalCond {
         this.q5 = q5;
         this.q6 = q6;
         this.q7 = q7;
-        this.q8 = q8;
+        this.q8a = q8a;
+        this.q8b = q8b;
+        this.q8c = q8c;
         this.q9 = q9;
         this.bloodType = bloodType;
         this.bloodPressure = bloodPressure;
@@ -122,21 +153,43 @@ public class MedicalCond {
         this.q11 = q11;
         this.q12 = q12;
     }
-     
+    
+    public int getMedicalConditionID(){
+        return medicalConditionID;
+    }
+    
+    public int getPatientID(){
+        return patientID;
+    }
+    
+    public Object[] returnData(){
+        Object[] data = {patientID,  q1,  q2,  q3,  q4,  q5,  q6,  q7,  q8a,  q8b,  q8c,  q9, bloodPressure,  q10,  q11, dateTaken};
+        return data;
+    }
+    
     /**
      * This method injects data the user input that will update the 
      * Medical_History table from the Toothbytes database schema.
      * @return  Identity value while inserting records into database.
      */
     public void Update(int patientID) {
+        try{
+            System.out.println(bloodType);
+            if(bloodType.equalsIgnoreCase("null")){
+                bloodType = null;
+            } else {
+                bloodType = "'"+bloodType+"'";
+            }
+        }catch(Exception e){
+            bloodType = null;
+        }
+        
         String UpdateMedicalCon = "INSERT INTO MEDICAL_HISTORY VALUES(DEFAULT, "+patientID+", '"+q1+"', "
-                + "'"+q2+"', '"+q3+"', '"+q4+"', '"+q5+"', '"+q6+"', '"+q7+"', '"+q8+"', '"+q9+"', '"+bloodType+"', "
-                + "'"+bloodType+"', '"+bloodPressure+"', '"+q10+"', '"+q11+"', '"+q12+"', null)";
+                + "'"+q2+"', '"+q3+"', '"+q4+"', '"+q5+"', '"+q6+"', '"+q7+"', '"+q8a+"', '"+q8b+"', '"+q8c+"', '"+q9+"', "
+                + ""+bloodType+",'"+bloodPressure+"', '"+q10+"', '"+q11+"', '"+q12+"', NOW())";
+        
+        System.out.println(UpdateMedicalCon);
         DBAccess.dbQuery(UpdateMedicalCon);
     }
     
-    public void Edit(MedicalCond mc){
-        String UpdateMedicalCon = "UPDATE ADDITIONAL_INFO SET "
-                + "DENTALINSURANCE = ''";
-    }
 }

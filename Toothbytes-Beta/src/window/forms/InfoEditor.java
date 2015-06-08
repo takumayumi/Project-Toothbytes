@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import utilities.AdditionalInfo;
 import utilities.DBAccess;
+import utilities.MedicalCond;
 
 /**
  *
@@ -27,6 +28,7 @@ public class InfoEditor extends javax.swing.JPanel {
      */
         
     private ArrayList<AdditionalInfo> additionalInfoList = new ArrayList<>();
+    private ArrayList<MedicalCond> medicalConditionList = new ArrayList<>();
     private int patientID = 0;
     private int selection = 0;
     
@@ -38,6 +40,7 @@ public class InfoEditor extends javax.swing.JPanel {
     
     private void start(){
         additionalInfoList = DBAccess.getAdditionalInfoData(patientID);
+        medicalConditionList = DBAccess.getMedicalConditionData(patientID);
         addNew.setEnabled(false);
         edit.setEnabled(false);
         delete.setEnabled(false);
@@ -176,12 +179,15 @@ public class InfoEditor extends javax.swing.JPanel {
     }//GEN-LAST:event_addNewActionPerformed
     private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
         resetTable();
+        edit.setEnabled(false);
+        delete.setEnabled(false);
         if(select.getSelectedIndex() == 1 && select.getSelectedIndex() != selection){
             selection = select.getSelectedIndex();
             changeEditTableAddInfo();
             addNew.setEnabled(true);
         } else if(select.getSelectedIndex() == 2 && select.getSelectedIndex() != selection){
             selection = 2;
+            changeEditTableMedInfo();
             addNew.setEnabled(true);
             
         } else {
@@ -194,8 +200,10 @@ public class InfoEditor extends javax.swing.JPanel {
         w.dispose();
     }//GEN-LAST:event_closeActionPerformed
     private void editTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editTableMouseReleased
-        edit.setEnabled(true);
-        delete.setEnabled(true);
+        if(select.getSelectedIndex() == 1){
+            edit.setEnabled(true);
+            delete.setEnabled(true);
+        }
     }//GEN-LAST:event_editTableMouseReleased
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
         if(selection == 1){
@@ -279,7 +287,32 @@ public class InfoEditor extends javax.swing.JPanel {
         DefaultTableModel editModel = new DefaultTableModel();
         editModel = (DefaultTableModel) editTable.getModel();
         
-        editModel.addColumn("");
+        editModel.addColumn("Medical History ID");
+        editModel.addColumn("Good Health");
+        editModel.addColumn("Condition");
+        editModel.addColumn("Serious Illness");
+        editModel.addColumn("Hospitalized");
+        editModel.addColumn("Prescription");
+        editModel.addColumn("Tobacco");
+        editModel.addColumn("Drugs");
+        editModel.addColumn("Pregnant");
+        editModel.addColumn("Nursing");
+        editModel.addColumn("Birth Control");
+        editModel.addColumn("Allergy");
+        editModel.addColumn("BloodType");
+        editModel.addColumn("BloodPressure");
+        editModel.addColumn("Illness");
+        editModel.addColumn("Date");
+        
+        editTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        
+        editTable.removeColumn(editTable.getColumnModel().getColumn(0));
+            
+        for(int i = 0; i < medicalConditionList.size(); i++){
+            editModel.addRow(medicalConditionList.get(i).returnData());
+        }
+        
+        editTable.removeColumn(editTable.getColumnModel().getColumn(0));
     }
     
     private void launchAdditionalInformation(){
@@ -298,7 +331,7 @@ public class InfoEditor extends javax.swing.JPanel {
         java.awt.EventQueue.invokeLater(new Runnable(){
             public void run(){
                 JDialog ai = new JDialog();
-                ai.add(new MedicalCondition());
+                ai.add(new MedicalCondition(patientID));
                 ai.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                 ai.pack();
                 ai.setVisible(true);

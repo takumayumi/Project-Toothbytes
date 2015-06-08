@@ -6,11 +6,9 @@
 package window.forms;
 
 import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.Window;
 import java.util.regex.Pattern;
 import javax.swing.ButtonGroup;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import utilities.MedicalCond;
@@ -18,10 +16,10 @@ import utilities.MedicalCond;
 public class MedicalCondition extends javax.swing.JPanel {
     private int patientID;
     private MedicalCond mc;
-    private Window w = SwingUtilities.getWindowAncestor(this);
     
-    public MedicalCondition() {
+    public MedicalCondition(int patientID) {
         initComponents();
+        this.patientID = patientID;
         q1Yes.setActionCommand("y");
         q1No.setActionCommand("n");
         q2Yes.setActionCommand("y");
@@ -43,7 +41,7 @@ public class MedicalCondition extends javax.swing.JPanel {
         q10Yes.setActionCommand("y");
         q10No.setActionCommand("n");
     }
-    
+        
     private final String BUTTON_DIR = "res/buttons/";
     /**
      * This method is called from within the constructor to initialize the form.
@@ -100,7 +98,6 @@ public class MedicalCondition extends javax.swing.JPanel {
         q12opt14 = new javax.swing.JCheckBox();
         q12opt15 = new javax.swing.JCheckBox();
         finishButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         q1No = new javax.swing.JRadioButton();
         q1Yes = new javax.swing.JRadioButton();
@@ -295,14 +292,6 @@ public class MedicalCondition extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Back.png"));
-        jButton2.setText("Back");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jButton3.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Cancel.png"));
         jButton3.setText("Cancel");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -411,6 +400,11 @@ public class MedicalCondition extends javax.swing.JPanel {
 
         q8.add(q8Yes);
         q8Yes.setText("Yes");
+        q8Yes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                q8YesActionPerformed(evt);
+            }
+        });
 
         q8.add(q8No);
         q8No.setText("No");
@@ -594,8 +588,6 @@ public class MedicalCondition extends javax.swing.JPanel {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(finishButton)))
                 .addGap(46, 46, 46))
             .addGroup(layout.createSequentialGroup()
@@ -692,7 +684,6 @@ public class MedicalCondition extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(finishButton)
-                    .addComponent(jButton2)
                     .addComponent(jButton3))
                 .addContainerGap())
         );
@@ -839,11 +830,12 @@ public class MedicalCondition extends javax.swing.JPanel {
                 sq12 = sq12 + "Heart Attacks";
             }
             
-            mc = new MedicalCond(q1ans, q2ansTF, q3ansTF, q4ansTF, q5ansTF, q6ans, q7ans, q8ans, q9ans,bloodType, bloodPressure, q10ans, sq11, sq12);
+            mc = new MedicalCond(q1ans, q2ansTF, q3ansTF, q4ansTF, q5ansTF, q6ans, q7ans, q8ans, q9ans, q10ans, sq11, null, bloodType, bloodPressure, sq12, null);
             
             
             updateDatabase();
             
+            Window w = SwingUtilities.getWindowAncestor(this);
             w.dispose();
         }else{
             if(!hasAnswer(q1)){q1Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
@@ -864,12 +856,13 @@ public class MedicalCondition extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        Window w = SwingUtilities.getWindowAncestor(this);
         w.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void q8YesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_q8YesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_q8YesActionPerformed
     
     public boolean entriesValid() { 
         if(hasAnswer(q1) &&
@@ -946,13 +939,13 @@ public class MedicalCondition extends javax.swing.JPanel {
     }
 
     public void updateDatabase() {
-       mc.Update(patientID);
+            mc.Update(patientID);
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField bloodPressureTF;
     private javax.swing.JComboBox bloodTypeCB;
     private javax.swing.JButton finishButton;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

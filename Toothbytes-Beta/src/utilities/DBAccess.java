@@ -425,6 +425,35 @@ public class DBAccess {
         
         return additionalInfoList;
     }
+    
+    public static ArrayList<MedicalCond> getMedicalConditionData(int patientID){
+        String query = "SELECT * FROM MEDICAL_HISTORY WHERE patientID = "+patientID;
+        
+        ArrayList<MedicalCond> medicalConditionList = new ArrayList<>();
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(query);
+            while(rs.next()){
+                Calendar cal;
+                try{
+                    cal = Calendar.getInstance();
+                    cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(19)));
+                }catch(Exception e){
+                    cal = null;
+                }
+                
+                MedicalCond mc = new MedicalCond(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5),
+                rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12),
+                rs.getString(13), rs.getString(14), rs.getString(15), rs.getString(16), rs.getString(17), rs.getString(18), cal);
+                
+                medicalConditionList.add(mc);
+            }
+        }catch(Exception e){
+            System.out.println("DBAccess - getMedicalConditionData Error: "+e);
+        }
+        
+        return medicalConditionList;
+    }
 
     public static boolean validate(String usr, char[] pwd) {
         boolean isValid = false;
