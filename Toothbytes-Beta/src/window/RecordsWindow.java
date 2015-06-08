@@ -41,6 +41,7 @@ import models.DentalChart;
 import models.OrganizedTreatment;
 import models.Patient;
 import models.PatientX;
+import models.Picture;
 import net.miginfocom.swing.MigLayout;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -474,6 +475,33 @@ public class RecordsWindow extends ModuleWindow {
             JOptionPane.showMessageDialog(null,error);
         }
     }
+    
+    private void gallerySetUp(Patient p){
+        JButton uploadImage = new JButton("Save Image");
+        uploadImage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        JDialog im = new JDialog();
+                        im.add(new ImageManager(p));
+                        im.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                        im.pack();
+                        im.setVisible(true);
+                        im.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    }
+                });
+            }
+        });
+        gallery.add(uploadImage);
+        
+        ArrayList<Picture> pictureList = new ArrayList<>();
+        pictureList = DBAccess.getPictureData(p.getId());
+        
+        for(int i = 0; i < pictureList.size(); i++){
+            gallery.add(new JLabel(pictureList.get(i).getImageLocation()));
+        }
+    }
 
     /**
      * <h1>PatientListListener</h1>
@@ -489,6 +517,7 @@ public class RecordsWindow extends ModuleWindow {
                 PatientX px = DBAccess.getData(p.getId());
                 showInfo(px);
                 showDental(p);
+                gallerySetUp(p);
             }
         }
     }

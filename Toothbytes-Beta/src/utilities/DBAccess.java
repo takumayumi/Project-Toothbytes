@@ -25,6 +25,7 @@ import org.hsqldb.jdbc.JDBCDriver;
 import org.hsqldb.jdbc.JDBCResultSet;
 import org.hsqldb.jdbc.JDBCStatement;
 import models.Appointment;
+import models.Picture;
 import models.Treatment;
 
 /**
@@ -152,6 +153,30 @@ public class DBAccess {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+    
+    public static ArrayList<Picture> getPictureData(int id){
+        String query = "SELECT * FROM DENTAL_PICTURES WHERE PATIENTID = "+id;
+        ArrayList<Picture> pictureList = new ArrayList<>();
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(query);
+            while(rs.next()){
+                Calendar cal;
+                try{
+                    cal = Calendar.getInstance();
+                    cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(4)));
+                }catch(Exception e){
+                    cal = null;
+                }
+                Picture pic = new Picture(rs.getInt(1), rs.getInt(2), rs.getString(3), cal, rs.getString(5), rs.getString(6), rs.getString(7));
+                pictureList.add(pic);
+            }
+        }catch(Exception e){
+            System.out.println("DBAccess - getPictureData Error:"+e);
+        }
+        
+        return pictureList;
     }
 
     public static ArrayList<PaymentX> getPaymentData(int id) {
