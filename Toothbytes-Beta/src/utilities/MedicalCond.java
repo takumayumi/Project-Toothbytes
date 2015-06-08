@@ -134,4 +134,9 @@ public class MedicalCond {
                 + "'"+bloodType+"', '"+bloodPressure+"', '"+q10+"', '"+q11+"', '"+q12+"', null)";
         DBAccess.dbQuery(UpdateMedicalCon);
     }
+    
+    public void Edit(MedicalCond mc){
+        String UpdateMedicalCon = "UPDATE ADDITIONAL_INFO SET "
+                + "DENTALINSURANCE = ''";
+    }
 }

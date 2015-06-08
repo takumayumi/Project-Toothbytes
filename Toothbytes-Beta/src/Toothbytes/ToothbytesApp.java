@@ -6,9 +6,9 @@
 package Toothbytes;
 
 import components.CalendarWindow;
-import components.PaymentWindow;
-import components.RecordsWindow;
-import components.ReportsGenWindow;
+import window.PaymentWindow;
+import window.RecordsWindow;
+import window.ReportsGenWindow;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;

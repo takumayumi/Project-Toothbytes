@@ -5,6 +5,7 @@
 */
 package utilities;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -15,6 +16,7 @@ import java.util.Calendar;
  * forms and database.
  */
 public class PersonalInfo {
+    String patientID;
     String surname;
     String givenName;
     String mi;
@@ -94,13 +96,51 @@ public class PersonalInfo {
      *          A foreign key from the Medical_History table.
      * @return  Identity value while inserting records into database.
      */
-    public int UpdatePersonalInfo() {
-        String PersonalInfoUpdate = "INSERT INTO PATIENT VALUES(DEFAULT, '"+surname+"', '"+givenName+"', '"+mi.charAt(0)+"', "
-                + "'"+patientPhoto+"', '"+birthDate.get(Calendar.YEAR)+"-"+birthDate.get(Calendar.MONTH)+"-"+birthDate.get(Calendar.DAY_OF_MONTH) +"', '"+occupation+"', '"+civilStatus+"', '"+gender.charAt(0)+"', '"+nickname+"', "
-                + "'"+homeAddress+"', '"+telephoneNo+"', '"+officeNo+"', '"+faxNo+"', '"+cellphoneNo+"', '"+emailAdd+"')";
+    public int UpdatePersonalInfo(String patientID) {
+        String personalInfoUpdate = "UPDATE PATIENT SET "
+                + "PATIENT_LASTNAME = '"+surname+"', "
+                + "PATIENT_FIRSTNAME = '"+givenName+"', "
+                + "PATIENT_MIDDLEINITIAL = '"+mi.charAt(0)+"', "
+                + "BIRTHDATE = '"+new SimpleDateFormat("yyyy-MM-dd").format(birthDate.getTime())+"', "
+                + "OCCUPATION = '"+occupation+"', "
+                + "NICKNAME = '"+nickname+"', "
+                + "GENDER = '"+gender.charAt(0)+"', "
+                + "CIVILSTATUS = '"+civilStatus+"', "
+                + "HOMEADDRESS = '"+homeAddress+"', "
+                + "HOMENO = '"+telephoneNo+"', "
+                + "OFFICENO = '"+officeNo+"', "
+                + "FAXNO = '"+faxNo+"', "
+                + "CELLNO = '"+cellphoneNo+"', "
+                + "EMAILADDRESS = '"+emailAdd+"'"
+                + "WHERE patientID = " + patientID + ";";
+    
+//        String PersonalInfoUpdate = "INSERT INTO PATIENT VALUES("+patientID+", '"+surname+"', '"+givenName+"', '"+mi.charAt(0)+"', "
+//                + "'"+patientPhoto+"', '"+birthDate.get(Calendar.YEAR)+"-"+birthDate.get(Calendar.MONTH)+"-"+birthDate.get(Calendar.DAY_OF_MONTH) +"', 
+                    //'"+occupation+"', '"+nickname+"', '"+gender.charAt(0)+"', '"+civilStatus+"', "
+//                + "'"+homeAddress+"', '"+telephoneNo+"', '"+officeNo+"', '"+faxNo+"', '"+cellphoneNo+"', '"+emailAdd+"')";
+        
+        
+        System.out.println(personalInfoUpdate);
+        DBAccess.dbQuery(personalInfoUpdate);
+        return DBAccess.CallIdentity();
+    }
+    
+    public void NewPersonalInfo(){
+        String PersonalInfoUpdate = "INSERT INTO PATIENT VALUES("+patientID+", '"+surname+"', '"+givenName+"', '"+mi.charAt(0)+"', "
+        + "'"+patientPhoto+"', '"+birthDate.get(Calendar.YEAR)+"-"+birthDate.get(Calendar.MONTH)+"-"+birthDate.get(Calendar.DAY_OF_MONTH) +"', '"+occupation+"', '"+nickname+"', '"+gender.charAt(0)+"', '"+civilStatus+"', "
+        + "'"+homeAddress+"', '"+telephoneNo+"', '"+officeNo+"', '"+faxNo+"', '"+cellphoneNo+"', '"+emailAdd+"')";
+        
+        
         System.out.println(PersonalInfoUpdate);
         DBAccess.dbQuery(PersonalInfoUpdate);
-        return DBAccess.CallIdentity();
+    }
+    
+    public void setPatientID(String patientID){
+        this.patientID = patientID;
+    }
+    
+    public String getPatientID(){
+        return patientID;
     }
     
     /**

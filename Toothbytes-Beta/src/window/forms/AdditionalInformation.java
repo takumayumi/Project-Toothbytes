@@ -6,33 +6,31 @@
 package window.forms;
 
 import java.awt.Dialog;
+import java.awt.Window;
 import java.util.Calendar;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import utilities.AdditionalInfo;
-import utilities.MedicalCond;
-import utilities.PersonalInfo;
 
 public class AdditionalInformation extends javax.swing.JPanel {
-    private PersonalInfo pi;
     private AdditionalInfo ai;
-    private MedicalCond mc;
-    private JDialog tb;
-       
-    public AdditionalInformation(JDialog tb, PersonalInfo pi) {
+    private boolean toggle = true;
+    private int patientID;
+    private int additionalInfoID;
+    
+    public AdditionalInformation(int patientID) {
         initComponents();
-        this.pi = pi;
-        this.tb = tb;
+        this.patientID = patientID;
     }
     
-    public AdditionalInformation(JDialog tb, PersonalInfo pi, AdditionalInfo ai, MedicalCond mc) {
+    public AdditionalInformation(AdditionalInfo ai, int additionalInfoID) {
         initComponents();
-        this.tb = tb;
-        this.pi = pi;
+        toggle = false;
         this.ai = ai;
-        this.mc = mc;
+        this.additionalInfoID = additionalInfoID;
         
         dentalInsuranceTF.setText(ai.getDentalInsurance());
         guardiansNameTF.setText(ai.getGuardianName());
@@ -46,15 +44,16 @@ public class AdditionalInformation extends javax.swing.JPanel {
         officeNumberTF.setText(ai.getOfficeNumber());
         
         //Dates
-        effectiveDateDayCB.setSelectedIndex(ai.getEffectiveDate().get(Calendar.DAY_OF_MONTH));
-        effectiveDateMonthCB.setSelectedIndex(ai.getEffectiveDate().get(Calendar.MONTH));
-        effectiveDateYearTF.setText(String.valueOf(ai.getEffectiveDate().get(Calendar.YEAR)));
-        
-        lastDentalVisitDayCB.setSelectedIndex(ai.getLastDentalVisit().get(Calendar.DAY_OF_MONTH));
-        lastDentalVisitMonthCB.setSelectedIndex(ai.getLastDentalVisit().get(Calendar.MONTH));
-        lastDentalVisitYearTF.setText(String.valueOf(ai.getLastDentalVisit().get(Calendar.YEAR)));
-        
-        
+        try{
+            effectiveDateDayCB.setSelectedIndex(ai.getEffectiveDate().get(Calendar.DAY_OF_MONTH));
+            effectiveDateMonthCB.setSelectedIndex(ai.getEffectiveDate().get(Calendar.MONTH));
+            effectiveDateYearTF.setText(String.valueOf(ai.getEffectiveDate().get(Calendar.YEAR)));
+        }catch(Exception e){}
+        try{
+            lastDentalVisitDayCB.setSelectedIndex(ai.getLastDentalVisit().get(Calendar.DAY_OF_MONTH));
+            lastDentalVisitMonthCB.setSelectedIndex(ai.getLastDentalVisit().get(Calendar.MONTH));
+            lastDentalVisitYearTF.setText(String.valueOf(ai.getLastDentalVisit().get(Calendar.YEAR)));
+        }catch(Exception e){}        
     }
     
     public boolean hasNumbers(String numberlessString){
@@ -132,7 +131,6 @@ public class AdditionalInformation extends javax.swing.JPanel {
         jLabel15 = new javax.swing.JLabel();
         officeNumberTF = new javax.swing.JTextField();
         nextButton = new javax.swing.JButton();
-        backButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
 
@@ -184,6 +182,11 @@ public class AdditionalInformation extends javax.swing.JPanel {
         );
 
         addImageButton.setText("Add Image");
+        addImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addImageButtonActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Person who reffered the patient:");
 
@@ -224,15 +227,6 @@ public class AdditionalInformation extends javax.swing.JPanel {
             }
         });
 
-        backButton.setIcon(new ImageIcon(BUTTON_DIR+"Back.png"));
-        backButton.setText("Back");
-        backButton.setToolTipText("");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed(evt);
-            }
-        });
-
         cancelButton.setIcon(new ImageIcon(BUTTON_DIR+"Cancel.png"));
         cancelButton.setText("Cancel");
         cancelButton.setToolTipText("");
@@ -252,8 +246,6 @@ public class AdditionalInformation extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cancelButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(backButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nextButton)
                 .addGap(40, 40, 40))
@@ -408,7 +400,6 @@ public class AdditionalInformation extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nextButton)
-                    .addComponent(backButton)
                     .addComponent(cancelButton))
                 .addGap(25, 25, 25))
         );
@@ -418,16 +409,37 @@ public class AdditionalInformation extends javax.swing.JPanel {
         grayTFBorders();
         if(entriesValid()) {
             // Proceed to medical condition form
-            String dentalInsurance = dentalInsuranceTF.getText();    
-            String guardiansName = guardiansNameTF.getText();              
-            String occupation = occupationTF.getText();                     
-            String referrer = referrerTF.getText();                         
-            String reason = reasonTF.getText();                           
-            String previousDentist = previousDentistTF.getText();   
-            String nameOfPhysician = nameOfPhysicianTF.getText();          
-            String officeAddress = officeAddressTF.getText();             
-            String specialization = specializationTF.getText();           
-            String officeNumber = officeNumberTF.getText();    
+            String dentalInsurance = "NULL";    
+            String guardiansName = "NULL";              
+            String occupation = "NULL";                     
+            String referrer = "NULL";                         
+            String reason = "NULL";                           
+            String previousDentist = "NULL";   
+            String nameOfPhysician = "NULL";          
+            String officeAddress = "NULL";             
+            String specialization = "NULL";           
+            String officeNumber = "NULL";  
+            
+            if(!dentalInsuranceTF.getText().isEmpty())
+                dentalInsurance = dentalInsuranceTF.getText();
+            if(!guardiansNameTF.getText().isEmpty())
+                guardiansName = guardiansNameTF.getText();
+            if(!occupationTF.getText().isEmpty())
+                occupation = occupationTF.getText();
+            if(!referrerTF.getText().isEmpty())                      
+                referrer = referrerTF.getText();
+            if(!reasonTF.getText().isEmpty())
+                reason = reasonTF.getText();
+            if(!previousDentistTF.getText().isEmpty())
+                previousDentist = previousDentistTF.getText();
+            if(!nameOfPhysicianTF.getText().isEmpty())
+            nameOfPhysician = nameOfPhysicianTF.getText();
+            if(!officeAddressTF.getText().isEmpty())
+                officeAddress = officeAddressTF.getText();
+            if(!specializationTF.getText().isEmpty())
+                specialization = specializationTF.getText();  
+            if(!officeNumberTF.getText().isEmpty())
+                officeNumber = officeNumberTF.getText();    
             
             Calendar effectiveDate = Calendar.getInstance();
             
@@ -453,7 +465,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
             } else {
                 lastDentalVisit = null;
             }
-            
+                       
             ai = new AdditionalInfo(dentalInsurance, effectiveDate, guardiansName, occupation, referrer, reason, previousDentist,
                                                 lastDentalVisit, nameOfPhysician, officeAddress, specialization, officeNumber);
             
@@ -466,21 +478,13 @@ public class AdditionalInformation extends javax.swing.JPanel {
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void launchMedicalCondition() {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDialog tb = new JDialog();
-                tb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                MedicalCondition mc = new MedicalCondition(tb, pi, ai);
-                System.out.println(mc.isVisible());
-                tb.setSize(mc.getPreferredSize());
-                tb.add(mc);
-                tb.pack();
-                tb.setVisible(true);
-                tb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                }
-            }
-        );
-        tb.dispose();
+        if(toggle){
+            ai.UpdateAdditionalInfo(patientID, ai);
+        } else {
+            ai.EditAdditionalInfo(additionalInfoID);
+        }
+        Window w = SwingUtilities.getWindowAncestor(this);
+        w.dispose();
     }
     
     private void dentalInsuranceTFKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dentalInsuranceTFKeyReleased
@@ -499,32 +503,17 @@ public class AdditionalInformation extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_dentalInsuranceTFFocusLost
 
-    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        launchPersonalInformation();
-    }//GEN-LAST:event_backButtonActionPerformed
-
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // TODO add your handling code here:
-        tb.dispose();
+        Window w = SwingUtilities.getWindowAncestor(this);
+        
+        w.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
-    
-    private void launchPersonalInformation() {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDialog tb = new JDialog();
-                PersonalInformation psi = new PersonalInformation(tb, pi, ai, mc);
-                System.out.println(psi.isVisible());
-                tb.setSize(psi.getPreferredSize());
-                tb.add(psi);
-                tb.pack();
-                tb.setVisible(true);
-                tb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                }
-            }
-        );
-        tb.dispose();
-    }
-    
+
+    private void addImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addImageButtonActionPerformed
+        
+    }//GEN-LAST:event_addImageButtonActionPerformed
+     
     public boolean entriesValid() {
         // Get values from fields
         String dentalnsurance = dentalInsuranceTF.getText();            //no filter
@@ -577,7 +566,6 @@ public class AdditionalInformation extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addImageButton;
-    private javax.swing.JButton backButton;
     private javax.swing.JButton cancelButton;
     private javax.swing.JTextField dentalInsuranceTF;
     private javax.swing.JComboBox effectiveDateDayCB;

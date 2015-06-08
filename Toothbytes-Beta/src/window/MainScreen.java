@@ -10,9 +10,6 @@ import components.Cover;
 import components.ExitDialog;
 import components.LoginDialog;
 import components.ModuleWindow;
-import components.PaymentWindow;
-import components.RecordsWindow;
-import components.ReportsGenWindow;
 import components.SidePanel;
 import components.TBMenuBar;
 import java.awt.Color;
@@ -386,7 +383,7 @@ public class MainScreen extends JFrame {
                     public void run() {
                         JDialog ctb = new JDialog();
                         ctb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                        PersonalInformation pi = new PersonalInformation(ctb);
+                        PersonalInformation pi = new PersonalInformation();
                         System.out.println(pi.isVisible());
                         ctb.setSize(pi.getPreferredSize());
                         ctb.add(pi);

@@ -5,6 +5,7 @@
 */
 package components;
 
+import window.SettingsWindow;
 import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -54,7 +55,7 @@ public class TBMenuBar extends JMenuBar implements ActionListener {
 
                     public void run() {
                         JDialog ctb = new JDialog();
-                        PersonalInformation pi = new PersonalInformation(ctb);
+                        PersonalInformation pi = new PersonalInformation();
                         ctb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                         System.out.println(pi.isVisible());
                         ctb.setSize(pi.getPreferredSize());

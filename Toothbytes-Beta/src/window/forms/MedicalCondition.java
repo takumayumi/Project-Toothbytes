@@ -7,21 +7,20 @@ package window.forms;
 
 import java.awt.Color;
 import java.awt.Dialog;
+import java.awt.Window;
 import java.util.regex.Pattern;
 import javax.swing.ButtonGroup;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import utilities.AdditionalInfo;
+import javax.swing.SwingUtilities;
 import utilities.MedicalCond;
-import utilities.PersonalInfo;
 
 public class MedicalCondition extends javax.swing.JPanel {
-    public JDialog tb;
-    public PersonalInfo pi;
-    public AdditionalInfo ai;
-    public MedicalCond mc;
+    private int patientID;
+    private MedicalCond mc;
+    private Window w = SwingUtilities.getWindowAncestor(this);
     
-    public MedicalCondition(JDialog tb, PersonalInfo pi, AdditionalInfo ai) {
+    public MedicalCondition() {
         initComponents();
         q1Yes.setActionCommand("y");
         q1No.setActionCommand("n");
@@ -43,10 +42,6 @@ public class MedicalCondition extends javax.swing.JPanel {
         q9No.setActionCommand("n");
         q10Yes.setActionCommand("y");
         q10No.setActionCommand("n");
-        
-        this.tb = tb;
-        this.pi = pi;
-        this.ai = ai;
     }
     
     private final String BUTTON_DIR = "res/buttons/";
@@ -849,7 +844,7 @@ public class MedicalCondition extends javax.swing.JPanel {
             
             updateDatabase();
             
-            tb.dispose();
+            w.dispose();
         }else{
             if(!hasAnswer(q1)){q1Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(!hasAnswer(q2)){q2Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
@@ -869,36 +864,11 @@ public class MedicalCondition extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        tb.dispose();
+        w.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDialog tb = new JDialog();
-                tb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                AdditionalInformation adi = null;
-                System.out.println("here");
-                try{
-                    if(ai.getReason().isEmpty()){
-                        
-                    } else {
-                        adi = new AdditionalInformation(tb, pi, ai, mc);
-                    }
-                }catch(Exception e){
-                    adi = new AdditionalInformation(tb, pi);
-                }                
-                tb.setSize(adi.getPreferredSize());
-                System.out.println(adi.isVisible());
-                tb.add(adi);
-                tb.pack();
-                tb.setVisible(true);
-                tb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                }
-            }
-        );
-        tb.dispose();
+    
     }//GEN-LAST:event_jButton2ActionPerformed
     
     public boolean entriesValid() { 
@@ -976,9 +946,7 @@ public class MedicalCondition extends javax.swing.JPanel {
     }
 
     public void updateDatabase() {
-       int personalID = pi.UpdatePersonalInfo();
-       ai.UpdateAdditionalInfo(personalID);
-       mc.Update(personalID);
+       mc.Update(patientID);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField bloodPressureTF;

@@ -98,7 +98,7 @@ public class DBAccess {
             rs.next();
             //ALTER TABLE Dental_Records ADD COLUMN toothStatus VARCHAR(45) NULL;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("DBAccess - dbQuery Error: "+e);
             return false;
         }
         return true;
@@ -384,6 +384,46 @@ public class DBAccess {
         } catch (Exception e) {
             System.out.println("DBAccess - addAppointmentData Error: " + e);
         }
+    }
+    
+    public static ArrayList<AdditionalInfo> getAdditionalInfoData(int patientID){
+        ArrayList<AdditionalInfo> additionalInfoList = new ArrayList<>();
+        String query = "SELECT * FROM ADDITIONAL_INFO WHERE PATIENTID = " + patientID + ";";
+        
+        try{
+            rs = (JDBCResultSet) stmt.executeQuery(query);
+                       
+            while(rs.next()){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                
+                Calendar effectiveDate = null;
+                Calendar lastDentalVisit = null;
+                                
+                try{
+                    effectiveDate = Calendar.getInstance();
+                    effectiveDate.setTime(sdf.parse(rs.getString(4)));
+                }catch(Exception e){
+                    effectiveDate = null;
+                }
+                
+                try{
+                    lastDentalVisit = Calendar.getInstance();
+                    lastDentalVisit.setTime(sdf.parse(rs.getString(10)));
+                }catch(Exception e){
+                    lastDentalVisit = null;
+                }
+                
+                AdditionalInfo ai = new AdditionalInfo(rs.getInt(1), rs.getInt(2), rs.getString(3), effectiveDate,rs.getString(5), rs.getString(6),
+                rs.getString(7), rs.getString(8), rs.getString(9), lastDentalVisit, rs.getString(11), rs.getString(12), rs.getString(13), rs.getString(14));
+                
+                additionalInfoList.add(ai);
+            }
+            
+        }catch(Exception e){
+            System.out.println("DBAccess - getAdditionalInfoData Error: "+e);
+        }
+        
+        return additionalInfoList;
     }
 
     public static boolean validate(String usr, char[] pwd) {

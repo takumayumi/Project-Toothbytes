@@ -5,22 +5,19 @@
 */
 package window.forms;
 
-import java.awt.Dialog;
+import java.awt.Window;
 import java.util.Calendar;
 import java.util.regex.Pattern;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import utilities.AdditionalInfo;
-import utilities.MedicalCond;
+import javax.swing.SwingUtilities;
 import utilities.PersonalInfo;
 
 public class PersonalInformation extends javax.swing.JPanel {
-    public JDialog ctb;
-    public PersonalInfo pi;
-    public AdditionalInfo ai;
-    public MedicalCond mc;
+    private PersonalInfo pi;
+    private String patientID;
+    private boolean newPatient = true;
     
-    public PersonalInformation(JDialog ctb) {
+    public PersonalInformation() {
         initComponents();
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -32,18 +29,15 @@ public class PersonalInformation extends javax.swing.JPanel {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(PersonalInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        this.ctb = ctb;
         this.setVisible(true);
     }
     
-    public PersonalInformation(JDialog ctb, PersonalInfo pi, AdditionalInfo ai, MedicalCond mc){
+    public PersonalInformation(PersonalInfo pi){
         initComponents();
-        this.ctb = ctb;
         this.pi = pi;
-        this.ai = ai;
-        this.mc = mc;
-        
+        patientID = pi.getPatientID();
         insertData();
+        newPatient = false;
     }
 
     @SuppressWarnings("unchecked")
@@ -196,7 +190,7 @@ public class PersonalInformation extends javax.swing.JPanel {
         jLabel19.setText("Occupation:");
 
         nextButton.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Next.png"));
-        nextButton.setText("Next");
+        nextButton.setText("Save");
         nextButton.setToolTipText("");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -439,7 +433,7 @@ public class PersonalInformation extends javax.swing.JPanel {
             String faxNo = faxNumberTF.getText();
             
                         
-            pi = new PersonalInfo(surname, givenName, mi, gender, birthdate, nickname, civilStatus, occupation, homeAddress,
+            pi = new PersonalInfo(surname, givenName, mi, gender, birthdate, civilStatus, nickname, occupation, homeAddress,
             telephoneNo, officeNo, emailAdd, cellphoneNo, faxNo, null);
             launchAdditionalInfo();
         }else{
@@ -461,34 +455,19 @@ public class PersonalInformation extends javax.swing.JPanel {
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        ctb.dispose();
+        Window w = SwingUtilities.getWindowAncestor(this);
+        w.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
     
     private void launchAdditionalInfo(){
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDialog tb = new JDialog();
-                tb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                AdditionalInformation adi = null;
-                try{
-                    if(ai.getReason().isEmpty()){
-                        
-                    } else {
-                        adi = new AdditionalInformation(tb, pi, ai, mc);
-                    }
-                }catch(Exception e){
-                    adi = new AdditionalInformation(tb, pi);
-                }                
-                tb.setSize(adi.getPreferredSize());
-                System.out.println(adi.isVisible());
-                tb.add(adi);
-                tb.pack();
-                tb.setVisible(true);
-                tb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                }
-            }
-        );
-        ctb.dispose();
+        if(newPatient){
+            pi.NewPersonalInfo();
+        } else {
+            pi.UpdatePersonalInfo(patientID);
+        }
+        
+        Window w = SwingUtilities.getWindowAncestor(this);
+        w.dispose();
     }
     
     public void grayTFBorders(){
@@ -587,7 +566,7 @@ public class PersonalInformation extends javax.swing.JPanel {
         
         //Birthdate
         Calendar birthdate = pi.getBirthDate();
-        int month = birthdate.get(Calendar.MONTH);
+        int month = birthdate.get(Calendar.MONTH)+1;
         int day = birthdate.get(Calendar.DAY_OF_MONTH);
         int year = birthdate.get(Calendar.YEAR);
         
