@@ -133,7 +133,6 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         jLabel14.setText("Fee:");
 
-        statusService.setEditable(true);
         statusService.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Status...", "Available", "Unavailable" }));
         statusService.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,7 +140,6 @@ public class SettingsWindow extends javax.swing.JDialog {
             }
         });
 
-        serviceOffered.setEditable(true);
         serviceOffered.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -185,7 +183,6 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         jLabel3.setText("Status:");
 
-        newServiceStatus.setEditable(true);
         newServiceStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Status...", "Available", "Unavailable" }));
 
         newServiceFee.setHorizontalAlignment(newServiceFee.RIGHT);
