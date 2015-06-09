@@ -5,6 +5,7 @@
  */
 package models;
 
+import components.listener.ToothListener;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -37,10 +38,12 @@ public class Tooth extends JComponent {
     private String preState;
     private Graphics2D g2d;
     private Area markings = new Area();
+    private ToothListener tl;
+    private boolean modified;
 
     private final Image NORMAL_STATE, UNERUPTED_STATE, MISSING_STATE,
             LASER_STATE, CROWN_STATE, BRIDGE_STATE, MISSING_BRIDGED_STATE,
-            EXTRACTED_STATE;
+            EXTRACTED_STATE, DEFAULT_STATE;
 
     private int pointerX = -10;
     private int pointerY = -10;
@@ -48,12 +51,13 @@ public class Tooth extends JComponent {
     private JPopupMenu pop;
     private JMenuItem popNormal, popUnerupted, popMissing;
 
-    public Tooth(int number, String state) throws IOException {
+    public Tooth(int number, String state, boolean modified) throws IOException {
         this.number = number;
         this.state = state;
         this.setPreferredSize(new Dimension(55, 70));
         this.preState = null;
         this.setToolTipText(state);
+        this.modified = modified;
 
         NORMAL_STATE = ImageIO.read(new File("res/teeth/normal.png"));
         UNERUPTED_STATE = ImageIO.read(new File("res/teeth/unerupted.png"));
@@ -62,6 +66,7 @@ public class Tooth extends JComponent {
         CROWN_STATE = ImageIO.read(new File("res/teeth/crown.png"));
         MISSING_BRIDGED_STATE = ImageIO.read(new File("res/teeth/bridged.png"));
         BRIDGE_STATE = ImageIO.read(new File("res/teeth/bridge.png"));
+        DEFAULT_STATE = ImageIO.read(new File("res/teeth/bridged.png"));
         EXTRACTED_STATE = ImageIO.read(new File("res/teeth/extract.png"));
 
         MouseHandler mh = new MouseHandler();
@@ -78,6 +83,7 @@ public class Tooth extends JComponent {
         this.setPreferredSize(new Dimension(55, 70));
         this.preState = null;
         this.setToolTipText(state);
+        this.modified = false;
 
         NORMAL_STATE = ImageIO.read(new File("res/teeth/normal.png"));
         UNERUPTED_STATE = ImageIO.read(new File("res/teeth/unerupted.png"));
@@ -86,6 +92,7 @@ public class Tooth extends JComponent {
         CROWN_STATE = ImageIO.read(new File("res/teeth/crown.png"));
         MISSING_BRIDGED_STATE = ImageIO.read(new File("res/teeth/bridged.png"));
         BRIDGE_STATE = ImageIO.read(new File("res/teeth/bridge.png"));
+        DEFAULT_STATE = ImageIO.read(new File("res/teeth/bridged.png"));
         EXTRACTED_STATE = ImageIO.read(new File("res/teeth/extract.png"));
 
         MouseHandler mh = new MouseHandler();
@@ -96,6 +103,22 @@ public class Tooth extends JComponent {
         pop = new JPopupMenu("Tooth Popup");
     }
 
+    public boolean isModified() {
+        return modified;
+    }
+
+    public void setModified(boolean modified) {
+        this.modified = modified;
+    }
+    
+    public void addToothListener(ToothListener tl) {
+        this.tl = tl;
+    }
+    
+    public void notifyListener() {
+        tl.notify(number, state);
+    }
+    
     // Accessor & Mutators
     public int getNumber() {
         return number;
@@ -127,6 +150,11 @@ public class Tooth extends JComponent {
         if (this.preState != null) {
             if (!this.preState.matches(state)) {
                 this.setState(this.getPreState());
+                this.setModified(true);
+                if(tl != null) {
+                    notifyListener();
+                }
+                
                 this.repaint();
             }
 
@@ -266,6 +294,11 @@ public class Tooth extends JComponent {
 
                 g2d.draw(markings);
                 g2d.fill(markings);
+                break;
+            default:
+                g2d.drawImage(DEFAULT_STATE, X_TOOTH, Y_TOOTH, null);
+                g2d.drawString(this.state.substring(0, 4)+"...", X_TOOTH+5, Y_TOOTH+30);
+                this.setForeground(new Color(55, 100, 200));
                 break;
         }
 

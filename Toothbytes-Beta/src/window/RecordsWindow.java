@@ -27,15 +27,16 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import models.DentalChart;
 import models.OrganizedTreatment;
@@ -126,12 +127,13 @@ public class RecordsWindow extends ModuleWindow {
         gallery = new JPanel();
         gallery.setLayout(formLayout);
         gallery.setBackground(Color.white);
-
+        
+        scrollDental = new JScrollPane(dentalViewer);
         scrollInfo = new JScrollPane(infoViewer);
         scrollGallery = new JScrollPane(gallery);
 
         tabsPane.addTab("Personal Info", new ImageIcon(ICON_DIR + "PersonalInfo.png"), scrollInfo);
-        tabsPane.addTab("Dental Info", new ImageIcon(ICON_DIR + "DentalRecords.png"), dentalViewer);
+        tabsPane.addTab("Dental Info", new ImageIcon(ICON_DIR + "DentalRecords.png"), scrollDental);
         tabsPane.addTab("Gallery", new ImageIcon(ICON_DIR + "Images.png"), scrollGallery);
 
         super.addToMainPane(plv, "span 2, grow");
@@ -146,35 +148,36 @@ public class RecordsWindow extends ModuleWindow {
         return owner;
     }
 
-    public void setupTable() {
-        tableModel.addColumn("Date");
-        tableModel.addColumn("Tooth No.");
-        tableModel.addColumn("Condition");
-        tableModel.addColumn("Remarks");
-
-        theTable = new JTable(tableModel);
-
-        theTable.getColumnModel().getColumn(0).setMinWidth(100);
-        theTable.getColumnModel().getColumn(1).setMinWidth(60);
-        theTable.getColumnModel().getColumn(2).setMinWidth(100);
-
-        theTable.getColumnModel().getColumn(0).setMaxWidth(200);
-        theTable.getColumnModel().getColumn(1).setMaxWidth(100);
-        theTable.getColumnModel().getColumn(2).setMaxWidth(300);
-
-        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
-
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
-        theTable.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
-        theTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-        theTable.getTableHeader().setReorderingAllowed(false);
-    }
+//    public void setupTable() {
+//        tableModel.addColumn("Date");
+//        tableModel.addColumn("Tooth No.");
+//        tableModel.addColumn("Condition");
+//        tableModel.addColumn("Remarks");
+//
+//        theTable = new JTable(tableModel);
+//
+//        theTable.getColumnModel().getColumn(0).setMinWidth(100);
+//        theTable.getColumnModel().getColumn(1).setMinWidth(60);
+//        theTable.getColumnModel().getColumn(2).setMinWidth(100);
+//
+//        theTable.getColumnModel().getColumn(0).setMaxWidth(200);
+//        theTable.getColumnModel().getColumn(1).setMaxWidth(100);
+//        theTable.getColumnModel().getColumn(2).setMaxWidth(300);
+//
+//        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+//        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+//
+//        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+//        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+//
+//        theTable.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
+//        theTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+//        theTable.getTableHeader().setReorderingAllowed(false);
+//    }
 
     private final String ICON_DIR = "res/buttons/";
-    JButton checkup;
+    JToolBar dentalBar;
+    JButton checkup, history;
     JLabel chart;
     private boolean trigger = false;
     private DentalChart dc = new DentalChart();
@@ -182,13 +185,13 @@ public class RecordsWindow extends ModuleWindow {
         return trigger;
     }
     public void showDental(Patient p) {
-        chartLayout = new MigLayout("wrap 4, filly", "[]push[]push[]push[]", "[]");
+//        chartLayout = new MigLayout("wrap 4, filly", "[]push[]push[]push[]", "[]");
         //if there is a selected patient clear the viewer
         if (this.current != null) {
             dentalViewer.removeAll();
         }
 
-        JPanel dentalPanel = new JPanel(chartLayout);
+//        JPanel dentalPanel = new JPanel(chartLayout);
         ArrayList<OrganizedTreatment> otList = DataMan.organizeTreatment(DBAccess.getTreatmentList(p.getId()));
         for (int i = 0; i < otList.size(); i++) {
             OrganizedTreatment temp = otList.get(i);
@@ -204,70 +207,50 @@ public class RecordsWindow extends ModuleWindow {
             trigger = true;
             //chart
             dc = new DentalChart();
+            
             for (int i = 1; i < 53; i++) {
                 if (otList.get(0).getHm().containsKey(i)) {
                     dc.updateTooth(i + 1, otList.get(0).getHm().get(i).toLowerCase());
                     dc.updateUI();
                 }
             }
-            JScrollPane dcScroll = new JScrollPane(dc);
-            dentalPanel.add(dcScroll, "span 4, grow");
-
-            //table
-            tableModel = new DefaultTableModel() {
-                @Override
-                public boolean isCellEditable(int row, int col) {
-//                    if (col == 3) {
-//                        return true;
-//                    } else {
-                    return false;
-//                    }
-                }
-            };
-
-            setupTable();
-            JScrollPane tableHolder = new JScrollPane(theTable);
-
-            SimpleDateFormat format1 = new SimpleDateFormat("MM-dd-yyyy");
-            for (OrganizedTreatment ot : otList) {
-
-                tableModel.addRow(new Object[]{"", "", "", ""});
-
-                theTable.setValueAt(format1.format(ot.getDate().getTime()), tableModel.getRowCount() - 1, 0);
-                for (int i = 0; i < 52; i++) {
-                    if (ot.getHm().containsKey(i)) {
-                        theTable.setValueAt(i + 1, tableModel.getRowCount() - 1, 1);
-                        theTable.setValueAt(ot.getHm().get(i), tableModel.getRowCount() - 1, 2);
-                        tableModel.addRow(new Object[]{"", "", "", ""});
-                    }
-                }
-            }
-
-            dentalPanel.add(tableHolder, "span 4, grow");
-
+            
+            dentalViewer.add(dc, BorderLayout.CENTER);
         } else {
             JLabel info = new JLabel("This patient has still no dental record. Create now by clicking Start checkup!");
             info.setFont(new Font("Calibri", Font.PLAIN, 18));
-            dentalPanel.add(info, "span 1 1");
+            dentalViewer.add(info, BorderLayout.CENTER);
         }
-
+        
+        dentalBar = new JToolBar("dentalBar");
+        dentalBar.setFloatable(false);
+        
+        history =  new JButton("View History");
+        
         checkup = new JButton("Start Checkup!");
-        checkup.setIcon(new ImageIcon(ICON_DIR + "btn\\BeginTreatment.png"));
+        
+        checkup.setIcon(new ImageIcon(ICON_DIR + "\\BeginTreatment.png"));
         checkup.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (trigger) {
                     TreatmentWindow tw = new TreatmentWindow(getOwner(), p, dc);
+                    tw.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     tw.setVisible(true);
+                    
                 } else {
                     TreatmentWindow tw = new TreatmentWindow(getOwner(), p);
+                    tw.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     tw.setVisible(true);
                 }
             }
         });
-        dentalViewer.add(dentalPanel, BorderLayout.CENTER);
-        dentalViewer.add(checkup, BorderLayout.SOUTH);
+        
+        dentalBar.add(checkup);
+        dentalBar.add(history);
+        
+        dentalViewer.add(dentalBar, BorderLayout.NORTH);
         SwingUtilities.updateComponentTreeUI(dentalViewer);
     }
 
