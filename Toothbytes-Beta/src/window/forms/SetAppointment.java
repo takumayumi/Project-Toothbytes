@@ -265,7 +265,6 @@ public class SetAppointment extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        sptPatient = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         sptMiniCalendar = new javax.swing.JTable();
         sptNext = new javax.swing.JButton();
@@ -284,11 +283,9 @@ public class SetAppointment extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         sptCharLeft = new javax.swing.JLabel();
         sptYear = new javax.swing.JLabel();
+        sptPatient = new javax.swing.JComboBox();
 
         setBackground(new java.awt.Color(250, 255, 250));
-
-        sptPatient.setEditable(true);
-        sptPatient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Patient" }));
 
         sptMiniCalendar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -400,6 +397,8 @@ public class SetAppointment extends javax.swing.JPanel {
         sptYear.setFont(new java.awt.Font("Vijaya", 1, 18)); // NOI18N
         sptYear.setText("Year");
 
+        sptPatient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Patient" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -429,7 +428,6 @@ public class SetAppointment extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sptPatient, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
                     .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
@@ -445,13 +443,17 @@ public class SetAppointment extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sptDurMin, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(sptPatient, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(sptPatient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(sptPatient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(sptPrevious, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)

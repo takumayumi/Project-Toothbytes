@@ -10,8 +10,6 @@ import java.awt.BorderLayout;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JLabel;
@@ -23,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
+import org.jfree.chart.ChartPanel;
 
 /**
  *
@@ -281,7 +280,6 @@ public class DentalChart extends JPanel implements ToothListener {
         }
     }
 
-    @Override
     public void notify(int number, String state) {
         updateTable(number, state);
     }

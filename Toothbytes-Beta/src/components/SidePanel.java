@@ -50,11 +50,7 @@ public class SidePanel extends JPanel{
         
         sideAppList = new JList();
         sideAppScroll = new JScrollPane(sideAppList);
-        sideAppointment.add(sideAppScroll, BorderLayout.CENTER);
-        
-        viewSched = new JButton("View Full Schedule");
-        viewSched.setIcon(new ImageIcon("src/toothbytes/res/icons/btn/WholeCalendar.png"));
-        sideAppointment.add(viewSched, BorderLayout.SOUTH);
+        sideAppointment.add(sideAppScroll, BorderLayout.CENTER);        
         
         // PAYMENTS
         sidePayment = new JPanel();

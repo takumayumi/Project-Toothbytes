@@ -45,6 +45,7 @@ public class SettingsWindow extends javax.swing.JDialog {
             currentAccount.setPassword(accountX.get(currentAccountID).getPassword());
             
             accountUsername.setText(currentAccount.getUsername());
+            accountPassword.setText(currentAccount.getPassword());
         } catch (Exception e){
             System.out.println("AccountDetails Error: "+e);
         }
@@ -298,11 +299,6 @@ public class SettingsWindow extends javax.swing.JDialog {
         jLabel8.setText("Username :");
 
         accountUsername.setText(" ");
-        accountUsername.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                accountUsernameActionPerformed(evt);
-            }
-        });
 
         jLabel9.setText("Password :");
 
@@ -310,12 +306,6 @@ public class SettingsWindow extends javax.swing.JDialog {
         jLabel10.setText("Change account settings");
 
         jLabel11.setText("Confirm Password :");
-
-        accountPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                accountPasswordActionPerformed(evt);
-            }
-        });
 
         jLabel15.setText("New Password :");
 
@@ -534,14 +524,6 @@ public class SettingsWindow extends javax.swing.JDialog {
             System.out.println("Error: "+e);
         }
     }//GEN-LAST:event_saveButtonNewActionPerformed
-
-    private void accountUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountUsernameActionPerformed
-  
-    }//GEN-LAST:event_accountUsernameActionPerformed
-
-    private void accountPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_accountPasswordActionPerformed
 
     private void serviceOfferedPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_serviceOfferedPopupMenuWillBecomeInvisible
         // TODO add your handling code here: 

@@ -111,8 +111,8 @@ public class MiniBilling extends javax.swing.JPanel {
         AmountPaidField = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        TotalBalanceField = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
+        TotalBalanceField = new javax.swing.JLabel();
 
         jButton2.setText("Pay");
 
@@ -193,7 +193,7 @@ public class MiniBilling extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(AmountPaidField)
-                                    .addComponent(TotalBalanceField))))
+                                    .addComponent(TotalBalanceField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -220,10 +220,12 @@ public class MiniBilling extends javax.swing.JPanel {
                     .addComponent(NoLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(RecievedLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(TotalBalanceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 6, Short.MAX_VALUE)
+                        .addComponent(jLabel10))
+                    .addComponent(TotalBalanceField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
@@ -254,7 +256,7 @@ public class MiniBilling extends javax.swing.JPanel {
     private javax.swing.JLabel DateLabel;
     private javax.swing.JLabel NoLabel;
     private javax.swing.JLabel RecievedLabel;
-    private javax.swing.JTextField TotalBalanceField;
+    private javax.swing.JLabel TotalBalanceField;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

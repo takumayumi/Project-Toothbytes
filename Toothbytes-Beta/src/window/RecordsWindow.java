@@ -75,7 +75,7 @@ public class RecordsWindow extends ModuleWindow {
     private MigLayout layout, formLayout, chartLayout;
     private JScrollPane scrollInfo, scrollDental, scrollGallery;
     private PatientX current;
-    private JButton patientRepBut;
+    private JButton patientRepBut, editInfoBut;
     
     final String BUTTON_DIR = "res/buttons/";
     private static JDBCConnection conn = null;
@@ -385,12 +385,16 @@ public class RecordsWindow extends ModuleWindow {
         patientRepBut.setToolTipText("Print Patient Records");
         
         PatientRecordsReport prr = new PatientRecordsReport();
-        infoViewer.add(patientRepBut);
+        infoViewer.add(patientRepBut, "skip 3");
         patientRepBut.addActionListener(prr);
 
         //EditInfoBut
-        JButton editInfoBut = new JButton("Edit Info");
+        editInfoBut = new JButton(new ImageIcon(BUTTON_DIR + "EditPersonalRecord"));
+        
         infoViewer.add(editInfoBut);
+        editInfoBut.setBackground(WHITE);
+        editInfoBut.setToolTipText("Edit Personal Information");
+        
         editInfoBut.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
