@@ -34,6 +34,7 @@ public class SetAppointment extends javax.swing.JPanel {
      * Creates new form SetAppointment
      */
     
+    private int appointmentID;
     private Appointment appointment;
     private ArrayList<PatientX> patientList = DBAccess.getPatientXData("");
     private Calendar now = Calendar.getInstance();
@@ -41,6 +42,7 @@ public class SetAppointment extends javax.swing.JPanel {
     private int yearMod = now.get(Calendar.YEAR);
     private int initCharNo = 254;
     private int charTyped = 0;
+    private boolean toggle = true;
     
     public SetAppointment() {
         initComponents();
@@ -51,9 +53,11 @@ public class SetAppointment extends javax.swing.JPanel {
     public SetAppointment(Appointment appointment){
         initComponents();
         this.appointment = appointment;
+        appointmentID = appointment.getAppointmentID();
         String[] appDate = appointment.getAppointmentDate().split("-");
         monthMod = Integer.parseInt(appDate[1])-1;
         yearMod = Integer.parseInt(appDate[0]);
+        toggle = false;
         
         setMonthValues();
         setPatientValues();
@@ -548,12 +552,26 @@ public class SetAppointment extends javax.swing.JPanel {
 
     private void sptSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sptSaveActionPerformed
         appointment = getAppointmentValues();
-        try{
-            DBAccess.addAppointmentData(appointment);
-            JOptionPane.showMessageDialog(this,"Appointment Added");
-        }catch(Exception e){
-            System.out.println("SetAppointment - sptSaveActionPerformed Error: " + e);
-        }        
+        if(toggle){
+           try{
+                DBAccess.addAppointmentData(appointment);
+                JOptionPane.showMessageDialog(this,"Appointment Added");
+            }catch(Exception e){
+                System.out.println("SetAppointment - sptSaveActionPerformed Error: " + e);
+            }  
+        } else if(toggle == false){
+            try{
+                String query = "UPDATE APPOINTMENT SET "
+                        + "APPOINTMENTDATE = "+appointment.getAppointmentDate()+""
+                        + "APPOINTMENTTIME = "+appointment.getAppointmentTime()+""
+                        + "APPOINTMENTENDTIME = "+appointment.getAppointmentEndTime()+""
+                        + "APPOINTMENTREMARKS = "+appointment.getAppointmentRemarks()+""
+                        + "WHERE APPOINTMENTID = "+appointmentID+";";
+                DBAccess.dbQuery(query);
+                
+            }catch(Exception e){}
+        }
+               
         
         Window w = SwingUtilities.getWindowAncestor(this);
         w.dispose();
