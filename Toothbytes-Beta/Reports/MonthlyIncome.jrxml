@@ -77,7 +77,7 @@ GROUP BY YEAR(paymentDate), MONTHNAME(paymentDate), pay.paymentDate, dp.procedur
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="588" y="0" width="118" height="18" forecolor="#000000" uuid="e3b1f153-3a1f-419a-860e-ced08c9c606a"/>
-				<textElement>
+				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Amount Paid]]></text>
@@ -109,9 +109,9 @@ GROUP BY YEAR(paymentDate), MONTHNAME(paymentDate), pay.paymentDate, dp.procedur
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Month}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField isStretchWithOverflow="true" pattern="#,###.00">
 					<reportElement style="Detail" positionType="Float" x="588" y="0" width="118" height="18" uuid="e41ad7a1-85bf-46b1-8806-8b5290c669a1"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Amount Paid}]]></textFieldExpression>

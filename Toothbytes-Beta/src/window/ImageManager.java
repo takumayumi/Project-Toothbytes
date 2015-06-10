@@ -89,9 +89,9 @@ public class ImageManager extends javax.swing.JPanel {
 
         remarksNo.setText("255");
 
-        save.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Confirm.png"));
+        save.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Save.png"));
         save.setText("Save");
-        save.setToolTipText("Save");
+        save.setToolTipText("");
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveActionPerformed(evt);
@@ -100,7 +100,7 @@ public class ImageManager extends javax.swing.JPanel {
 
         cancel.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Cancel.png"));
         cancel.setText("Cancel");
-        cancel.setToolTipText("Cancel");
+        cancel.setToolTipText("");
 
         tagSelect.setText("inputTag");
         tagSelect.setToolTipText("Tag");

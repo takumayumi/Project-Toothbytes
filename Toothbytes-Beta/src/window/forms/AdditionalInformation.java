@@ -210,8 +210,8 @@ public class AdditionalInformation extends javax.swing.JPanel {
 
         jLabel15.setText("Office Number:");
 
-        nextButton.setIcon(new ImageIcon(BUTTON_DIR+"Next.png"));
-        nextButton.setText("Next");
+        nextButton.setIcon(new ImageIcon(BUTTON_DIR+"Save.png"));
+        nextButton.setText("Save");
         nextButton.setToolTipText("");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -456,7 +456,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
             ai = new AdditionalInfo(dentalInsurance, effectiveDate, guardiansName, occupation, referrer, reason, previousDentist,
                                                 lastDentalVisit, nameOfPhysician, officeAddress, specialization, officeNumber);
             
-            launchMedicalCondition();
+            updateAdditionalInfo();
         } else {
             if(reasonTF.getText().isEmpty()){reasonTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(hasLetters(officeNumberTF.getText())){officeNumberTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
@@ -464,7 +464,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_nextButtonActionPerformed
 
-    private void launchMedicalCondition() {
+    private void updateAdditionalInfo() {
         if(toggle){
             ai.UpdateAdditionalInfo(patientID, ai);
         } else {
@@ -492,8 +492,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // TODO add your handling code here:
-        Window w = SwingUtilities.getWindowAncestor(this);
-        
+        Window w = SwingUtilities.getWindowAncestor(this);        
         w.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 

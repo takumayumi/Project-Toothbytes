@@ -480,9 +480,9 @@
     <Component class="javax.swing.JButton" name="nextButton">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new ImageIcon(BUTTON_DIR+&quot;Next.png&quot;)" type="code"/>
+          <Connection code="new ImageIcon(BUTTON_DIR+&quot;Save.png&quot;)" type="code"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Next"/>
+        <Property name="text" type="java.lang.String" value="Save"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
       <Events>
@@ -494,9 +494,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new ImageIcon(BUTTON_DIR+&quot;Cancel.png&quot;)" type="code"/>
         </Property>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="&quot;Cancel&quot;" type="code"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="Cancel"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
       <Events>

@@ -117,7 +117,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         jScrollPane2.setViewportView(jTextArea1);
 
         setTitle("Settings");
-        setBackground(new java.awt.Color(0, 204, 204));
+        setBackground(new java.awt.Color(250, 255, 250));
 
         servicesPanel.setBackground(new java.awt.Color(250, 255, 250));
         servicesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("SERVICES"));
@@ -165,9 +165,8 @@ public class SettingsWindow extends javax.swing.JDialog {
             }
         });
 
-        saveButtonExisting.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Confirm.png"));
-        saveButtonExisting.setText("Save");
-        saveButtonExisting.setToolTipText("");
+        saveButtonExisting.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Save.png"));
+        saveButtonExisting.setToolTipText("Save");
         saveButtonExisting.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonExistingActionPerformed(evt);
@@ -175,8 +174,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         });
 
         resetButtonExisting.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Undo.png"));
-        resetButtonExisting.setText("Reset");
-        resetButtonExisting.setToolTipText("");
+        resetButtonExisting.setToolTipText("Reset");
         resetButtonExisting.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetButtonExistingActionPerformed(evt);
@@ -198,8 +196,7 @@ public class SettingsWindow extends javax.swing.JDialog {
             }
         });
 
-        saveButtonNew.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Confirm.png"));
-        saveButtonNew.setText("Save");
+        saveButtonNew.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Save.png"));
         saveButtonNew.setToolTipText("Save");
         saveButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,8 +204,7 @@ public class SettingsWindow extends javax.swing.JDialog {
             }
         });
 
-        clearButtonNew.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Undo.png"));
-        clearButtonNew.setText("Clear");
+        clearButtonNew.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Cancel.png"));
         clearButtonNew.setToolTipText("Clear");
         clearButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,7 +239,7 @@ public class SettingsWindow extends javax.swing.JDialog {
                                     .addComponent(feeService)
                                     .addComponent(serviceOffered, 0, 150, Short.MAX_VALUE)))))
                     .addGroup(servicesPanelLayout.createSequentialGroup()
-                        .addGap(100, 100, 100)
+                        .addGap(154, 154, 154)
                         .addComponent(resetButtonExisting)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButtonExisting)))

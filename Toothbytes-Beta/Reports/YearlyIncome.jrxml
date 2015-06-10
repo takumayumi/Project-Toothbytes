@@ -55,29 +55,29 @@ GROUP BY dp.procedure, YEAR(pay.paymentDate), MONTHNAME(pay.paymentDate), pay.am
 	<columnHeader>
 		<band height="18" splitType="Stretch">
 			<staticText>
-				<reportElement style="Column header" x="109" y="0" width="159" height="18" forecolor="#000000" uuid="1e707c73-6ef7-4c5a-9d5d-c09a9d73cf9c"/>
+				<reportElement style="Column header" x="124" y="0" width="159" height="18" forecolor="#000000" uuid="1e707c73-6ef7-4c5a-9d5d-c09a9d73cf9c"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Procedure]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="268" y="0" width="159" height="18" forecolor="#000000" uuid="35ae733e-7046-49f8-88da-bf86a45296ba"/>
+				<reportElement style="Column header" x="299" y="0" width="115" height="18" forecolor="#000000" uuid="35ae733e-7046-49f8-88da-bf86a45296ba"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Year]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="427" y="0" width="159" height="18" forecolor="#000000" uuid="860944cf-bb8c-4ee7-b572-fad08a1b0144"/>
+				<reportElement style="Column header" x="427" y="0" width="123" height="18" forecolor="#000000" uuid="860944cf-bb8c-4ee7-b572-fad08a1b0144"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Month]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="586" y="0" width="130" height="18" forecolor="#000000" uuid="b7805403-1db6-4161-93ca-e84cc5e948b8"/>
-				<textElement>
+				<reportElement style="Column header" x="550" y="0" width="130" height="18" forecolor="#000000" uuid="b7805403-1db6-4161-93ca-e84cc5e948b8"/>
+				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Amount Paid]]></text>
@@ -89,29 +89,29 @@ GROUP BY dp.procedure, YEAR(pay.paymentDate), MONTHNAME(pay.paymentDate), pay.am
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="797" height="18" uuid="0219295f-2214-468e-8097-7562d4a2f058"/>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="109" y="0" width="159" height="18" uuid="731f195c-3eed-45fb-95a1-29ac1ee077a2"/>
+					<reportElement style="Detail" positionType="Float" x="124" y="0" width="159" height="18" uuid="731f195c-3eed-45fb-95a1-29ac1ee077a2"/>
 					<textElement>
 						<font fontName="SansSerif" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{PROCEDURE}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="268" y="0" width="159" height="18" uuid="e55bd861-f4d9-446e-9ab7-77c0d7986074"/>
+					<reportElement style="Detail" positionType="Float" x="299" y="0" width="115" height="18" uuid="e55bd861-f4d9-446e-9ab7-77c0d7986074"/>
 					<textElement>
 						<font fontName="SansSerif" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Year}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="427" y="0" width="159" height="18" uuid="c33ecf57-8413-4244-8227-076fc46174ba"/>
+					<reportElement style="Detail" positionType="Float" x="427" y="0" width="123" height="18" uuid="c33ecf57-8413-4244-8227-076fc46174ba"/>
 					<textElement>
 						<font fontName="SansSerif" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Month}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="586" y="0" width="130" height="18" uuid="583752a4-f18b-480a-991b-48488c550ff1"/>
-					<textElement>
+					<reportElement style="Detail" positionType="Float" x="550" y="0" width="130" height="18" uuid="583752a4-f18b-480a-991b-48488c550ff1"/>
+					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Amount Paid}]]></textFieldExpression>

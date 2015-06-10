@@ -495,7 +495,7 @@
     <Component class="javax.swing.JButton" name="nextButton">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.ImageIcon(BUTTON_DIR+&quot;Next.png&quot;)" type="code"/>
+          <Connection code="new javax.swing.ImageIcon(BUTTON_DIR+&quot;Save.png&quot;)" type="code"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Save"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>

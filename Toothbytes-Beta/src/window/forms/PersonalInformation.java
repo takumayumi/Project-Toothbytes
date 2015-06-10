@@ -189,7 +189,7 @@ public class PersonalInformation extends javax.swing.JPanel {
 
         jLabel19.setText("Occupation:");
 
-        nextButton.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Next.png"));
+        nextButton.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Save.png"));
         nextButton.setText("Save");
         nextButton.setToolTipText("");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
@@ -435,7 +435,8 @@ public class PersonalInformation extends javax.swing.JPanel {
                         
             pi = new PersonalInfo(surname, givenName, mi, gender, birthdate, civilStatus, nickname, occupation, homeAddress,
             telephoneNo, officeNo, emailAdd, cellphoneNo, faxNo, null);
-            launchAdditionalInfo();
+            
+            updatePersonalInfo();
         }else{
             if(miTF.getText().isEmpty() || hasNumbers(miTF.getText()) || miTF.getText().length() < -1 || miTF.getText().length() > 2){miTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(yearTF.getText().isEmpty() || hasLetters(yearTF.getText()) || hasSpecialCharacters(yearTF.getText())){yearTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
@@ -459,7 +460,7 @@ public class PersonalInformation extends javax.swing.JPanel {
         w.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
     
-    private void launchAdditionalInfo(){
+    private void updatePersonalInfo(){
         if(newPatient){
             pi.NewPersonalInfo();
         } else {
