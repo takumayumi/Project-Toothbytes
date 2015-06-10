@@ -22,7 +22,7 @@ public class PatientX extends Patient {
     private String officeNo;
     private String faxNo;
     private String cellNo;
-    private String emailAdd;
+    private String emailAdd;    
     
     /**
      * This method calls the other attributes of a Patient as it is.

@@ -24,6 +24,8 @@ public class SettingsWindow extends javax.swing.JDialog {
     private Services service;
     private Accounts currentAccount;
     
+    private final String BUTTON_DIR = "res/buttons/";
+    
     public SettingsWindow() throws Exception {
         this.setTitle("Settings");
         this.setIconImage(new ImageIcon("src/Toothbytes/favicon.png").getImage());
@@ -163,14 +165,18 @@ public class SettingsWindow extends javax.swing.JDialog {
             }
         });
 
+        saveButtonExisting.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Confirm.png"));
         saveButtonExisting.setText("Save");
+        saveButtonExisting.setToolTipText("");
         saveButtonExisting.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonExistingActionPerformed(evt);
             }
         });
 
+        resetButtonExisting.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Undo.png"));
         resetButtonExisting.setText("Reset");
+        resetButtonExisting.setToolTipText("");
         resetButtonExisting.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetButtonExistingActionPerformed(evt);
@@ -192,14 +198,18 @@ public class SettingsWindow extends javax.swing.JDialog {
             }
         });
 
+        saveButtonNew.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Confirm.png"));
         saveButtonNew.setText("Save");
+        saveButtonNew.setToolTipText("Save");
         saveButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonNewActionPerformed(evt);
             }
         });
 
+        clearButtonNew.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Undo.png"));
         clearButtonNew.setText("Clear");
+        clearButtonNew.setToolTipText("Clear");
         clearButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearButtonNewActionPerformed(evt);
@@ -217,43 +227,48 @@ public class SettingsWindow extends javax.swing.JDialog {
         servicesPanelLayout.setHorizontalGroup(
             servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(servicesPanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(servicesPanelLayout.createSequentialGroup()
-                            .addComponent(saveButtonExisting)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(resetButtonExisting))
-                        .addGroup(servicesPanelLayout.createSequentialGroup()
-                            .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel12)
-                                .addComponent(jLabel13)
-                                .addComponent(jLabel14))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(statusService, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(feeService)
-                                .addComponent(serviceOffered, 0, 150, Short.MAX_VALUE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                    .addGroup(servicesPanelLayout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addGroup(servicesPanelLayout.createSequentialGroup()
+                                .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel12)
+                                    .addComponent(jLabel13)
+                                    .addComponent(jLabel14))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(statusService, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(feeService)
+                                    .addComponent(serviceOffered, 0, 150, Short.MAX_VALUE)))))
+                    .addGroup(servicesPanelLayout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addComponent(resetButtonExisting)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButtonExisting)))
                 .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(servicesPanelLayout.createSequentialGroup()
-                            .addComponent(saveButtonNew)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(clearButtonNew))
-                        .addGroup(servicesPanelLayout.createSequentialGroup()
-                            .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabel3))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(newServiceStatus, 0, 150, Short.MAX_VALUE)
-                                .addComponent(newServiceFee)
-                                .addComponent(newServiceName)))))
-                .addGap(60, 60, 60))
+                    .addGroup(servicesPanelLayout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(jLabel5))
+                    .addGroup(servicesPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(servicesPanelLayout.createSequentialGroup()
+                                .addComponent(clearButtonNew)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(saveButtonNew))
+                            .addGroup(servicesPanelLayout.createSequentialGroup()
+                                .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(newServiceStatus, 0, 150, Short.MAX_VALUE)
+                                    .addComponent(newServiceFee)
+                                    .addComponent(newServiceName))))))
+                .addGap(39, 39, 39))
         );
         servicesPanelLayout.setVerticalGroup(
             servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,10 +298,10 @@ public class SettingsWindow extends javax.swing.JDialog {
                     .addComponent(newServiceStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(saveButtonExisting)
-                    .addComponent(resetButtonExisting)
-                    .addComponent(saveButtonNew)
-                    .addComponent(clearButtonNew))
+                    .addComponent(saveButtonExisting, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(resetButtonExisting, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(saveButtonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(clearButtonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
         );
 
@@ -331,7 +346,7 @@ public class SettingsWindow extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7))
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,14 +371,18 @@ public class SettingsWindow extends javax.swing.JDialog {
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
-        btnSaveSettings.setText("SAVE");
+        btnSaveSettings.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Confirm.png"));
+        btnSaveSettings.setText("Save");
+        btnSaveSettings.setToolTipText("Save");
         btnSaveSettings.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveSettingsActionPerformed(evt);
             }
         });
 
-        btnCancelSettings.setText("CANCEL");
+        btnCancelSettings.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Cancel.png"));
+        btnCancelSettings.setText("Cancel");
+        btnCancelSettings.setToolTipText("Cancel");
         btnCancelSettings.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelSettingsActionPerformed(evt);
@@ -382,9 +401,9 @@ public class SettingsWindow extends javax.swing.JDialog {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCancelSettings)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSaveSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCancelSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSaveSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(11, 11, 11))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -399,9 +418,9 @@ public class SettingsWindow extends javax.swing.JDialog {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSaveSettings)
-                    .addComponent(btnCancelSettings))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnSaveSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCancelSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();

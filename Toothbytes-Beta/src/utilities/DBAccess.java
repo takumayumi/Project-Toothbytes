@@ -390,8 +390,8 @@ public class DBAccess {
                     cal = null;
                 }
                 PatientX px = new PatientX(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), cal,
-                        rs.getString(6), rs.getString(7), rs.getString(8).charAt(0), rs.getString(9), rs.getString(10), rs.getString(11),
-                        rs.getString(12), rs.getString(13), rs.getString(14), rs.getString(15));
+                        rs.getString(6), rs.getString(7), rs.getString(8).charAt(0), rs.getString(9), rs.getString(10), 
+                        rs.getString(11), rs.getString(12), rs.getString(13), rs.getString(14), rs.getString(15));
                 patientX.add(px);
             }
         } catch (Exception e) {

@@ -30,13 +30,13 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="sptPrevious" min="-2" pref="130" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+              <Component id="sptPrevious" min="-2" pref="65" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
               <Component id="sptMonth" min="-2" pref="80" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="sptYear" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="sptNext" min="-2" pref="130" max="-2" attributes="0"/>
+              <Component id="sptNext" min="-2" pref="65" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
@@ -49,12 +49,13 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" pref="494" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="491" max="32767" attributes="0"/>
                   <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="sptCancel" min="-2" pref="200" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="sptSave" min="-2" pref="200" max="-2" attributes="0"/>
+                      <Component id="sptCancel" min="-2" pref="65" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="sptSave" min="-2" pref="65" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="sptStartHour" min="-2" pref="71" max="-2" attributes="0"/>
@@ -78,14 +79,14 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Component id="sptPatient" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="sptPatient" min="-2" pref="27" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                      <Component id="sptPrevious" alignment="3" pref="25" max="32767" attributes="0"/>
+                      <Component id="sptPrevious" alignment="3" pref="26" max="32767" attributes="0"/>
                       <Component id="sptMonth" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="sptYear" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="sptYear" alignment="0" pref="26" max="32767" attributes="0"/>
                   </Group>
                   <Component id="sptNext" alignment="0" max="32767" attributes="0"/>
               </Group>
@@ -110,9 +111,9 @@
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="sptCharLeft" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="sptCancel" pref="32" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="sptCancel" pref="26" max="32767" attributes="0"/>
                   <Component id="sptSave" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -195,7 +196,9 @@
     </Container>
     <Component class="javax.swing.JButton" name="sptNext">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Next"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new javax.swing.ImageIcon(BUTTON_DIR+&quot;Next.png&quot;)" type="code"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sptNextActionPerformed"/>
@@ -203,7 +206,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="sptPrevious">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Previous"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new javax.swing.ImageIcon(BUTTON_DIR+&quot;Back.png&quot;)" type="code"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sptPreviousActionPerformed"/>
@@ -237,7 +242,10 @@
     </Container>
     <Component class="javax.swing.JButton" name="sptCancel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Cancel"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new javax.swing.ImageIcon(BUTTON_DIR+&quot;Cancel.png&quot;)" type="code"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Cancel"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sptCancelActionPerformed"/>
@@ -245,7 +253,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="sptSave">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Save"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new javax.swing.ImageIcon(BUTTON_DIR+&quot;Confirm.png&quot;)" type="code"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Save "/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sptSaveActionPerformed"/>

@@ -269,7 +269,7 @@ public class RecordsWindow extends ModuleWindow {
 
         File f = new File("res/images/" + p.getId() + ".jpg");
 
-        JLabel photo = new JLabel();
+        JLabel photo = new JLabel();        
 
         JLabel[] name = new JLabel[]{new JLabel(p.getLastName()), new JLabel(p.getFirstName()), new JLabel(p.getMidName())};
         for (JLabel n : name) {
@@ -277,55 +277,42 @@ public class RecordsWindow extends ModuleWindow {
         }
 
         JLabel age = new JLabel(DataMan.getAge(p.getBdate()) + "");
-
         JLabel lblAge = new JLabel("Age:");
 
         SimpleDateFormat format1 = new SimpleDateFormat("MM-dd-yyyy");
-
         String bday = format1.format(p.getBdate().getTime());
-
+        
         JLabel bdate = new JLabel(bday);
-
         JLabel lblBdate = new JLabel("Birthdate:");
 
         JLabel occupation = new JLabel(p.getOccupation());
-
         JLabel lblOccupation = new JLabel("Occupation:");
 
         JLabel civstat = new JLabel(p.getCivilStatus());
-
         JLabel lblCivstat = new JLabel("Civil Status:");
 
         JLabel gender = new JLabel(p.getGender() + "");
-
         JLabel lblGender = new JLabel("Gender:");
 
         JLabel nName = new JLabel(p.getNickname());
-
         JLabel lblNname = new JLabel("Nickname:");
 
         JLabel homeadd = new JLabel(p.getHomeAddress());
-
         JLabel lblHomeadd = new JLabel("Home Address:");
 
         JLabel homeno = new JLabel(p.getHomeNo());
-
         JLabel lblHomeno = new JLabel("Home Number:");
 
         JLabel officeno = new JLabel(p.getOfficeNo());
-
         JLabel lblOfficeno = new JLabel("Office Number:");
 
         JLabel faxno = new JLabel(p.getFaxNo());
-
         JLabel lblFaxno = new JLabel("Fax Number:");
 
         JLabel cellno = new JLabel(p.getCellNo());
-
         JLabel lblCellno = new JLabel("Cellphone Number:");
 
         JLabel eAdd = new JLabel(p.getEmailAdd());
-
         JLabel lblEadd = new JLabel("Email Address:");
 
         if (f.exists()) {
@@ -389,12 +376,10 @@ public class RecordsWindow extends ModuleWindow {
         patientRepBut.addActionListener(prr);
 
         //EditInfoBut
-        editInfoBut = new JButton(new ImageIcon(BUTTON_DIR + "EditPersonalRecord"));
-        
-        infoViewer.add(editInfoBut);
+        editInfoBut = new JButton(new ImageIcon(BUTTON_DIR + "EditPersonalRecord.png"));
         editInfoBut.setBackground(WHITE);
         editInfoBut.setToolTipText("Edit Personal Information");
-        
+        infoViewer.add(editInfoBut);
         editInfoBut.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {

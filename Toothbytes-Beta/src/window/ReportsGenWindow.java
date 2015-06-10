@@ -1,8 +1,6 @@
 package window;
 
 import components.ModuleWindow;
-import components.ModuleWindow;
-import components.ReportsGen;
 import components.ReportsGen;
 
 /**
