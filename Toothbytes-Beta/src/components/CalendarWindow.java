@@ -41,6 +41,7 @@ public class CalendarWindow extends ModuleWindow {
     private int yearMod = now.get(Calendar.YEAR);
     private ArrayList<Appointment> appointmentList = DBAccess.getAppointmentData("");
     private ImageIcon teeth = new ImageIcon("res/images/logo_smaller.png");
+    private String BUTTON_DIR = "res/buttons/";
     
     public CalendarWindow() {
         initComponents();
@@ -192,6 +193,7 @@ public class CalendarWindow extends ModuleWindow {
         jPanel1.setBackground(new java.awt.Color(250, 255, 250));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Appointment Viewer"));
 
+        cdwPrevious.setIcon(new javax.swing.ImageIcon(BUTTON_DIR + "Back.png"));
         cdwPrevious.setText("Previous");
         cdwPrevious.setMaximumSize(new java.awt.Dimension(75, 23));
         cdwPrevious.setMinimumSize(new java.awt.Dimension(75, 23));
@@ -201,6 +203,7 @@ public class CalendarWindow extends ModuleWindow {
             }
         });
 
+        cdwNext.setIcon(new javax.swing.ImageIcon(BUTTON_DIR + "Next.png"));
         cdwNext.setText("Next");
         cdwNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -21,7 +21,6 @@ public class PersonalInfo {
     String surname;
     String givenName;
     String mi;
-    byte[] patientPhoto;
     String gender;
     Calendar birthDate;
     String occupation;
@@ -67,13 +66,11 @@ public class PersonalInfo {
      *          Mobile number of the patient.
      * @param   faxNo 
      *          Fax number of the patient.
-     * @param   patientPhoto
-     *          Image of the patient.
      */
     public PersonalInfo(String surname, String givenName, String middleInitial, 
         String gender, Calendar birthDate, String civilStatus, String nickname, 
         String occupation, String homeAddress, String telephoneNo, 
-        String officeNo, String emailAdd, String cellphoneNo, String faxNo, byte[] patientPhoto) {
+        String officeNo, String emailAdd, String cellphoneNo, String faxNo) {
         
         this.surname = surname;
         this.givenName = givenName;
@@ -89,7 +86,6 @@ public class PersonalInfo {
         this.emailAdd = emailAdd;
         this.cellphoneNo = cellphoneNo;
         this.faxNo = faxNo;
-        this.patientPhoto = patientPhoto;
     }
     
     /**
@@ -104,7 +100,7 @@ public class PersonalInfo {
                 + "PATIENT_LASTNAME = '"+surname+"', "
                 + "PATIENT_FIRSTNAME = '"+givenName+"', "
                 + "PATIENT_MIDDLEINITIAL = '"+mi.charAt(0)+"', "
-                + "BIRTHDATE = '"+new SimpleDateFormat("MM-dd-yyyy").format(birthDate.getTime())+"', "
+                + "BIRTHDATE = '"+new SimpleDateFormat("yyyy-MM-dd").format(birthDate.getTime())+"', "
                 + "OCCUPATION = '"+occupation+"', "
                 + "NICKNAME = '"+nickname+"', "
                 + "GENDER = '"+gender.charAt(0)+"', "
@@ -115,7 +111,6 @@ public class PersonalInfo {
                 + "FAXNO = '"+faxNo+"', "
                 + "CELLNO = '"+cellphoneNo+"', "
                 + "EMAILADDRESS = '"+emailAdd+"'"
-                + "PATIENTPHOTO = "+Arrays.toString(patientPhoto)
                 + "WHERE patientID = " + patientID + ";";
     
 //        String PersonalInfoUpdate = "INSERT INTO PATIENT VALUES("+patientID+", '"+surname+"', '"+givenName+"', '"+mi.charAt(0)+"', "
@@ -131,7 +126,7 @@ public class PersonalInfo {
     
     public void NewPersonalInfo(){
         String PersonalInfoUpdate = "INSERT INTO PATIENT VALUES("+patientID+", '"+surname+"', '"+givenName+"', '"+mi.charAt(0)+"', "
-        + "'"+Arrays.toString(patientPhoto)+"', '"+birthDate.get(Calendar.YEAR)+"-"+birthDate.get(Calendar.MONTH)+"-"+birthDate.get(Calendar.DAY_OF_MONTH) +"', '"+occupation+"', '"+nickname+"', '"+gender.charAt(0)+"', '"+civilStatus+"', "
+        + "'"+birthDate.get(Calendar.YEAR)+"-"+birthDate.get(Calendar.MONTH)+"-"+birthDate.get(Calendar.DAY_OF_MONTH) +"', '"+occupation+"', '"+nickname+"', '"+gender.charAt(0)+"', '"+civilStatus+"', "
         + "'"+homeAddress+"', '"+telephoneNo+"', '"+officeNo+"', '"+faxNo+"', '"+cellphoneNo+"', '"+emailAdd+"')";
         
         
@@ -169,14 +164,6 @@ public class PersonalInfo {
      */
     public String getMI() {
         return mi;
-    }
-    
-    /**
-     * Returns the middle initial of the patient.
-     * @return  Patient Photo.
-     */
-    public byte[] getPatientPhoto(){
-        return patientPhoto;
     }
     
     /**

@@ -439,9 +439,9 @@ public class PersonalInformation extends javax.swing.JPanel {
             
                         
             pi = new PersonalInfo(surname, givenName, mi, gender, birthdate, civilStatus, nickname, occupation, homeAddress,
-            telephoneNo, officeNo, emailAdd, cellphoneNo, faxNo, null);
+            telephoneNo, officeNo, emailAdd, cellphoneNo, faxNo);
             
-            updatePersonalInfo();
+            updatePersonalInfo();            
         }else{
             if(miTF.getText().isEmpty() || hasNumbers(miTF.getText()) || miTF.getText().length() < -1 || miTF.getText().length() > 2){miTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(yearTF.getText().isEmpty() || hasLetters(yearTF.getText()) || hasSpecialCharacters(yearTF.getText())){yearTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}

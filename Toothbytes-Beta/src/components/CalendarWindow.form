@@ -90,6 +90,9 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="cdwPrevious">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.ImageIcon(BUTTON_DIR + &quot;Back.png&quot;)" type="code"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Previous"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[75, 23]"/>
@@ -104,6 +107,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="cdwNext">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.ImageIcon(BUTTON_DIR + &quot;Next.png&quot;)" type="code"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Next"/>
           </Properties>
           <Events>

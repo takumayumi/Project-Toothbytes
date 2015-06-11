@@ -519,7 +519,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
             return false;
         }
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JTextField dentalInsuranceTF;

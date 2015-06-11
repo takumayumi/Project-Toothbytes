@@ -934,7 +934,8 @@ public class MedicalCondition extends javax.swing.JPanel {
     public void updateDatabase() {
             mc.Update(patientID);
         
-    }    
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField bloodPressureTF;
     private javax.swing.JComboBox bloodTypeCB;

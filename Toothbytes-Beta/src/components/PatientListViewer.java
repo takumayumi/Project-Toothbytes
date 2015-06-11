@@ -52,7 +52,7 @@ public class PatientListViewer extends JPanel {
      * @param   pList
      *          List of patients.
      */
-    public PatientListViewer(ArrayList<Patient> pList) {
+    public PatientListViewer(ArrayList<Patient> pList) {        
         this.setLayout(new BorderLayout());
 
         iMap = mapImages(pList);
@@ -252,7 +252,7 @@ public class PatientListViewer extends JPanel {
      *          Object representation of lsl.
      */
     public void setListListener(ListSelectionListener lsl) {
-        viewer.addListSelectionListener(lsl);
+        viewer.addListSelectionListener(lsl);        
     }
 
     /**

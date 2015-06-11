@@ -22,13 +22,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -59,7 +57,9 @@ import org.hsqldb.jdbc.JDBCDriver;
 import utilities.DBAccess;
 import utilities.DataMan;
 import utilities.PersonalInfo;
+import window.forms.AdditionalInformation;
 import window.forms.InfoEditor;
+import window.forms.MedicalCondition;
 import window.forms.PersonalInformation;
 
 /**
@@ -76,15 +76,19 @@ public class RecordsWindow extends ModuleWindow {
     private MigLayout layout, formLayout, chartLayout;
     private JScrollPane scrollInfo, scrollDental, scrollGallery;
     private PatientX current;
-    private JButton patientRepBut, editInfoBut;
+    private JButton patientRepBut, editInfoBut, addInfoBut, editMedCon, checkup, history;
     
-    final String BUTTON_DIR = "res/buttons/";
-    final String PATIENTS_DIR = "res/patients/";
     private static JDBCConnection conn = null;
     private static String dir = "data/db";
     private JTable theTable;
     private DefaultTableModel tableModel;
     private JFrame owner;
+    private final String ICON_DIR = "res/buttons/";
+    
+    private JToolBar dentalBar, recordsBar;
+    private JLabel chart;
+    private boolean trigger = false;
+    private DentalChart dc = new DentalChart();
 
     /**
      * This constructor layouts the Records Window.
@@ -176,13 +180,7 @@ public class RecordsWindow extends ModuleWindow {
 //        theTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
 //        theTable.getTableHeader().setReorderingAllowed(false);
 //    }
-
-    private final String ICON_DIR = "res/buttons/";
-    JToolBar dentalBar;
-    JButton checkup, history;
-    JLabel chart;
-    private boolean trigger = false;
-    private DentalChart dc = new DentalChart();
+    
     private boolean isTriggered() {
         return trigger;
     }
@@ -255,13 +253,18 @@ public class RecordsWindow extends ModuleWindow {
         dentalViewer.add(dentalBar, BorderLayout.NORTH);
         SwingUtilities.updateComponentTreeUI(dentalViewer);
     }
-
+    
+    final String BUTTON_DIR = "res/buttons/";
+    final String PATIENTS_DIR = "res/patients/";
     /**
      * This method shows the information about the Patient from the database.
      *
      * @param p Object representation of PatientX.
      */
-    public void showInfo(PatientX p) {
+    public void showInfo(PatientX p) {      
+        recordsBar = new JToolBar("dentalBar");
+        recordsBar.setFloatable(false);
+
         //if there is a selected patient clear the viewer
         if (this.current != null) {
             infoViewer.removeAll();
@@ -372,25 +375,26 @@ public class RecordsWindow extends ModuleWindow {
         infoViewer.add(lblEadd);
         infoViewer.add(eAdd, "wrap");
         
+        //Print Report
         patientRepBut = new JButton(new ImageIcon(BUTTON_DIR + "ReportGenPatient-30x30.png"));
         patientRepBut.setBackground(WHITE);
         patientRepBut.setToolTipText("Print Patient Records");
         
         PatientRecordsReport prr = new PatientRecordsReport();
-        infoViewer.add(patientRepBut, "skip, split 4");
+        recordsBar.add(patientRepBut, "skip 20, split 4");
         patientRepBut.addActionListener(prr);
 
         //EditInfoBut
         editInfoBut = new JButton(new ImageIcon(BUTTON_DIR + "EditPersonalRecord.png"));
         editInfoBut.setBackground(WHITE);
         editInfoBut.setToolTipText("Edit Personal Information");
-        infoViewer.add(editInfoBut);
+        recordsBar.add(editInfoBut);
         editInfoBut.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 PersonalInfo pix = new PersonalInfo(current.getLastName(), current.getFirstName(), current.getMidName(), String.valueOf(current.getGender()), 
                 current.getBdate(), current.getCivilStatus(), current.getNickname(), current.getOccupation(), current.getHomeAddress(), current.getHomeNo(), 
-                current.getOfficeNo(), current.getEmailAdd(), current.getCellNo(), current.getOfficeNo(), null);
+                current.getOfficeNo(), current.getEmailAdd(), current.getCellNo(), current.getOfficeNo());
                 pix.setPatientID(String.valueOf(current.getId()));
 
                 java.awt.EventQueue.invokeLater(new Runnable(){
@@ -407,23 +411,47 @@ public class RecordsWindow extends ModuleWindow {
            }
         });
         
-        JButton addInfoBut = new JButton("Additional Info");
-        infoViewer.add(addInfoBut);
+        //Edit Additional info
+        addInfoBut = new JButton(new ImageIcon(BUTTON_DIR + "EditPersonalRecord.png"));
+        addInfoBut.setBackground(WHITE);
+        addInfoBut.setToolTipText("Edit Addtional Information");
+        recordsBar.add(addInfoBut);
         addInfoBut.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 java.awt.EventQueue.invokeLater(new Runnable(){
                     public void run(){
-                        JDialog ie = new JDialog();
-                        ie.add(new InfoEditor(current.getId()));
-                        ie.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                        ie.pack();
-                        ie.setVisible(true);
-                        ie.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                        JDialog ai = new JDialog();
+                        ai.add(new AdditionalInformation(current.getId()));
+                        ai.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                        ai.pack();
+                        ai.setVisible(true);
+                        ai.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     }
                 });
             }
         });
         
+        //Edit Additional/Med Records
+        editMedCon = new JButton(new ImageIcon(BUTTON_DIR + "EditPersonalRecord.png"));
+        editMedCon.setBackground(WHITE);
+        editMedCon.setToolTipText("Edit Medical Information");
+        recordsBar.add(editMedCon);
+        editMedCon.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){                
+                java.awt.EventQueue.invokeLater(new Runnable(){
+                    public void run(){
+                        JDialog mc = new JDialog();
+                        mc.add(new MedicalCondition(current.getId()));
+                        mc.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                        mc.pack();
+                        mc.setVisible(true);
+                        mc.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    }
+                });
+            }
+        });
+        
+        infoViewer.add(recordsBar, "skip 15");
         SwingUtilities.updateComponentTreeUI(infoViewer);
     }
     
