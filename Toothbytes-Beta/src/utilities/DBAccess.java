@@ -99,7 +99,7 @@ public class DBAccess {
             rs.next();
             //ALTER TABLE Dental_Records ADD COLUMN toothStatus VARCHAR(45) NULL;
         } catch (Exception e) {
-            System.out.println("DBAccess - dbQuery Error: "+e);
+            System.out.println("DBAccess - dbQuery Error: " + e);
             return false;
         }
         return true;
@@ -139,7 +139,7 @@ public class DBAccess {
             rs = (JDBCResultSet) stmt.executeQuery("SELECT * FROM PATIENT WHERE patientID =" + id);
 
             rs.next();
-
+            
             Calendar cal = Calendar.getInstance();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
@@ -154,28 +154,28 @@ public class DBAccess {
             return null;
         }
     }
-    
-    public static ArrayList<Picture> getPictureData(int id){
-        String query = "SELECT * FROM DENTAL_PICTURES WHERE PATIENTID = "+id;
+
+    public static ArrayList<Picture> getPictureData(int id) {
+        String query = "SELECT * FROM DENTAL_PICTURES WHERE PATIENTID = " + id;
         ArrayList<Picture> pictureList = new ArrayList<>();
-        
-        try{
+
+        try {
             rs = (JDBCResultSet) stmt.executeQuery(query);
-            while(rs.next()){
+            while (rs.next()) {
                 Calendar cal;
-                try{
+                try {
                     cal = Calendar.getInstance();
                     cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(4)));
-                }catch(Exception e){
+                } catch (Exception e) {
                     cal = null;
                 }
                 Picture pic = new Picture(rs.getInt(1), rs.getInt(2), rs.getString(3), cal, rs.getString(5), rs.getString(6), rs.getString(7));
                 pictureList.add(pic);
             }
-        }catch(Exception e){
-            System.out.println("DBAccess - getPictureData Error:"+e);
+        } catch (Exception e) {
+            System.out.println("DBAccess - getPictureData Error:" + e);
         }
-        
+
         return pictureList;
     }
 
@@ -390,7 +390,7 @@ public class DBAccess {
                     cal = null;
                 }
                 PatientX px = new PatientX(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), cal,
-                        rs.getString(6), rs.getString(7), rs.getString(8).charAt(0), rs.getString(9), rs.getString(10), 
+                        rs.getString(6), rs.getString(7), rs.getString(8).charAt(0), rs.getString(9), rs.getString(10),
                         rs.getString(11), rs.getString(12), rs.getString(13), rs.getString(14), rs.getString(15));
                 patientX.add(px);
             }
@@ -410,85 +410,85 @@ public class DBAccess {
             System.out.println("DBAccess - addAppointmentData Error: " + e);
         }
     }
-    
-    public static ArrayList<AdditionalInfo> getAdditionalInfoData(int patientID){
+
+    public static ArrayList<AdditionalInfo> getAdditionalInfoData(int patientID) {
         ArrayList<AdditionalInfo> additionalInfoList = new ArrayList<>();
         String query = "SELECT * FROM ADDITIONAL_INFO WHERE PATIENTID = " + patientID + ";";
-        
-        try{
+
+        try {
             rs = (JDBCResultSet) stmt.executeQuery(query);
-                       
-            while(rs.next()){
+
+            while (rs.next()) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                
+
                 Calendar effectiveDate = null;
                 Calendar lastDentalVisit = null;
-                                
-                try{
+
+                try {
                     effectiveDate = Calendar.getInstance();
                     effectiveDate.setTime(sdf.parse(rs.getString(4)));
-                }catch(Exception e){
+                } catch (Exception e) {
                     effectiveDate = null;
                 }
-                
-                try{
+
+                try {
                     lastDentalVisit = Calendar.getInstance();
                     lastDentalVisit.setTime(sdf.parse(rs.getString(10)));
-                }catch(Exception e){
+                } catch (Exception e) {
                     lastDentalVisit = null;
                 }
-                
-                AdditionalInfo ai = new AdditionalInfo(rs.getInt(1), rs.getInt(2), rs.getString(3), effectiveDate,rs.getString(5), rs.getString(6),
-                rs.getString(7), rs.getString(8), rs.getString(9), lastDentalVisit, rs.getString(11), rs.getString(12), rs.getString(13), rs.getString(14));
-                
+
+                AdditionalInfo ai = new AdditionalInfo(rs.getInt(1), rs.getInt(2), rs.getString(3), effectiveDate, rs.getString(5), rs.getString(6),
+                        rs.getString(7), rs.getString(8), rs.getString(9), lastDentalVisit, rs.getString(11), rs.getString(12), rs.getString(13), rs.getString(14));
+
                 additionalInfoList.add(ai);
             }
-            
-        }catch(Exception e){
-            System.out.println("DBAccess - getAdditionalInfoData Error: "+e);
+
+        } catch (Exception e) {
+            System.out.println("DBAccess - getAdditionalInfoData Error: " + e);
         }
-        
+
         return additionalInfoList;
     }
-    
-    public static ArrayList<MedicalCond> getMedicalConditionData(int patientID){
-        String query = "SELECT * FROM MEDICAL_HISTORY WHERE patientID = "+patientID;
-        
+
+    public static ArrayList<MedicalCond> getMedicalConditionData(int patientID) {
+        String query = "SELECT * FROM MEDICAL_HISTORY WHERE patientID = " + patientID;
+
         ArrayList<MedicalCond> medicalConditionList = new ArrayList<>();
-        
-        try{
+
+        try {
             rs = (JDBCResultSet) stmt.executeQuery(query);
-            while(rs.next()){
+            while (rs.next()) {
                 Calendar cal;
-                try{
+                try {
                     cal = Calendar.getInstance();
                     cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(19)));
-                }catch(Exception e){
+                } catch (Exception e) {
                     cal = null;
                 }
-                
+
                 MedicalCond mc = new MedicalCond(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5),
-                rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12),
-                rs.getString(13), rs.getString(14), rs.getString(15), rs.getString(16), rs.getString(17), rs.getString(18), cal);
-                
+                        rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12),
+                        rs.getString(13), rs.getString(14), rs.getString(15), rs.getString(16), rs.getString(17), rs.getString(18), cal);
+
                 medicalConditionList.add(mc);
             }
-        }catch(Exception e){
-            System.out.println("DBAccess - getMedicalConditionData Error: "+e);
+        } catch (Exception e) {
+            System.out.println("DBAccess - getMedicalConditionData Error: " + e);
         }
-        
+
         return medicalConditionList;
     }
 
     public static boolean validate(String usr, char[] pwd) {
         boolean isValid = false;
         PreparedStatement findCredential = null;
-        
+
         String pass = "";
         for (int i = 0; i < pwd.length; i++) {
             pass = pass + pwd[i];
         }
-        
+
         String query = "SELECT * FROM ACCOUNTS "
                 + "where USERNAME = ? AND PASSWORD = ?";
         try {
@@ -496,34 +496,38 @@ public class DBAccess {
             findCredential.setString(1, usr);
             findCredential.setString(2, pass);
 //            isValid = findCredential.execute();
-            rs = (JDBCResultSet)findCredential.executeQuery();
+            rs = (JDBCResultSet) findCredential.executeQuery();
 //            while (rs.next()) {
             isValid = rs.next();
 //            }
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return isValid;
     }
-    
+
     public static ArrayList<Treatment> getTreatmentList(int id) {
         ArrayList<Treatment> tList = new ArrayList<Treatment>();
         PreparedStatement queryTreatment = null;
         Calendar cal = Calendar.getInstance();
-        
-        String query = "select TREATMENTDATE, TOOTHNO, PROCEDURE from DENTAL_RECORDS "+
-                "where PATIENTID = ?";
+
+        String query = "select TREATMENTDATE, TOOTHNO, PROCEDURE from DENTAL_RECORDS "
+                + "where PATIENTID = ?";
         try {
             queryTreatment = conn.prepareStatement(query);
             queryTreatment.setInt(1, id);
 //            isValid = findCredential.execute();
-            rs = (JDBCResultSet)queryTreatment.executeQuery();
-            
+            rs = (JDBCResultSet) queryTreatment.executeQuery();
+
             while (rs.next()) {
-                cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(1)));
-                Treatment temp = new Treatment(cal, rs.getString(2), rs.getString(3));
-                tList.add(temp);
+                if (rs.getString(2)!=null) {
+                    if (!rs.getString(2).equals("null")) {
+                        cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(1)));
+                        Treatment temp = new Treatment(cal, rs.getString(2), rs.getString(3));
+                        tList.add(temp);
+                    }
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
@@ -532,7 +536,7 @@ public class DBAccess {
         }
         return tList;
     }
-    
+
     public static void closeDB() {
         try {
             stmt.close();
@@ -541,6 +545,6 @@ public class DBAccess {
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 }

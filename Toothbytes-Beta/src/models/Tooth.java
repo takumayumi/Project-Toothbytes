@@ -5,7 +5,7 @@
  */
 package models;
 
-import components.ToothListener;
+import components.listener.ToothListener;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
