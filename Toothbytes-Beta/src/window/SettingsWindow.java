@@ -297,11 +297,12 @@ public class SettingsWindow extends javax.swing.JDialog {
                     .addComponent(jLabel3)
                     .addComponent(newServiceStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(resetButtonExisting)
-                    .addComponent(saveButtonNew)
-                    .addComponent(clearButtonNew)
-                    .addComponent(saveButtonExisting))
+                .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(saveButtonExisting, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(resetButtonExisting)
+                        .addComponent(saveButtonNew)
+                        .addComponent(clearButtonNew)))
                 .addGap(21, 21, 21))
         );
 

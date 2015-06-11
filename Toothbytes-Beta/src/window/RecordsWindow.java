@@ -14,6 +14,7 @@ import static java.awt.Color.WHITE;
 import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -78,6 +79,7 @@ public class RecordsWindow extends ModuleWindow {
     private JButton patientRepBut, editInfoBut;
     
     final String BUTTON_DIR = "res/buttons/";
+    final String PATIENTS_DIR = "res/patients/";
     private static JDBCConnection conn = null;
     private static String dir = "data/db";
     private JTable theTable;
@@ -265,11 +267,7 @@ public class RecordsWindow extends ModuleWindow {
             infoViewer.removeAll();
         }
 
-        this.current = p;
-
-        File f = new File("res/images/" + p.getId() + ".jpg");
-
-        JLabel photo = new JLabel();        
+        this.current = p;     
 
         JLabel[] name = new JLabel[]{new JLabel(p.getLastName()), new JLabel(p.getFirstName()), new JLabel(p.getMidName())};
         for (JLabel n : name) {
@@ -315,9 +313,15 @@ public class RecordsWindow extends ModuleWindow {
 
         JLabel eAdd = new JLabel(p.getEmailAdd());
         JLabel lblEadd = new JLabel("Email Address:");
-
+        
+        JLabel photo = new JLabel();
+        
+        File f = new File("res/patients/" + p.getId() + ".jpg");
+        String path = PATIENTS_DIR + p.getId() + ".jpg";
+        ImageIcon croppedImg = ResizeImage(path);
+        
         if (f.exists()) {
-            photo.setIcon(new ImageIcon(f.getAbsolutePath()));
+            photo.setIcon(croppedImg);
         } else {
             photo.setIcon(new ImageIcon("res/images/patient.png"));
         }
@@ -373,7 +377,7 @@ public class RecordsWindow extends ModuleWindow {
         patientRepBut.setToolTipText("Print Patient Records");
         
         PatientRecordsReport prr = new PatientRecordsReport();
-        infoViewer.add(patientRepBut, "skip split 4");
+        infoViewer.add(patientRepBut, "skip, split 4");
         patientRepBut.addActionListener(prr);
 
         //EditInfoBut
@@ -421,6 +425,14 @@ public class RecordsWindow extends ModuleWindow {
         });
         
         SwingUtilities.updateComponentTreeUI(infoViewer);
+    }
+    
+    public ImageIcon ResizeImage(String imagePath){
+        ImageIcon MyImage = new ImageIcon(imagePath);
+        Image img = MyImage.getImage();        
+        Image newImage = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImage);
+        return image;
     }
     
     public void printPatientRecords(){        

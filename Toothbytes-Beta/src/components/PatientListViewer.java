@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -140,19 +141,30 @@ public class PatientListViewer extends JPanel {
      * @return  Map object.
      */
     private final String IMG_DIR = "res/images/";
+    private final String PATIENTS_DIR = "res/patients/";
+    
     private Map<String, ImageIcon> mapImages(ArrayList<Patient> pList) {
         Map<String, ImageIcon> map = new HashMap<>();
         for (Patient p : pList) {
-            File f = new File(IMG_DIR + p.getId() + ".jpg");
-            if (f.exists()) {
-                map.put(p.getFullName() + "", new ImageIcon(
-                        IMG_DIR + p.getId() + ".jpg"));
+            File f = new File(PATIENTS_DIR + p.getId() + ".jpg");
+            String path = PATIENTS_DIR + p.getId() + ".jpg";
+            ImageIcon croppedImg = ResizeImage(path);
+            
+            if(f.exists()){
+                map.put(p.getFullName() + "", croppedImg);
             } else {
-                map.put(p.getFullName() + "", new ImageIcon(
-                        IMG_DIR + "patient.png"));
+                map.put(p.getFullName() + "", new ImageIcon(IMG_DIR + "patient.png"));
             }
         }
         return map;
+    }
+    
+    public ImageIcon ResizeImage(String imagePath){
+        ImageIcon MyImage = new ImageIcon(imagePath);
+        Image img = MyImage.getImage();        
+        Image newImage = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImage);
+        return image;
     }
 
     /**
