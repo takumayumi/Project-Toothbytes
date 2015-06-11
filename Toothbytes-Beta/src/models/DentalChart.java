@@ -5,7 +5,7 @@
  */
 package models;
 
-import components.listener.ToothListener;
+import components.ToothListener;
 import java.awt.BorderLayout;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 
 /**
  *
@@ -39,6 +40,7 @@ public class DentalChart extends JPanel implements ToothListener {
     private static DefaultTableModel tableModel;
     private JTable table;
     private JPanel tablePanel;
+    private JFreeChart freeChart;
     private ChartPanel chartPanel;
 
     public DentalChart() {
@@ -47,7 +49,7 @@ public class DentalChart extends JPanel implements ToothListener {
         this.setSize(970, 600);
         this.setLayout(mainLayout);
 
-        chartPanel = new ChartPanel();
+        chartPanel = new ChartPanel(freeChart, true);
 
         tablePanel = new JPanel(new BorderLayout());
 

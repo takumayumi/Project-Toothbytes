@@ -275,7 +275,8 @@ public class RecordsWindow extends ModuleWindow {
         for (JLabel n : name) {
             n.setFont(new Font("Calibri", Font.BOLD, 14));
         }
-
+        JLabel lblName = new JLabel("Name:");
+        
         JLabel age = new JLabel(DataMan.getAge(p.getBdate()) + "");
         JLabel lblAge = new JLabel("Age:");
 
@@ -321,58 +322,58 @@ public class RecordsWindow extends ModuleWindow {
             photo.setIcon(new ImageIcon("res/images/patient.png"));
         }
 
-        infoViewer.add(photo, "skip 13, span 2");
+        infoViewer.add(photo, "wrap");
+        
+        infoViewer.add(lblName);
+        infoViewer.add(name[0], "split 3");
+        infoViewer.add(name[1]);
+        infoViewer.add(name[2], "wrap");
 
-        infoViewer.add(name[0], "span 2");
-        infoViewer.add(name[1], "skip1, span 2");
-        infoViewer.add(name[2], "skip1, span 1");
+        infoViewer.add(lblAge);
+        infoViewer.add(age, "wrap");
 
-        infoViewer.add(lblAge, "skip 3, span 2");
+        infoViewer.add(lblBdate);
+        infoViewer.add(bdate, "wrap");
 
-        infoViewer.add(age, "span 7");
+        infoViewer.add(lblOccupation);
+        infoViewer.add(occupation, "wrap");
 
-        infoViewer.add(lblBdate, "skip 3, span 2");
-        infoViewer.add(bdate, "span 7");
+        infoViewer.add(lblCivstat);
+        infoViewer.add(civstat, "wrap");
 
-        infoViewer.add(lblOccupation, "skip 3, span 2");
-        infoViewer.add(occupation, "span 7");
+        infoViewer.add(lblGender);
+        infoViewer.add(gender, "wrap");
 
-        infoViewer.add(lblCivstat, "skip 3, span 2");
-        infoViewer.add(civstat, "span 7");
+        infoViewer.add(lblNname);
+        infoViewer.add(nName, "wrap");
 
-        infoViewer.add(lblGender, "skip 3, span 2");
-        infoViewer.add(gender, "span 7");
+        infoViewer.add(lblHomeadd);
+        infoViewer.add(homeadd, "wrap");
 
-        infoViewer.add(lblNname, "skip 3, span 2");
-        infoViewer.add(nName, "span 7");
+        infoViewer.add(lblHomeno);
+        infoViewer.add(homeno, "wrap");
 
-        infoViewer.add(lblHomeadd, "skip 3, span 2");
-        infoViewer.add(homeadd, "span 7");
+        infoViewer.add(lblOfficeno);
+        infoViewer.add(officeno, "wrap");
 
-        infoViewer.add(lblHomeno, "skip 3, span 2");
-        infoViewer.add(homeno, "span 7");
+        infoViewer.add(lblFaxno);
+        infoViewer.add(faxno, "wrap");
 
-        infoViewer.add(lblOfficeno, "skip 3, span 2");
-        infoViewer.add(officeno, "span 7");
+        infoViewer.add(lblFaxno);
+        infoViewer.add(faxno, "wrap");
 
-        infoViewer.add(lblFaxno, "skip 3, span 2");
-        infoViewer.add(faxno, "span 7");
+        infoViewer.add(lblCellno);
+        infoViewer.add(cellno, "wrap");
 
-        infoViewer.add(lblFaxno, "skip 3, span 2");
-        infoViewer.add(faxno, "span 7");
-
-        infoViewer.add(lblCellno, "skip 3, span 2");
-        infoViewer.add(cellno, "span 7");
-
-        infoViewer.add(lblEadd, "skip 3, span 2");
-        infoViewer.add(eAdd, "span 7");
+        infoViewer.add(lblEadd);
+        infoViewer.add(eAdd, "wrap");
         
         patientRepBut = new JButton(new ImageIcon(BUTTON_DIR + "ReportGenPatient-30x30.png"));
         patientRepBut.setBackground(WHITE);
         patientRepBut.setToolTipText("Print Patient Records");
         
         PatientRecordsReport prr = new PatientRecordsReport();
-        infoViewer.add(patientRepBut, "skip 3");
+        infoViewer.add(patientRepBut, "skip split 4");
         patientRepBut.addActionListener(prr);
 
         //EditInfoBut

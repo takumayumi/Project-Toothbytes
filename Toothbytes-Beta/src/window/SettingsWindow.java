@@ -166,7 +166,8 @@ public class SettingsWindow extends javax.swing.JDialog {
         });
 
         saveButtonExisting.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Save.png"));
-        saveButtonExisting.setToolTipText("Save");
+        saveButtonExisting.setText("Save");
+        saveButtonExisting.setToolTipText("");
         saveButtonExisting.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonExistingActionPerformed(evt);
@@ -174,7 +175,8 @@ public class SettingsWindow extends javax.swing.JDialog {
         });
 
         resetButtonExisting.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Undo.png"));
-        resetButtonExisting.setToolTipText("Reset");
+        resetButtonExisting.setText("Reset");
+        resetButtonExisting.setToolTipText("");
         resetButtonExisting.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetButtonExistingActionPerformed(evt);
@@ -197,7 +199,8 @@ public class SettingsWindow extends javax.swing.JDialog {
         });
 
         saveButtonNew.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Save.png"));
-        saveButtonNew.setToolTipText("Save");
+        saveButtonNew.setText("Save");
+        saveButtonNew.setToolTipText("");
         saveButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonNewActionPerformed(evt);
@@ -205,7 +208,8 @@ public class SettingsWindow extends javax.swing.JDialog {
         });
 
         clearButtonNew.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Cancel.png"));
-        clearButtonNew.setToolTipText("Clear");
+        clearButtonNew.setText("Clear");
+        clearButtonNew.setToolTipText("");
         clearButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearButtonNewActionPerformed(evt);
@@ -239,7 +243,7 @@ public class SettingsWindow extends javax.swing.JDialog {
                                     .addComponent(feeService)
                                     .addComponent(serviceOffered, 0, 150, Short.MAX_VALUE)))))
                     .addGroup(servicesPanelLayout.createSequentialGroup()
-                        .addGap(154, 154, 154)
+                        .addGap(100, 100, 100)
                         .addComponent(resetButtonExisting)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButtonExisting)))
@@ -292,13 +296,13 @@ public class SettingsWindow extends javax.swing.JDialog {
                     .addComponent(jLabel12)
                     .addComponent(jLabel3)
                     .addComponent(newServiceStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(servicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(saveButtonExisting, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resetButtonExisting, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saveButtonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(clearButtonNew, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24))
+                    .addComponent(resetButtonExisting)
+                    .addComponent(saveButtonNew)
+                    .addComponent(clearButtonNew)
+                    .addComponent(saveButtonExisting))
+                .addGap(21, 21, 21))
         );
 
         jPanel2.setBackground(new java.awt.Color(250, 255, 250));
@@ -396,10 +400,10 @@ public class SettingsWindow extends javax.swing.JDialog {
                         .addComponent(servicesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCancelSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSaveSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(332, 332, 332)
+                        .addComponent(btnCancelSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSaveSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(11, 11, 11))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

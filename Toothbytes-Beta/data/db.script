@@ -62,7 +62,7 @@ GRANT DBA TO "root"
 SET SCHEMA SYSTEM_LOBS
 INSERT INTO BLOCKS VALUES(0,2147483647,0)
 SET SCHEMA PUBLIC
-INSERT INTO ACCOUNTS VALUES(0,'pascual','12345')
+INSERT INTO ACCOUNTS VALUES(0,'rubenpascual','12345')
 INSERT INTO ACCOUNTS VALUES(1,'asdf','asdf')
 INSERT INTO ADDITIONAL_INFO VALUES(1,1,'Maxicare','2015-08-06','Ruby Dasalla','Call Center Agent','Smile Dental Clinic','Why not?','Danilo Hermosa','2015-05-03','Charlotte Chua','09208694661','Pediatrician','09208694661')
 INSERT INTO ADDITIONAL_INFO VALUES(2,2,'Philhealth','2014-12-27','Eduard Gonzales','Doctor','NULL','NULL','NULL','2015-04-14','Charlotte Chua','Assumption Road','Pediatrician','09208694661')
