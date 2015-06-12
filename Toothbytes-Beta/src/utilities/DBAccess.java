@@ -310,6 +310,45 @@ public class DBAccess {
             System.out.println("addServicesData Error: " + e);
         }
     }
+    
+    public static void updateAppointmentData(Appointment appointment){
+        //ArrayList<Appointment> appointmentDate = getAppointmentData;
+        String updateAppointmentDate            = "UPDATE APPOINTMENT SET APPOINTMENTDATE = '" +appointment.getAppointmentDate()+"' WHERE appointmentID = " + appointment.getAppointmentID()  + ";";
+        String updateAppointmentTime            = "UPDATE APPOINTMENT SET APPOINTMENTTIME = '" +appointment.getAppointmentTime()+"' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
+        String updateAppointmentEndTime     = "UPDATE APPOINTMENT SET APPOINTMENTENDTIME = '" +appointment.getAppointmentEndTime()+"' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
+        String updateAppointmentRemarks = "UPDATE APPOINTMENT SET APPOINTMENTREMARKS = '" +appointment.getAppointmentRemarks()+"' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
+        
+        try {
+            rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentDate);
+            rs.next();
+            System.out.println(appointment.getAppointmentID());
+            System.out.println(updateAppointmentDate);
+        } catch (Exception e) {
+            System.out.println("updateAppointmentDate Error: " + e);
+        }
+        
+        try {
+            rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentTime);
+            rs.next();
+        } catch (Exception e) {
+            System.out.println("updateAppointmentTime Error: " + e);
+        }
+        
+        try {
+            rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentEndTime);
+            rs.next();
+        } catch (Exception e) {
+            System.out.println("updateAppointmentEndTime Error: " + e);
+        }
+        
+        try {
+            rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentRemarks);
+            rs.next();
+        } catch (Exception e) {
+            System.out.println("updateAppointmentRemarks Error: " + e);
+        }
+        
+    }
 
     public static ArrayList<Appointment> getAppointmentData(String condition) {
         String getAppointmentData = "SELECT * FROM APPOINTMENT" + condition;

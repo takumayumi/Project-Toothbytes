@@ -274,28 +274,28 @@ JOIN medical_history md ON pa.patientID = md.patientID]]>
 				</textElement>
 				<text><![CDATA[Balance]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true" pattern="MM/dd/yyyy">
+			<textField isStretchWithOverflow="true" pattern="MM/dd/yyyy" isBlankWhenNull="true">
 				<reportElement style="Detail" positionType="Float" x="30" y="654" width="132" height="18" uuid="a33babd6-9354-437f-b00d-566e1e944ff3"/>
 				<textElement>
 					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{TREATMENTDATE}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="Detail" positionType="Float" x="162" y="654" width="120" height="18" uuid="2f68c214-299b-4136-ae09-ebd2d6c69231"/>
 				<textElement>
 					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{PROCEDURE}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,###.00">
+			<textField isStretchWithOverflow="true" pattern="#,###.00" isBlankWhenNull="true">
 				<reportElement style="Detail" positionType="Float" x="282" y="654" width="136" height="18" uuid="a7af9ed2-e80f-47e9-a107-94eaca68cb16"/>
 				<textElement>
 					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{AMOUNTCHARGED}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement style="Detail" positionType="Float" x="418" y="654" width="110" height="18" uuid="5c7c9db0-e0fe-4d09-92d6-cbfe0ac6e276"/>
 				<textElement>
 					<font fontName="SansSerif" size="11"/>

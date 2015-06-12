@@ -9,7 +9,6 @@ import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +44,6 @@ public class CalendarWindow extends ModuleWindow {
     
     public CalendarWindow() {
         initComponents();
-        
         calendarSetUp();
     }
     
@@ -194,7 +192,7 @@ public class CalendarWindow extends ModuleWindow {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Appointment Viewer"));
 
         cdwPrevious.setIcon(new javax.swing.ImageIcon(BUTTON_DIR + "Back.png"));
-        cdwPrevious.setText("Previous");
+        cdwPrevious.setToolTipText("Previous");
         cdwPrevious.setMaximumSize(new java.awt.Dimension(75, 23));
         cdwPrevious.setMinimumSize(new java.awt.Dimension(75, 23));
         cdwPrevious.addActionListener(new java.awt.event.ActionListener() {
@@ -204,7 +202,7 @@ public class CalendarWindow extends ModuleWindow {
         });
 
         cdwNext.setIcon(new javax.swing.ImageIcon(BUTTON_DIR + "Next.png"));
-        cdwNext.setText("Next");
+        cdwNext.setToolTipText("Next");
         cdwNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cdwNextActionPerformed(evt);
@@ -222,23 +220,27 @@ public class CalendarWindow extends ModuleWindow {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(cdwPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(97, 97, 97)
+                .addGap(26, 26, 26)
+                .addComponent(cdwPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(246, 246, 246)
                 .addComponent(cdwMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75)
+                .addGap(30, 30, 30)
                 .addComponent(cdwYear, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
-                .addComponent(cdwNext, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 296, Short.MAX_VALUE)
+                .addComponent(cdwNext, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cdwPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cdwNext)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(cdwPrevious, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(cdwNext, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(cdwMonth)
                     .addComponent(cdwYear))
                 .addContainerGap())
@@ -354,7 +356,7 @@ public class CalendarWindow extends ModuleWindow {
             if(values.length > 1){
                 ArrayList<Appointment> appointmentDate = getAppointment(formatDate(mode));
                 for(int i = 0; i < appointmentDate.size(); i++){
-                    JMenuItem editAppointment = new JMenuItem("Edit Appointment: " + appointmentDate.get(i).getAppointmentTime());
+                    JMenuItem editAppointment = new JMenuItem("Edit Appointment: " + appointmentDate.get(i).getAppointmentTime() + " " + appointmentDate.get(i).getAppointmentID());
                     int spec = i;
                     editAppointment.addActionListener(new ActionListener(){
                         public void actionPerformed(ActionEvent evt){
