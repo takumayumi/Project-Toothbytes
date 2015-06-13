@@ -1,6 +1,2 @@
-/*C5*/SET SCHEMA PUBLIC
-DELETE FROM PATIENT WHERE PATIENTID=104
-INSERT INTO PATIENT VALUES(104,'Abasolo','Joshua','A','null','1994-02-09','None','Josh','F','Single','Purok 56, Bokawkan Rd, Baguio City','','','','','joshua.abasolo9@yahoo.com')
-COMMIT
-/*C6*/SET SCHEMA PUBLIC
+/*C3*/SET SCHEMA PUBLIC
 DISCONNECT

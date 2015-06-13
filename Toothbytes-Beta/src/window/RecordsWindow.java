@@ -61,6 +61,7 @@ import window.forms.AdditionalInformation;
 import window.forms.InfoEditor;
 import window.forms.MedicalCondition;
 import window.forms.PersonalInformation;
+import window.forms.UpdatePersonalInformation;
 
 /**
  * <h1>RecordsWindow</h1>
@@ -401,7 +402,7 @@ public class RecordsWindow extends ModuleWindow {
                 java.awt.EventQueue.invokeLater(new Runnable(){
                     public void run(){
                         JDialog pI = new JDialog();
-                        pI.add(new PersonalInformation(pix));
+                        pI.add(new UpdatePersonalInformation(pix));
                         pI.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                         pI.pack();
                         pI.setVisible(true);
