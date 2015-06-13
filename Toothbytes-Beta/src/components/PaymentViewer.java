@@ -5,19 +5,21 @@
 */
 package components;
 import java.awt.Dialog;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import models.PatientX;
@@ -26,13 +28,13 @@ import models.RecordsX;
 import utilities.DBAccess;
 import window.forms.MiniBilling;
 import window.forms.SetAppointment;
-import window.forms.SetPaymentSchedule;
 
 public class PaymentViewer extends JPanel{
     PatientX px;
     private int patientID;
     private ArrayList<RecordsX> recordsX;
     private ArrayList<PaymentX> paymentX;
+    private String PATIENTS_DIR = "res/patients/";
     
     public PaymentViewer(int patientID) {
         initComponents();
@@ -63,6 +65,17 @@ public class PaymentViewer extends JPanel{
     private void setPatientInfo(){
         px = DBAccess.getData(patientID);
         patientNameLabel.setText(px.getFullName());
+        
+        File f = new File("res/patients/" + px.getId() + ".jpg");
+        String path = PATIENTS_DIR + px.getId() + ".jpg";
+        ImageIcon croppedImg = ResizeImage(path);
+        
+        if (f.exists()) {
+            patientImage.setIcon(croppedImg);
+        } else {
+            patientImage.setIcon(new ImageIcon("res/images/patient.png"));
+        }
+        
         
         try{
             if(!px.getCellNo().equalsIgnoreCase("NULL")){
@@ -139,6 +152,14 @@ public class PaymentViewer extends JPanel{
         }
     }
     
+    public ImageIcon ResizeImage(String imagePath){
+        ImageIcon MyImage = new ImageIcon(imagePath);
+        Image img = MyImage.getImage();        
+        Image newImage = img.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImage);
+        return image;
+    }
+    
     private void setTransactionsTable(){
         recordsX = DBAccess.getRecordsData(patientID);
         
@@ -190,7 +211,6 @@ public class PaymentViewer extends JPanel{
 
         BillingPanel = new javax.swing.JPanel();
         personalInformationPanel = new javax.swing.JPanel();
-        patientPhotoPanel = new javax.swing.JPanel();
         patientNameLabel = new javax.swing.JLabel();
         addressLabel = new javax.swing.JLabel();
         genderLabel = new javax.swing.JLabel();
@@ -199,6 +219,7 @@ public class PaymentViewer extends JPanel{
         emailAddressLabel = new javax.swing.JLabel();
         cellphoneNo = new javax.swing.JLabel();
         homeNoLabel = new javax.swing.JLabel();
+        patientImage = new javax.swing.JLabel();
         detailsPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         detailsTable = new javax.swing.JTable();
@@ -210,19 +231,6 @@ public class PaymentViewer extends JPanel{
 
         personalInformationPanel.setBackground(new java.awt.Color(250, 255, 250));
         personalInformationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Patient Information"));
-
-        patientPhotoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-
-        javax.swing.GroupLayout patientPhotoPanelLayout = new javax.swing.GroupLayout(patientPhotoPanel);
-        patientPhotoPanel.setLayout(patientPhotoPanelLayout);
-        patientPhotoPanelLayout.setHorizontalGroup(
-            patientPhotoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 115, Short.MAX_VALUE)
-        );
-        patientPhotoPanelLayout.setVerticalGroup(
-            patientPhotoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 115, Short.MAX_VALUE)
-        );
 
         patientNameLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         patientNameLabel.setText("Last, First MI.");
@@ -246,14 +254,17 @@ public class PaymentViewer extends JPanel{
         homeNoLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         homeNoLabel.setText("HomeNo");
 
+        patientImage.setBackground(new java.awt.Color(204, 204, 204));
+        patientImage.setOpaque(true);
+
         javax.swing.GroupLayout personalInformationPanelLayout = new javax.swing.GroupLayout(personalInformationPanel);
         personalInformationPanel.setLayout(personalInformationPanelLayout);
         personalInformationPanelLayout.setHorizontalGroup(
             personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(personalInformationPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(patientPhotoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(patientImage, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(personalInformationPanelLayout.createSequentialGroup()
                         .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -278,7 +289,7 @@ public class PaymentViewer extends JPanel{
             personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(personalInformationPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(personalInformationPanelLayout.createSequentialGroup()
                         .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(patientNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -295,8 +306,9 @@ public class PaymentViewer extends JPanel{
                         .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cellphoneNo)
                             .addComponent(emailAddressLabel))
-                        .addContainerGap(22, Short.MAX_VALUE))
-                    .addComponent(patientPhotoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 11, Short.MAX_VALUE))
+                    .addComponent(patientImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         detailsPanel.setBackground(new java.awt.Color(250, 255, 250));
@@ -531,8 +543,8 @@ public class PaymentViewer extends JPanel{
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel occupationLabel;
+    private javax.swing.JLabel patientImage;
     private javax.swing.JLabel patientNameLabel;
-    private javax.swing.JPanel patientPhotoPanel;
     private javax.swing.JPanel personalInformationPanel;
     private javax.swing.JPanel transactionPanel;
     private javax.swing.JTable transactionsTable;
