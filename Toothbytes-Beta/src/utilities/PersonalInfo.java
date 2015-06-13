@@ -31,7 +31,8 @@ public class PersonalInfo {
     String officeNo;
     String emailAdd;
     String cellphoneNo;
-    String faxNo;
+    String faxNo;    
+    byte[] patientPhoto;
 
     public PersonalInfo() {}
     
@@ -70,7 +71,7 @@ public class PersonalInfo {
     public PersonalInfo(String surname, String givenName, String middleInitial, 
         String gender, Calendar birthDate, String civilStatus, String nickname, 
         String occupation, String homeAddress, String telephoneNo, 
-        String officeNo, String emailAdd, String cellphoneNo, String faxNo) {
+        String officeNo, String emailAdd, String cellphoneNo, String faxNo, byte[] patientPhoto) {
         
         this.surname = surname;
         this.givenName = givenName;
@@ -85,7 +86,8 @@ public class PersonalInfo {
         this.officeNo = officeNo;
         this.emailAdd = emailAdd;
         this.cellphoneNo = cellphoneNo;
-        this.faxNo = faxNo;
+        this.faxNo = faxNo;        
+        this.patientPhoto = patientPhoto;
     }
     
     /**
@@ -126,7 +128,7 @@ public class PersonalInfo {
     
     public void NewPersonalInfo(){
         String PersonalInfoUpdate = "INSERT INTO PATIENT VALUES("+patientID+", '"+surname+"', '"+givenName+"', '"+mi.charAt(0)+"', "
-        + "'"+birthDate.get(Calendar.YEAR)+"-"+birthDate.get(Calendar.MONTH)+"-"+birthDate.get(Calendar.DAY_OF_MONTH) +"', '"+occupation+"', '"+nickname+"', '"+gender.charAt(0)+"', '"+civilStatus+"', "
+        + "'"+Arrays.toString(patientPhoto)+"', '"+birthDate.get(Calendar.YEAR)+"-"+birthDate.get(Calendar.MONTH)+"-"+birthDate.get(Calendar.DAY_OF_MONTH) +"', '"+occupation+"', '"+nickname+"', '"+gender.charAt(0)+"', '"+civilStatus+"', "
         + "'"+homeAddress+"', '"+telephoneNo+"', '"+officeNo+"', '"+faxNo+"', '"+cellphoneNo+"', '"+emailAdd+"')";
         
         

@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import models.Appointment;
 import utilities.DBAccess;
 import window.forms.SetAppointment;
+import window.forms.UpdateAppointment;
 
 /**
  *
@@ -234,15 +235,15 @@ public class CalendarWindow extends ModuleWindow {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cdwMonth)
+                        .addComponent(cdwYear))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
-                        .addComponent(cdwPrevious, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(cdwNext, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(cdwMonth)
-                    .addComponent(cdwYear))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cdwPrevious, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cdwNext, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -341,7 +342,7 @@ public class CalendarWindow extends ModuleWindow {
                             SetAppointment sA = new SetAppointment(mode);
 
                             nA.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                            nA.setPreferredSize(sA.getPreferredSize());
+                            nA.setPreferredSize(sA.getMaximumSize());
                             nA.add(sA);
                             nA.pack();
                             nA.setVisible(true);
@@ -363,11 +364,11 @@ public class CalendarWindow extends ModuleWindow {
                             java.awt.EventQueue.invokeLater(new Runnable(){
                                 public void run(){
                                     JDialog nA = new JDialog();
-                                    SetAppointment sA = new SetAppointment(appointmentDate.get(spec));
+                                    UpdateAppointment uA = new UpdateAppointment(appointmentDate.get(spec));
 
                                     nA.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                                    nA.setPreferredSize(sA.getPreferredSize());
-                                    nA.add(sA);
+                                    nA.setPreferredSize(uA.getPreferredSize());
+                                    nA.add(uA);
                                     nA.pack();
                                     nA.setVisible(true);
                                     nA.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

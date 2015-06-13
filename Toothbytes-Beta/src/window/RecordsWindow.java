@@ -394,7 +394,8 @@ public class RecordsWindow extends ModuleWindow {
             public void actionPerformed(ActionEvent e) {
                 PersonalInfo pix = new PersonalInfo(current.getLastName(), current.getFirstName(), current.getMidName(), String.valueOf(current.getGender()), 
                 current.getBdate(), current.getCivilStatus(), current.getNickname(), current.getOccupation(), current.getHomeAddress(), current.getHomeNo(), 
-                current.getOfficeNo(), current.getEmailAdd(), current.getCellNo(), current.getOfficeNo());
+                current.getOfficeNo(), current.getEmailAdd(), current.getCellNo(), current.getOfficeNo(), null);
+                
                 pix.setPatientID(String.valueOf(current.getId()));
 
                 java.awt.EventQueue.invokeLater(new Runnable(){

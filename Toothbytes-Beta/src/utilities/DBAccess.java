@@ -137,7 +137,6 @@ public class DBAccess {
     public static PatientX getData(int id) {
         try {
             rs = (JDBCResultSet) stmt.executeQuery("SELECT * FROM PATIENT WHERE patientID =" + id);
-
             rs.next();
             
             Calendar cal = Calendar.getInstance();
