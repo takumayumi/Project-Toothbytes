@@ -7,6 +7,7 @@ package components;
 
 import java.awt.BorderLayout;
 import static java.awt.Color.WHITE;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +34,8 @@ public class SidePanel extends JPanel{
     private JScrollPane sideAppScroll, sidePayScroll;
     private JButton viewSched;
     
+    private ArrayList<Appointment> appointmentToday, appointmentX;
+    
     /**
      * This is the default constructor of the SidePanel class.
      */
@@ -49,7 +52,27 @@ public class SidePanel extends JPanel{
         
         sideAppList = new JList();
         sideAppScroll = new JScrollPane(sideAppList);
-        sideAppointment.add(sideAppScroll, BorderLayout.CENTER);        
+        sideAppointment.add(sideAppScroll, BorderLayout.CENTER);
+        
+        appointmentToday = new ArrayList<>();
+        appointmentToday = DBAccess.getAppointmentData("");
+        
+        int a = 0;
+        
+        for(int i = 0; i < appointmentToday.size(); i++){
+            try{
+                if(checkAppointmentToday(appointmentToday.get(i))){
+                    sideAppointment.add(new AppointmentForToday(appointmentToday.get(i)));
+                    if(a < 10){
+                        a++;
+                    } else {
+                        break;
+                    }
+                }
+            }catch(Exception e){
+                
+            }
+        }
         
         // PAYMENTS
         sidePayment = new JPanel();
@@ -57,7 +80,7 @@ public class SidePanel extends JPanel{
         sidePayment.setLayout(new BoxLayout(sidePayment,BoxLayout.Y_AXIS));
         sidePayment.setBackground(WHITE);
         
-        ArrayList<Appointment> appointmentX = new ArrayList<>();
+        appointmentX = new ArrayList<>();
         appointmentX = DBAccess.getAppointmentData("");
         
         int x = 0;
@@ -94,7 +117,35 @@ public class SidePanel extends JPanel{
                 return false;
             }
             
-        }catch(Exception e){
+        }catch(ParseException e){
+            return false;
+        }
+    }
+    
+    private boolean checkAppointmentToday(Appointment appointmentToday){
+        
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            
+            Calendar inCal = Calendar.getInstance();
+            Calendar inApp = Calendar.getInstance();
+            
+            inCal.setTime(sdf.parse(appointmentToday.getAppointmentDate()));
+            
+            String inCalendar = sdf.format(inCal.getTime());
+            String inAppointment = sdf.format(inApp.getTime());
+            
+            //int date = inCal.compareTo(inApp);
+            boolean same = inCalendar.equalsIgnoreCase(inAppointment);
+            
+            if(same == true){
+                System.out.println(inCalendar + " = " + inAppointment);
+                System.out.println(same);
+                return true;
+            }else{
+                return false;
+            }
+        }catch(ParseException e){
             return false;
         }
     }
