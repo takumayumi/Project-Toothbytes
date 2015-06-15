@@ -288,6 +288,7 @@ public class SetAppointment extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(250, 255, 250));
         setMaximumSize(new java.awt.Dimension(508, 462));
+        setMinimumSize(new java.awt.Dimension(508, 462));
         setPreferredSize(new java.awt.Dimension(508, 462));
 
         sptMiniCalendar.setModel(new javax.swing.table.DefaultTableModel(
@@ -365,7 +366,7 @@ public class SetAppointment extends javax.swing.JPanel {
 
         jLabel1.setText("Start Time");
 
-        jLabel2.setText("Duration");
+        jLabel2.setText("End Time");
 
         jLabel3.setText("Characters Left: ");
 

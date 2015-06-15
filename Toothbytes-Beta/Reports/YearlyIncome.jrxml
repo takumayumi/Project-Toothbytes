@@ -109,7 +109,7 @@ GROUP BY dp.procedure, YEAR(pay.paymentDate), MONTHNAME(pay.paymentDate), pay.am
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Month}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField isStretchWithOverflow="true" pattern="#,###.00">
 					<reportElement style="Detail" positionType="Float" x="550" y="0" width="130" height="18" uuid="583752a4-f18b-480a-991b-48488c550ff1"/>
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="12"/>

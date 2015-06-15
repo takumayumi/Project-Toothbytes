@@ -7,11 +7,8 @@
 package components;
 
 import java.util.ArrayList;
-import javax.swing.JDialog;
 import models.Appointment;
 import utilities.DBAccess;
-import window.forms.SetAppointment;
-import window.forms.UpdateAppointment;
 
 /**
  *
@@ -20,7 +17,6 @@ import window.forms.UpdateAppointment;
 public class AppointmentForToday extends javax.swing.JPanel {
 
     private Appointment appointmentToday;
-    private int patientID;
     private ArrayList<Appointment> appList;
     
     /**
@@ -64,11 +60,11 @@ public class AppointmentForToday extends javax.swing.JPanel {
 
         jLabel3.setText("Reason:");
 
-        patientName.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        patientName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        appointmentTime.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        appointmentTime.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        reason.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        reason.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

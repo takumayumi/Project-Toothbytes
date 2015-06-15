@@ -382,7 +382,7 @@ public class RecordsWindow extends ModuleWindow {
         patientRepBut.setToolTipText("Print Patient Records");
         
         PatientRecordsReport prr = new PatientRecordsReport();
-        recordsBar.add(patientRepBut, "skip 20, split 4");
+        recordsBar.add(patientRepBut, "skip 100, split 4");
         patientRepBut.addActionListener(prr);
 
         //EditInfoBut
@@ -414,7 +414,7 @@ public class RecordsWindow extends ModuleWindow {
         });
         
         //Edit Additional info
-        addInfoBut = new JButton(new ImageIcon(BUTTON_DIR + "EditPersonalRecord.png"));
+        addInfoBut = new JButton(new ImageIcon(BUTTON_DIR + "EditAdditionalInfo.png"));
         addInfoBut.setBackground(WHITE);
         addInfoBut.setToolTipText("Edit Addtional Information");
         recordsBar.add(addInfoBut);
@@ -434,7 +434,7 @@ public class RecordsWindow extends ModuleWindow {
         });
         
         //Edit Additional/Med Records
-        editMedCon = new JButton(new ImageIcon(BUTTON_DIR + "EditPersonalRecord.png"));
+        editMedCon = new JButton(new ImageIcon(BUTTON_DIR + "Edit MedicalInfo.png"));
         editMedCon.setBackground(WHITE);
         editMedCon.setToolTipText("Edit Medical Information");
         recordsBar.add(editMedCon);

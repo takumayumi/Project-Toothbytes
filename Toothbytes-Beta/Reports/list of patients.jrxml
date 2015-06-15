@@ -112,7 +112,7 @@
 					<textElement>
 						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{CELLNO}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{CELLNO} != "NULL" ? $F{CELLNO} : "n/a"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" x="405" y="0" width="214" height="18" uuid="fee72121-a202-4602-8fd6-53e801e1810c"/>
@@ -126,7 +126,7 @@
 					<textElement>
 						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{EMAILADDRESS}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{EMAILADDRESS} != "NULL" ? $F{EMAILADDRESS} : "n/a"]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
