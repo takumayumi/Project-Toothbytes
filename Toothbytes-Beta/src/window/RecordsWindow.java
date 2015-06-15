@@ -12,7 +12,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import static java.awt.Color.WHITE;
 import java.awt.Dialog;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -54,13 +53,12 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.hsqldb.jdbc.JDBCConnection;
 import org.hsqldb.jdbc.JDBCDriver;
+import utilities.Configuration;
 import utilities.DBAccess;
 import utilities.DataMan;
 import utilities.PersonalInfo;
 import window.forms.AdditionalInformation;
-import window.forms.InfoEditor;
 import window.forms.MedicalCondition;
-import window.forms.PersonalInformation;
 import window.forms.UpdatePersonalInformation;
 
 /**
@@ -154,33 +152,6 @@ public class RecordsWindow extends ModuleWindow {
     private JFrame getOwner() {
         return owner;
     }
-
-//    public void setupTable() {
-//        tableModel.addColumn("Date");
-//        tableModel.addColumn("Tooth No.");
-//        tableModel.addColumn("Condition");
-//        tableModel.addColumn("Remarks");
-//
-//        theTable = new JTable(tableModel);
-//
-//        theTable.getColumnModel().getColumn(0).setMinWidth(100);
-//        theTable.getColumnModel().getColumn(1).setMinWidth(60);
-//        theTable.getColumnModel().getColumn(2).setMinWidth(100);
-//
-//        theTable.getColumnModel().getColumn(0).setMaxWidth(200);
-//        theTable.getColumnModel().getColumn(1).setMaxWidth(100);
-//        theTable.getColumnModel().getColumn(2).setMaxWidth(300);
-//
-//        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-//        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
-//
-//        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-//        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-//
-//        theTable.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
-//        theTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-//        theTable.getTableHeader().setReorderingAllowed(false);
-//    }
     
     private boolean isTriggered() {
         return trigger;
@@ -204,6 +175,9 @@ public class RecordsWindow extends ModuleWindow {
             }
         }
         
+        history =  new JButton("View History");
+        history.setEnabled(false);
+        
         if (otList.size() >= 1) {
             trigger = true;
             //chart
@@ -215,21 +189,28 @@ public class RecordsWindow extends ModuleWindow {
                     dc.updateUI();
                 }
             }
-            
+            history.setEnabled(true);
             dentalViewer.add(dc, BorderLayout.CENTER);
         } else {
             JLabel info = new JLabel("This patient has still no dental record. Create now by clicking Start checkup!");
-            info.setFont(new Font("Calibri", Font.PLAIN, 18));
+            info.setFont(Configuration.TB_FONT_HEADER);
             dentalViewer.add(info, BorderLayout.CENTER);
         }
         
         dentalBar = new JToolBar("dentalBar");
         dentalBar.setFloatable(false);
         
-        history =  new JButton("View History");
+        history.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HistoryWindow hw = new HistoryWindow(getOwner(), otList);
+                hw.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                hw.setVisible(true);
+            }
+        });
         
         checkup = new JButton("Start Checkup!");
-        
         checkup.setIcon(new ImageIcon(ICON_DIR + "\\BeginTreatment.png"));
         checkup.addActionListener(new ActionListener() {
 
@@ -275,7 +256,7 @@ public class RecordsWindow extends ModuleWindow {
 
         JLabel[] name = new JLabel[]{new JLabel(p.getLastName()), new JLabel(p.getFirstName()), new JLabel(p.getMidName())};
         for (JLabel n : name) {
-            n.setFont(new Font("Calibri", Font.BOLD, 14));
+            n.setFont(Configuration.TB_FONT_NORMAL);
         }
         JLabel lblName = new JLabel("Name:");
         

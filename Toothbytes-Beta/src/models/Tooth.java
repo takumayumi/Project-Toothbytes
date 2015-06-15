@@ -261,7 +261,7 @@ public class Tooth extends JComponent {
                 g2d.drawImage(CROWN_STATE, X_TOOTH, Y_TOOTH, null);
                 this.setForeground(Color.darkGray);
                 break;
-            case "laser":
+            case "laser bleaching":
                 g2d.drawImage(LASER_STATE, X_TOOTH, Y_TOOTH, null);
                 this.setForeground(Color.GRAY);
                 break;

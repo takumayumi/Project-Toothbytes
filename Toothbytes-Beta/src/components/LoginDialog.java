@@ -118,14 +118,14 @@ public class LoginDialog extends JDialog {
 
             @Override
             public void windowActivated(WindowEvent e) {
-                f.setGlassPane(new JComponent(){
-                    public void paintComponent(Graphics g) {
-                        g.setColor(new Color(0, 0, 0, 200));
-                        g.fillRect(0, 0, getWidth(), getHeight());
-                        super.paintComponents(g);
-                    }
-                });
-                f.getGlassPane().setVisible(true);
+//                f.setGlassPane(new JComponent(){
+//                    public void paintComponent(Graphics g) {
+//                        g.setColor(new Color(0, 0, 0, 200));
+//                        g.fillRect(0, 0, getWidth(), getHeight());
+//                        super.paintComponents(g);
+//                    }
+//                });
+//                f.getGlassPane().setVisible(true);
             }
         });
     }

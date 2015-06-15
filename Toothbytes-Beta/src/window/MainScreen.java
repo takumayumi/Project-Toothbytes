@@ -8,6 +8,7 @@ package window;
 import components.CalendarWindow;
 import components.Cover;
 import components.ExitDialog;
+import components.LoadingScreen;
 import components.LoginDialog;
 import components.ModuleWindow;
 import components.SidePanel;
@@ -38,14 +39,15 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import window.AppointmentsWindow;
+import utilities.Configuration;
 import window.forms.PersonalInformation;
 import window.forms.SetAppointment;
+
 /**
  * <h1>MainScreen</h1>
  * The {@code MainScreen} class constructs the main window of Toothbytes. It
- * layouts the panels, buttons, menu bar, toolbars, and module windows of 
- * the program.
+ * layouts the panels, buttons, menu bar, toolbars, and module windows of the
+ * program.
  */
 public class MainScreen extends JFrame {
 
@@ -60,7 +62,7 @@ public class MainScreen extends JFrame {
     private JToolBar navBar, quickBar, statusBar;
     private JButton qAddPatientBut, qSetAppointmentBut;
     private String state;
-    private ModuleWindow recWindow, appWindow, payWindow,repWindow;
+    private ModuleWindow recWindow, appWindow, payWindow, repWindow;
     private SidePanel sp;
     public static String time;
     private Cover c;
@@ -68,10 +70,14 @@ public class MainScreen extends JFrame {
     private ExitDialog ed;
 
     public MainScreen(RecordsWindow rw, CalendarWindow aw, PaymentWindow pw, ReportsGenWindow rgw) {
+
+        LoadingScreen ls = new LoadingScreen("Loading...");
+        this.setGlassPane(ls);
+        this.getGlassPane().setVisible(true);
         //Dialogs
         ld = new LoginDialog(this);
         ed = new ExitDialog(this);
-        
+
         recWindow = rw;
         appWindow = aw;
         payWindow = pw;
@@ -79,7 +85,6 @@ public class MainScreen extends JFrame {
 
         state = "cover";
 
-        Font uiButtonFont = new Font("Walkway SemiBold", Font.PLAIN, 24);
         Color uiButtonColor = Color.WHITE;
 
         // Frame configurations.
@@ -167,7 +172,7 @@ public class MainScreen extends JFrame {
         }, 1000, 1000);
 
         test.setForeground(Color.white);
-        test.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        test.setFont(Configuration.TB_FONT_HEADER);
         statusBar.add(test);
 
         // Nav bar.
@@ -197,10 +202,10 @@ public class MainScreen extends JFrame {
         payBut.setBackground(WHITE);
 
         repgenBut = new JToggleButton();
-        repgenBut.setIcon(new ImageIcon(BUTTON_DIR+"GenerateReport.png"));
+        repgenBut.setIcon(new ImageIcon(BUTTON_DIR + "GenerateReport.png"));
         repgenBut.setToolTipText("Generate Reports");
         repgenBut.setBackground(WHITE);
-        
+
         navButtons.add(homeBut);
         navButtons.add(recBut);
         navButtons.add(appBut);
@@ -243,10 +248,10 @@ public class MainScreen extends JFrame {
         quickBar = new JToolBar("QuickBar");
         quickBar.setBackground(WHITE);
 
-        qAddPatientBut = new JButton(new ImageIcon(BUTTON_DIR+"AddNewPatient.png"));
+        qAddPatientBut = new JButton(new ImageIcon(BUTTON_DIR + "AddNewPatient.png"));
         qAddPatientBut.setBackground(WHITE);
         qAddPatientBut.setToolTipText("Add Patient");
-        qSetAppointmentBut = new JButton(new ImageIcon(BUTTON_DIR+"AddNewAppointment.png"));
+        qSetAppointmentBut = new JButton(new ImageIcon(BUTTON_DIR + "AddNewAppointment.png"));
         qSetAppointmentBut.setBackground(WHITE);
         qSetAppointmentBut.setToolTipText("Set Appointment");
 
@@ -258,20 +263,20 @@ public class MainScreen extends JFrame {
         quickBar.add(qSetAppointmentBut);
 
         mainPanel.add(quickBar, "north");
-        
+
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
 
             public void windowOpened(WindowEvent e) {
-                
+
                 ld.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                 ld.setVisible(true);
                 ld.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                
+
             }
 
             public void windowClosing(WindowEvent e) {
-                
+
                 ed.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                 ed.setVisible(true);
                 ed.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -292,7 +297,7 @@ public class MainScreen extends JFrame {
      * This method sets the frame to be visible.
      */
     public void init() {
-        menuBar.setAllFont(new Font("Walkway SemiBold", Font.PLAIN, 16));
+        menuBar.setAllFont(Configuration.TB_FONT_NORMAL);
         this.setVisible(true);
     }
 
@@ -339,7 +344,7 @@ public class MainScreen extends JFrame {
             return appWindow;
         } else if (state.equals("payw")) {
             return payWindow;
-        } else if (state.equals("repw")){
+        } else if (state.equals("repw")) {
             return repWindow;
         } else {
             return null;
@@ -398,10 +403,10 @@ public class MainScreen extends JFrame {
             }
 
             if (e.getSource() == qSetAppointmentBut) {
-                java.awt.EventQueue.invokeLater(new Runnable(){
-                    public void run(){
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
                         JDialog sA = new JDialog();
-                        SetAppointment  nA = new SetAppointment();
+                        SetAppointment nA = new SetAppointment();
                         sA.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                         sA.setSize(nA.getPreferredSize());
                         sA.add(nA);
@@ -460,8 +465,8 @@ public class MainScreen extends JFrame {
                 if (!state.equals("repw")) {
                     modulePanel.removeAll();
                     loadModule(getModule("repw"), "repw");
-        }
-    }
+                }
+            }
         }
     }
 

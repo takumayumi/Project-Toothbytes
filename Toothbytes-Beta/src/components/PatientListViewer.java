@@ -2,13 +2,12 @@
  * Copyright (c) 2014, 2015, Project Toothbytes. All rights reserved.
  *
  *
-*/
+ */
 package components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -24,6 +23,7 @@ import java.util.Set;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -33,7 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionListener;
 import models.Patient;
 import models.TBListModel;
-
+import utilities.Configuration;
 
 /**
  * <h1>PatienListViewer</h1>
@@ -44,15 +44,15 @@ public class PatientListViewer extends JPanel {
     private Map<String, ImageIcon> iMap;
     private JList viewer;
     private JTextField searchField;
+    private JButton searchBut;
     int keyLength;
-
     /**
-     * This method is used to construct the interface for viewing the list of 
+     * This method is used to construct the interface for viewing the list of
      * patients.
-     * @param   pList
-     *          List of patients.
+     *
+     * @param pList List of patients.
      */
-    public PatientListViewer(ArrayList<Patient> pList) {        
+    public PatientListViewer(ArrayList<Patient> pList) {
         this.setLayout(new BorderLayout());
 
         iMap = mapImages(pList);
@@ -62,7 +62,7 @@ public class PatientListViewer extends JPanel {
         JScrollPane scroll = new JScrollPane(viewer);
 
         searchField = new JTextField("Search Patient");
-        searchField.setFont(new Font("Arial", Font.PLAIN, 16));
+        searchField.setFont(Configuration.TB_FONT_NORMAL);
         searchField.setForeground(Color.gray);
 
         searchField.addKeyListener(
@@ -78,11 +78,11 @@ public class PatientListViewer extends JPanel {
 
                     @Override
                     public void keyReleased(KeyEvent e) {
-                        if (keyLength > searchField.getText().length()) {
-                            viewer.setModel(new TBListModel(pList));
+                        if (keyLength > 0) {
+//                            viewer.setModel(new TBListModel(pList));
                             filterList();
                         } else {
-                            filterList();
+                            viewer.setModel(new TBListModel(pList));
                         }
                     }
                 }
@@ -97,22 +97,22 @@ public class PatientListViewer extends JPanel {
 
                     @Override
                     public void mousePressed(MouseEvent e) {
-                        
+
                     }
 
                     @Override
                     public void mouseReleased(MouseEvent e) {
-                        
+
                     }
 
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        
+
                     }
 
                     @Override
                     public void mouseExited(MouseEvent e) {
-                        
+
                     }
                 }
         );
@@ -122,9 +122,9 @@ public class PatientListViewer extends JPanel {
 
     /**
      * This method creates an array of full names of patients.
-     * @param   pList
-     *          List of patients.
-     * @return  Array of names.
+     *
+     * @param pList List of patients.
+     * @return Array of names.
      */
     private String[] createNames(ArrayList<Patient> pList) {
         String[] names = new String[pList.size()];
@@ -136,21 +136,21 @@ public class PatientListViewer extends JPanel {
 
     /**
      * This method maps the image path to patient names.
-     * @param   pList
-     *          List of patients.
-     * @return  Map object.
+     *
+     * @param pList List of patients.
+     * @return Map object.
      */
     private final String IMG_DIR = "res/images/";
     private final String PATIENTS_DIR = "res/patients/";
-    
+
     private Map<String, ImageIcon> mapImages(ArrayList<Patient> pList) {
         Map<String, ImageIcon> map = new HashMap<>();
         for (Patient p : pList) {
             File f = new File(PATIENTS_DIR + p.getId() + ".jpg");
             String path = PATIENTS_DIR + p.getId() + ".jpg";
             ImageIcon croppedImg = ResizeImage(path);
-            
-            if(f.exists()){
+
+            if (f.exists()) {
                 map.put(p.getFullName() + "", croppedImg);
             } else {
                 map.put(p.getFullName() + "", new ImageIcon(IMG_DIR + "patient.png"));
@@ -158,10 +158,10 @@ public class PatientListViewer extends JPanel {
         }
         return map;
     }
-    
-    public ImageIcon ResizeImage(String imagePath){
+
+    public ImageIcon ResizeImage(String imagePath) {
         ImageIcon MyImage = new ImageIcon(imagePath);
-        Image img = MyImage.getImage();        
+        Image img = MyImage.getImage();
         Image newImage = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         ImageIcon image = new ImageIcon(newImage);
         return image;
@@ -174,19 +174,14 @@ public class PatientListViewer extends JPanel {
     public class PatientCellRenderer extends DefaultListCellRenderer {
 
         /**
-         * This method is used to get the list of cell component when 
-         * rendered.
-         * @param   list
-         *          JList object.
-         * @param   value
-         *          An object representation.
-         * @param   index
-         *          An integer representation.
-         * @param   isSelected
-         *          A boolean representation.
-         * @param   cellHasFocus
-         *          A boolean representation.
-         * @return  JLabel.
+         * This method is used to get the list of cell component when rendered.
+         *
+         * @param list JList object.
+         * @param value An object representation.
+         * @param index An integer representation.
+         * @param isSelected A boolean representation.
+         * @param cellHasFocus A boolean representation.
+         * @return JLabel.
          */
         @Override
         public Component getListCellRendererComponent(
@@ -195,6 +190,7 @@ public class PatientListViewer extends JPanel {
             Patient p = (Patient) value;
             JLabel label = (JLabel) super.getListCellRendererComponent(
                     list, value, index, isSelected, cellHasFocus);
+            label.setFont(Configuration.TB_FONT_HEADER);
             label.setIcon(iMap.get(p.getFullName()));
             label.setHorizontalTextPosition(JLabel.RIGHT);
             return label;
@@ -205,11 +201,11 @@ public class PatientListViewer extends JPanel {
     DefaultListModel noMatchModel;
 
     /**
-     * This method sets up the environment for the logic function of the 
-     * program and sets hold NO DUPLICATE values. Following logic is used to 
-     * find an item in JList and following try-catch blog will enhance the 
-     * user friendliness. It allows to add the filtered results to the new 
-     * model and sets the model to the list again.
+     * This method sets up the environment for the logic function of the program
+     * and sets hold NO DUPLICATE values. Following logic is used to find an
+     * item in JList and following try-catch blog will enhance the user
+     * friendliness. It allows to add the filtered results to the new model and
+     * sets the model to the list again.
      */
     private void filterList() {
         int start = 0;
@@ -229,7 +225,7 @@ public class PatientListViewer extends JPanel {
             try {
                 resultSet.add(viewer.getModel().getElementAt(itemIx));
             } catch (ArrayIndexOutOfBoundsException e) {
-                JOptionPane.showMessageDialog(this, "No entry is matched with your query....");
+                JOptionPane.showMessageDialog(this, "No match found....");
                 searchField.setText("");
                 return;
             }
@@ -245,19 +241,20 @@ public class PatientListViewer extends JPanel {
 
         viewer.setModel(filteredModel);
     }
-
+    
     /**
      * This method sets a list listener for viewing the patients list.
-     * @param   lsl 
-     *          Object representation of lsl.
+     *
+     * @param lsl Object representation of lsl.
      */
     public void setListListener(ListSelectionListener lsl) {
-        viewer.addListSelectionListener(lsl);        
+        viewer.addListSelectionListener(lsl);
     }
 
     /**
      * This method is used to get the selected patient.
-     * @return  A patient selected by the user.
+     *
+     * @return A patient selected by the user.
      */
     public Patient getSelectedPatient() {
         return (Patient) viewer.getSelectedValue();

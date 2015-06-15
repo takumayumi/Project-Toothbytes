@@ -321,7 +321,7 @@ INSERT INTO PATIENT VALUES(100,'Baucan','Russel','L',NULL,'1993-02-04',NULL,'Sin
 INSERT INTO PATIENT VALUES(101,'Marquez','Ryan','B','null','1998-05-26','None','Ryan','M','Single','36 Puguis, La Trinidad, Benguet','','','','09164528965','ryan.marquez26@gamil.com')
 INSERT INTO PATIENT VALUES(102,'Seto','Phil','M','null','1993-09-20','Band pianist','Phil','F','Single','012 Puguis, La trinidad, Benguet','','','','09994557168','philseto@yahoo.com')
 INSERT INTO PATIENT VALUES(103,'Duluena','Mark','H','null','1987-06-17','IT Consultant','Mark','M','Married','365 Pico, La Trinidad, Benguet','','','','09267899852','markduluena@yahoo.com')
-INSERT INTO PATIENT VALUES(104,'Abasolo','Joshua','A','null','1994-02-09','None','Single','F','Josh','Purok 56, Bokawkan Rd, Baguio City','','','','','joshua.abasolo9@yahoo.com')
+INSERT INTO PATIENT VALUES(104,'Abasolo','Joshua','A','null','1994-02-09','None','Josh','F','Single','Purok 56, Bokawkan Rd, Baguio City','','','','','joshua.abasolo9@yahoo.com')
 INSERT INTO PATIENT VALUES(105,'Gonzales','Wendelle','H','null','1993-05-14','None','Wends','F','Single','456 Poblacion Norte, Caba, La Union','','','','09265654787','wendellegonzales@gmail.com')
 INSERT INTO MEDICAL_HISTORY VALUES(1,1,'Yes','No','No','No','Multivitamins','No','No','No','No','No','Penicilin','Peanut, Chicken','AB','120/80','Asthma','NULL',NULL)
 INSERT INTO MEDICAL_HISTORY VALUES(2,2,'Yes','No','No','No','Vitamin C','No','No','No','No','No','Latex','Seafood, Egg','B','120/80','','NULL',NULL)

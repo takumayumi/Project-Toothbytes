@@ -5,28 +5,27 @@
  */
 package components;
 
-import java.awt.Font;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import models.DentalChart;
 import models.Patient;
 import net.miginfocom.swing.MigLayout;
+import utilities.Configuration;
+import utilities.DBAccess;
 
 /**
  *
@@ -39,13 +38,16 @@ public class TreatmentWindow extends JDialog {
     private JButton editMedHistory, save, crownB, decayB, uneruptB, normalB, laserB, extractB,
             bridgeB, missingB, fillB, camera;
     private DentalChart dc;
-    private JToolBar toolbox, ctoolbox, ttoolbox;
+    private JToolBar toolbox, ctoolbox, ttoolbox, otoolbox;
     private JScrollPane dcScroll;
     private static JTable table;
     private MigLayout layout;
     private String selectedTool;
     private ToolsHandler th;
-
+    private ColorBox cBox;
+    private Color fill, stroke;
+    private JComboBox tBox;
+            
     public TreatmentWindow(JFrame f, Patient p) {
         super(f);
         dc = new DentalChart();
@@ -68,7 +70,7 @@ public class TreatmentWindow extends JDialog {
         this.setLayout(layout);
 
         patientInfo = new JPanel();
-        name = new JLabel(p.getFullName());
+        name = new JLabel(p.getFullName(), JLabel.LEFT);
 
         save = new JButton("Save", new ImageIcon("res/buttons/save.png"));
 
@@ -77,16 +79,13 @@ public class TreatmentWindow extends JDialog {
 
         toolbox = new JToolBar("toolbox");
         toolbox.setOrientation(JToolBar.VERTICAL);
+        toolbox.setFloatable(false);
 
-        ctoolbox = new JToolBar("ctoolbox");
-        ctoolbox.setOrientation(JToolBar.VERTICAL);
-        ctoolbox.setBorder(new TitledBorder("Conditions"));
-        ctoolbox.setFloatable(false);
+        ctoolbox = createToolBar("Conditions");
 
-        ttoolbox = new JToolBar("ttoolbox");
-        ttoolbox.setOrientation(JToolBar.VERTICAL);
-        ttoolbox.setBorder(new TitledBorder("Treatments"));
-        ttoolbox.setFloatable(false);
+        ttoolbox = createToolBar("Treatments");
+        
+        otoolbox = createToolBar("Custom");
 
         th = new ToolsHandler();
 
@@ -100,6 +99,10 @@ public class TreatmentWindow extends JDialog {
         crownB = createToolButton("res/teeth/crown_s.png", "Crowning");
         fillB = createToolButton("res/teeth/amal_s.png", "Filling");
         extractB = createToolButton("res/teeth/extract_s.png", "Extraction");
+        
+        cBox = new ColorBox(this);
+        JLabel tBoxLbl = new JLabel("Other Services: ");
+        tBox = new JComboBox(DBAccess.getServicesOffered().toArray());
 
         ctoolbox.add(normalB);
         ctoolbox.add(uneruptB);
@@ -111,9 +114,15 @@ public class TreatmentWindow extends JDialog {
         ttoolbox.add(crownB);
         ttoolbox.add(fillB);
         ttoolbox.add(extractB);
-
+        
+        otoolbox.add(tBoxLbl);
+        otoolbox.add(tBox);
+        otoolbox.add(cBox);
+        
         toolbox.add(ctoolbox);
         toolbox.add(ttoolbox);
+        toolbox.add(otoolbox);
+        
 
         camera = new JButton(new ImageIcon("res/buttons/camera.png"));
         camera.addActionListener(new ActionListener() {
@@ -130,9 +139,9 @@ public class TreatmentWindow extends JDialog {
         });
 
         dcScroll = new JScrollPane(dc);
-
+        
+        this.add(toolbox, "west");
         this.add(patientInfo, "north");
-        this.add(toolbox, "span 1 1");
         this.add(dcScroll, "span 5 2");
 
         this.addWindowListener(new WindowAdapter() {
@@ -145,10 +154,16 @@ public class TreatmentWindow extends JDialog {
         dc.setEnabled(true);
 
     }
-
+    private JToolBar createToolBar(String title) {
+        JToolBar t = new JToolBar(title);
+        t.setOrientation(JToolBar.VERTICAL);
+        t.setBorder(new TitledBorder(title));
+        t.setFloatable(false);
+        return t;
+    }
     private JButton createToolButton(String icon, String name) {
         JButton temp = new JButton(name, new ImageIcon(icon));
-        temp.setFont(new Font("Calibri", Font.PLAIN, 14));
+        temp.setFont(Configuration.TB_FONT_NORMAL);
         temp.setSize(25, 80);
         temp.addActionListener(th);
         return temp;
@@ -171,7 +186,7 @@ public class TreatmentWindow extends JDialog {
                 dc.updatePreState("missing");
             }
             if (e.getSource().equals(laserB)) {
-                dc.updatePreState("laser");
+                dc.updatePreState("laser bleaching");
             }
             if (e.getSource().equals(bridgeB)) {
                 dc.updatePreState("bridge");
@@ -188,5 +203,13 @@ public class TreatmentWindow extends JDialog {
         }
 
     }
+    
+//    public static void main(String[] args) {
+//        JFrame f = new JFrame();
+//        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        f.setVisible(true);
+//        TreatmentWindow tw = new TreatmentWindow(f, new Patient(1, "asd", "asd", "a"));
+//        tw.setVisible(true);
+//    }
 
 }

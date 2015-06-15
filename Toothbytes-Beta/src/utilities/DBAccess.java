@@ -138,7 +138,7 @@ public class DBAccess {
         try {
             rs = (JDBCResultSet) stmt.executeQuery("SELECT * FROM PATIENT WHERE patientID =" + id);
             rs.next();
-            
+
             Calendar cal = Calendar.getInstance();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
@@ -309,14 +309,14 @@ public class DBAccess {
             System.out.println("addServicesData Error: " + e);
         }
     }
-    
-    public static void updateAppointmentData(Appointment appointment){
+
+    public static void updateAppointmentData(Appointment appointment) {
         //ArrayList<Appointment> appointmentDate = getAppointmentData;
-        String updateAppointmentDate            = "UPDATE APPOINTMENT SET APPOINTMENTDATE = '" +appointment.getAppointmentDate()+"' WHERE appointmentID = " + appointment.getAppointmentID()  + ";";
-        String updateAppointmentTime            = "UPDATE APPOINTMENT SET APPOINTMENTTIME = '" +appointment.getAppointmentTime()+"' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
-        String updateAppointmentEndTime     = "UPDATE APPOINTMENT SET APPOINTMENTENDTIME = '" +appointment.getAppointmentEndTime()+"' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
-        String updateAppointmentRemarks = "UPDATE APPOINTMENT SET APPOINTMENTREMARKS = '" +appointment.getAppointmentRemarks()+"' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
-        
+        String updateAppointmentDate = "UPDATE APPOINTMENT SET APPOINTMENTDATE = '" + appointment.getAppointmentDate() + "' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
+        String updateAppointmentTime = "UPDATE APPOINTMENT SET APPOINTMENTTIME = '" + appointment.getAppointmentTime() + "' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
+        String updateAppointmentEndTime = "UPDATE APPOINTMENT SET APPOINTMENTENDTIME = '" + appointment.getAppointmentEndTime() + "' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
+        String updateAppointmentRemarks = "UPDATE APPOINTMENT SET APPOINTMENTREMARKS = '" + appointment.getAppointmentRemarks() + "' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
+
         try {
             rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentDate);
             rs.next();
@@ -325,28 +325,28 @@ public class DBAccess {
         } catch (Exception e) {
             System.out.println("updateAppointmentDate Error: " + e);
         }
-        
+
         try {
             rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentTime);
             rs.next();
         } catch (Exception e) {
             System.out.println("updateAppointmentTime Error: " + e);
         }
-        
+
         try {
             rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentEndTime);
             rs.next();
         } catch (Exception e) {
             System.out.println("updateAppointmentEndTime Error: " + e);
         }
-        
+
         try {
             rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentRemarks);
             rs.next();
         } catch (Exception e) {
             System.out.println("updateAppointmentRemarks Error: " + e);
         }
-        
+
     }
 
     public static ArrayList<Appointment> getAppointmentData(String condition) {
@@ -545,6 +545,28 @@ public class DBAccess {
         return isValid;
     }
 
+    public static ArrayList<String> getServicesOffered() {
+        ArrayList<String> tList = new ArrayList<String>();
+        String query = "select SERVICETYPE from SERVICES;";
+
+        try {
+            rs = (JDBCResultSet) stmt.executeQuery(query);
+            while (rs.next()) {
+                if (!rs.getString("SERVICETYPE").equals("Extraction")
+                        || !rs.getString("SERVICETYPE").equals("Laser Bleaching")
+                        || !rs.getString("SERVICETYPE").equals("Bridge")
+                        || !rs.getString("SERVICETYPE").equals("Filling")) {
+                    tList.add(rs.getString("SERVICETYPE"));
+                }
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tList;
+    }
+
     public static ArrayList<Treatment> getTreatmentList(int id) {
         ArrayList<Treatment> tList = new ArrayList<Treatment>();
         PreparedStatement queryTreatment = null;
@@ -559,7 +581,7 @@ public class DBAccess {
             rs = (JDBCResultSet) queryTreatment.executeQuery();
 
             while (rs.next()) {
-                if (rs.getString(2)!=null) {
+                if (rs.getString(2) != null) {
                     if (!rs.getString(2).equals("null")) {
                         cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(1)));
                         Treatment temp = new Treatment(cal, rs.getString(2), rs.getString(3));
