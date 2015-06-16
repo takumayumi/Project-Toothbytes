@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import models.Patient;
@@ -50,10 +51,11 @@ public class ToothbytesApp {
         } catch (ClassNotFoundException |
                 InstantiationException |
                 IllegalAccessException |
-                javax.swing.UnsupportedLookAndFeelException |
-                SQLException ex) {
+                javax.swing.UnsupportedLookAndFeelException ex) {
             Logger.getLogger(ToothbytesApp.class.getName()).log(Level.SEVERE, null, ex);
             java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch(SQLException sqlex) {
+            JOptionPane.showMessageDialog(null, "Toothbytes is already running!", "Already Open", JOptionPane.ERROR_MESSAGE);
         }
 
     }

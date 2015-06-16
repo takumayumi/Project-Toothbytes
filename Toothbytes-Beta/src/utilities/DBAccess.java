@@ -552,10 +552,14 @@ public class DBAccess {
         try {
             rs = (JDBCResultSet) stmt.executeQuery(query);
             while (rs.next()) {
-                if (!rs.getString("SERVICETYPE").equals("Extraction")
-                        || !rs.getString("SERVICETYPE").equals("Laser Bleaching")
-                        || !rs.getString("SERVICETYPE").equals("Bridge")
-                        || !rs.getString("SERVICETYPE").equals("Filling")) {
+                System.out.println("Checking service:" + rs.getString("SERVICETYPE"));
+                boolean b = !(rs.getString("SERVICETYPE").equals("Extraction")
+                        || rs.getString("SERVICETYPE").equals("Laser Bleaching")
+                        || rs.getString("SERVICETYPE").equals("Bridge")
+                        || rs.getString("SERVICETYPE").equals("Filling")
+                        || rs.getString("SERVICETYPE").equals("Crown"));
+                System.out.println(b);
+                if (b) {
                     tList.add(rs.getString("SERVICETYPE"));
                 }
 

@@ -5,8 +5,10 @@
  */
 package utilities;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Calendar;
+import javax.swing.ImageIcon;
 import models.OrganizedTreatment;
 import models.Treatment;
 
@@ -53,5 +55,21 @@ public class DataMan {
         }
 
         return newList;
+    }
+
+    public static ImageIcon ResizeImage(String imagePath) {
+        ImageIcon MyImage = new ImageIcon(imagePath);
+        Image img = MyImage.getImage();
+        Image newImage = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImage);
+        return image;
+    }
+
+    public static ImageIcon ResizeImage(String imagePath, int w, int h) {
+        ImageIcon MyImage = new ImageIcon(imagePath);
+        Image img = MyImage.getImage();
+        Image newImage = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImage);
+        return image;
     }
 }

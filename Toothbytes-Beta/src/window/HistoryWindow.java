@@ -35,7 +35,7 @@ public class HistoryWindow extends JDialog {
 
         JList list = new JList(dates);
         JScrollPane scroll = new JScrollPane(list);
-        dc = new DentalChart();
+        dc = new DentalChart(false);
         JScrollPane scrollDC = new JScrollPane(dc);
 
         list.addListSelectionListener(new ListSelectionListener() {
@@ -46,7 +46,7 @@ public class HistoryWindow extends JDialog {
                     
                     for (int i = 1; i < 53; i++) {
                         if (otList.get(j).getHm().containsKey(i)) {
-                            dc.updateTooth(i + 1, otList.get(j).getHm().get(i).toLowerCase());
+                            dc.updateTooth(i + 1, otList.get(j).getHm().get(i).toLowerCase(), false);
                             dc.updateUI();
                         }
                     }

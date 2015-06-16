@@ -8,7 +8,6 @@ package components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -34,6 +33,7 @@ import javax.swing.event.ListSelectionListener;
 import models.Patient;
 import models.TBListModel;
 import utilities.Configuration;
+import utilities.DataMan;
 
 /**
  * <h1>PatienListViewer</h1>
@@ -148,7 +148,7 @@ public class PatientListViewer extends JPanel {
         for (Patient p : pList) {
             File f = new File(PATIENTS_DIR + p.getId() + ".jpg");
             String path = PATIENTS_DIR + p.getId() + ".jpg";
-            ImageIcon croppedImg = ResizeImage(path);
+            ImageIcon croppedImg = DataMan.ResizeImage(path);
 
             if (f.exists()) {
                 map.put(p.getFullName() + "", croppedImg);
@@ -159,13 +159,7 @@ public class PatientListViewer extends JPanel {
         return map;
     }
 
-    public ImageIcon ResizeImage(String imagePath) {
-        ImageIcon MyImage = new ImageIcon(imagePath);
-        Image img = MyImage.getImage();
-        Image newImage = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        ImageIcon image = new ImageIcon(newImage);
-        return image;
-    }
+    
 
     /**
      * <h1>PatientCallRenderer</h1>
@@ -190,7 +184,7 @@ public class PatientListViewer extends JPanel {
             Patient p = (Patient) value;
             JLabel label = (JLabel) super.getListCellRendererComponent(
                     list, value, index, isSelected, cellHasFocus);
-            label.setFont(Configuration.TB_FONT_HEADER);
+            label.setFont(Configuration.TB_FONT_PLV);
             label.setIcon(iMap.get(p.getFullName()));
             label.setHorizontalTextPosition(JLabel.RIGHT);
             return label;

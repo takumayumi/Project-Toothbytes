@@ -12,8 +12,10 @@ import java.awt.Font;
  * @author Jolas
  */
 public class Configuration {
-    public static final Font TB_FONT_NORMAL = new Font("Calibri", Font.PLAIN, 15);
-    public static final Font TB_FONT_HEADER = new Font("Calibri", Font.PLAIN, 18);
-    public static final Font TB_FONT_BANNER = new Font("Calibri", Font.PLAIN, 24);
+    public static final Font TB_FONT_NORMAL = new Font("Arial", Font.PLAIN, 12);
+    public static final Font TB_FONT_HEADER_B = new Font("Arial", Font.BOLD, 15);
+    public static final Font TB_FONT_HEADER = new Font("Arial", Font.PLAIN, 15);
+    public static final Font TB_FONT_BANNER = new Font("Arial", Font.PLAIN, 18);
     public static final Font TB_FONT_PRINT = new Font("Times New Roman", Font.PLAIN, 15);
+    public static final Font TB_FONT_PLV = new Font("Arial", Font.PLAIN, 12);
 }

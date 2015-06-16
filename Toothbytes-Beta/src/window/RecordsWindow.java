@@ -7,7 +7,6 @@ package window;
 
 import components.ModuleWindow;
 import components.PatientListViewer;
-import components.TreatmentWindow;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import static java.awt.Color.WHITE;
@@ -87,7 +86,7 @@ public class RecordsWindow extends ModuleWindow {
     private JToolBar dentalBar, recordsBar;
     private JLabel chart;
     private boolean trigger = false;
-    private DentalChart dc = new DentalChart();
+    private DentalChart dc = new DentalChart(false);
 
     /**
      * This constructor layouts the Records Window.
@@ -97,9 +96,9 @@ public class RecordsWindow extends ModuleWindow {
     public RecordsWindow(ArrayList<Patient> pList) {
         layout = new MigLayout(
                 "filly, wrap 12",
-                "[fill]push[fill][fill]push[fill]push"
+                "[fill][fill]push[fill]push[fill]push"
                 + "[fill]push[fill]push[fill]push[fill]push"
-                + "[fill]push[fill]push[fill]push[fill]" //12 columns
+                + "[fill]push[fill]push[fill]push[fill]push[fill]" //13 columns
         );
         formLayout = new MigLayout(
                 "wrap 12",
@@ -141,8 +140,8 @@ public class RecordsWindow extends ModuleWindow {
         tabsPane.addTab("Dental Info", new ImageIcon(ICON_DIR + "DentalRecords.png"), scrollDental);
         tabsPane.addTab("Gallery", new ImageIcon(ICON_DIR + "Images.png"), scrollGallery);
 
-        super.addToMainPane(plv, "span 2, grow");
-        super.addToMainPane(tabsPane, "span 10, grow");
+        super.addToMainPane(plv, "width 150:220:220 ,west");
+        super.addToMainPane(tabsPane, "span 13, grow");
     }
 
     public void setOwner(JFrame f) {
@@ -181,24 +180,25 @@ public class RecordsWindow extends ModuleWindow {
         if (otList.size() >= 1) {
             trigger = true;
             //chart
-            dc = new DentalChart();
+            dc = new DentalChart(false);
             
             for (int i = 1; i < 53; i++) {
                 if (otList.get(0).getHm().containsKey(i)) {
-                    dc.updateTooth(i + 1, otList.get(0).getHm().get(i).toLowerCase());
+                    dc.updateTooth(i + 1, otList.get(0).getHm().get(i).toLowerCase(), false);
                     dc.updateUI();
                 }
             }
             history.setEnabled(true);
             dentalViewer.add(dc, BorderLayout.CENTER);
         } else {
-            JLabel info = new JLabel("This patient has still no dental record. Create now by clicking Start checkup!");
+            JLabel info = new JLabel("This patient has still no dental record. Create now by clicking Start checkup!", JLabel.CENTER);
             info.setFont(Configuration.TB_FONT_HEADER);
             dentalViewer.add(info, BorderLayout.CENTER);
         }
         
         dentalBar = new JToolBar("dentalBar");
         dentalBar.setFloatable(false);
+        dentalBar.setBackground(new Color(240, 240, 240));
         
         history.addActionListener(new ActionListener() {
 
@@ -231,6 +231,9 @@ public class RecordsWindow extends ModuleWindow {
         
         dentalBar.add(checkup);
         dentalBar.add(history);
+        
+        checkup.setFont(Configuration.TB_FONT_HEADER);
+        history.setFont(Configuration.TB_FONT_HEADER);
         
         dentalViewer.add(dentalBar, BorderLayout.NORTH);
         SwingUtilities.updateComponentTreeUI(dentalViewer);

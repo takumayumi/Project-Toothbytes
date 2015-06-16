@@ -17,7 +17,6 @@ import java.awt.Color;
 import static java.awt.Color.WHITE;
 import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +27,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -109,7 +109,7 @@ public class MainScreen extends JFrame {
                 "filly, wrap 12", // Layout constraints.
                 "[fill]push[fill]push[fill]push[fill]push"
                 + "[fill]push[fill]push[fill]push[fill]push"
-                + "[fill][fill]push[fill]push[fill]", // 12 columns.
+                + "[fill][fill]push[fill][fill]", // 12 columns.
                 "[fill]push[fill]"); // Rows.
 
         // Mainpanel configurations.
@@ -179,12 +179,23 @@ public class MainScreen extends JFrame {
         final String BUTTON_DIR = "res/buttons/";
 
         navBar = new JToolBar("TestBar");
-        navButtons = new ButtonGroup();
+        navButtons = new ButtonGroup(){
+            @Override
+            public void setSelected(ButtonModel model, boolean selected) {
+                if(selected) {
+                    super.setSelected(model, selected);
+                } else {
+                    clearSelection();
+                }
+                
+            }
+        };
 
         homeBut = new JToggleButton();
         homeBut.setIcon(new ImageIcon(BUTTON_DIR + "Home.png"));
         homeBut.setToolTipText("Home");
         homeBut.setBackground(WHITE);
+        homeBut.setSelected(true);
 
         recBut = new JToggleButton();
         recBut.setIcon(new ImageIcon(BUTTON_DIR + "PatientRecords.png"));
@@ -242,7 +253,7 @@ public class MainScreen extends JFrame {
         // Side panel (right).
         sp = new SidePanel();
         sp.setBackground(WHITE);
-        mainPanel.add(sp, "east");
+        mainPanel.add(sp, "width 100:200:200 ,east");
 
         // Quick bar.
         quickBar = new JToolBar("QuickBar");

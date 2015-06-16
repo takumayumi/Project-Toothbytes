@@ -34,8 +34,7 @@ import javax.swing.border.LineBorder;
 public class Tooth extends JComponent {
 
     private int number;
-    private String state;
-    private String preState;
+    private String state, preState, secondState, otherTreatment;
     private Graphics2D g2d;
     private Area markings = new Area();
     private ToothListener tl;
@@ -54,10 +53,12 @@ public class Tooth extends JComponent {
     public Tooth(int number, String state, boolean modified) throws IOException {
         this.number = number;
         this.state = state;
+        this.secondState = null;
         this.setPreferredSize(new Dimension(55, 70));
         this.preState = null;
         this.setToolTipText(state);
         this.modified = modified;
+        this.otherTreatment = null;
 
         NORMAL_STATE = ImageIO.read(new File("res/teeth/normal.png"));
         UNERUPTED_STATE = ImageIO.read(new File("res/teeth/unerupted.png"));
@@ -82,6 +83,8 @@ public class Tooth extends JComponent {
         this.state = "normal";
         this.setPreferredSize(new Dimension(55, 70));
         this.preState = null;
+        this.secondState = null;
+        this.otherTreatment = null;
         this.setToolTipText(state);
         this.modified = false;
 
@@ -110,15 +113,20 @@ public class Tooth extends JComponent {
     public void setModified(boolean modified) {
         this.modified = modified;
     }
-    
+
     public void addToothListener(ToothListener tl) {
         this.tl = tl;
     }
-    
+
     public void notifyListener() {
-        tl.notify(number, state);
+        if (this.secondState == null) {
+            tl.notify(number, state);
+        } else {
+            tl.notify(number, secondState);
+        }
+
     }
-    
+
     // Accessor & Mutators
     public int getNumber() {
         return number;
@@ -134,11 +142,18 @@ public class Tooth extends JComponent {
 
     public void setState(String state) {
         this.state = state;
-        this.setToolTipText(state);
     }
 
     public String getPreState() {
         return preState;
+    }
+
+    public String getSecondState() {
+        return secondState;
+    }
+
+    public void setSecondState(String secondState) {
+        this.secondState = secondState;
     }
 
     public void setPreState(String preState) {
@@ -149,16 +164,40 @@ public class Tooth extends JComponent {
     public void updateState() {
         if (this.preState != null) {
             if (!this.preState.matches(state)) {
+
+                markings.reset();
+
+                if (this.preState.matches("marker") || this.preState.matches("fill")) {
+//                    this.otherTreatment = this.getSecondState();
+                    this.setToolTipText(this.getSecondState());
+//                    this.setState(this.getPreState());
+                } else {
+                    this.secondState = null;
+                    this.setToolTipText(state);
+                }
+
                 this.setState(this.getPreState());
+
                 this.setModified(true);
-                if(tl != null) {
+                if (tl != null) {
                     notifyListener();
                 }
-                
+
                 this.repaint();
+            } else if (secondState != null) {
+                if (!preState.matches(secondState)) {
+                    this.setToolTipText(this.getSecondState());
+                    this.setState(this.getPreState());
+
+                    this.setModified(true);
+                    if (tl != null) {
+                        notifyListener();
+                    }
+                    this.repaint();
+                }
             }
 
-            if (preState.matches("decayed") || preState.matches("filling")) {
+            if (preState.matches("decayed") || preState.matches("filling") || preState.matches("marker")) {
                 markings.add(new Area(drawBrush(pointerX, pointerY, 4, 4)));
                 repaint();
             }
@@ -288,16 +327,48 @@ public class Tooth extends JComponent {
                 break;
             case "filling":
                 g2d.drawImage(NORMAL_STATE, X_TOOTH, Y_TOOTH, null);
-                g2d.setPaint(new Color(0, 10, 60));
+                g2d.setPaint(new Color(0, 200, 255));
                 g2d.setComposite(AlphaComposite.getInstance(type, 0.5f));
-                this.setForeground(new Color(20, 30, 60));
+                this.setForeground(new Color(0, 200, 255));
+
+                g2d.draw(markings);
+                g2d.fill(markings);
+                break;
+            case "fill":
+                g2d.drawImage(DEFAULT_STATE, X_TOOTH, Y_TOOTH, null);
+                if (this.secondState.length() > 9 && this.secondState.length() <= 11) {
+                    g2d.drawString(this.secondState.substring(0, 4), X_TOOTH + 7, Y_TOOTH + 20);
+                    g2d.drawString(this.secondState.substring(4, this.secondState.length()), X_TOOTH + 5, Y_TOOTH + 30);
+                } else if (this.secondState.length() > 11) {
+                    g2d.drawString(this.secondState.substring(0, 4), X_TOOTH + 7, Y_TOOTH + 20);
+                    g2d.drawString(this.secondState.substring(5, 6) + "...", X_TOOTH + 5, Y_TOOTH + 30);
+                } else {
+                    g2d.drawString(this.secondState, X_TOOTH + 2, Y_TOOTH + 30);
+                }
+//                g2d.drawString(this.state.substring(0, 4) + "...", X_TOOTH + 5, Y_TOOTH + 30);
+                this.setForeground(new Color(55, 100, 200));
+                break;
+            case "marker":
+                g2d.drawImage(NORMAL_STATE, X_TOOTH, Y_TOOTH, null);
+                g2d.setPaint(new Color(240, 100, 100));
+                g2d.setComposite(AlphaComposite.getInstance(type, 0.5f));
+                this.setForeground(new Color(240, 100, 100));
 
                 g2d.draw(markings);
                 g2d.fill(markings);
                 break;
             default:
                 g2d.drawImage(DEFAULT_STATE, X_TOOTH, Y_TOOTH, null);
-                g2d.drawString(this.state.substring(0, 4)+"...", X_TOOTH+5, Y_TOOTH+30);
+                if (this.state.length() > 5 && this.state.length() <= 11) {
+                    g2d.drawString(this.state.substring(0, 4), X_TOOTH + 7, Y_TOOTH + 20);
+                    g2d.drawString(this.state.substring(5, this.state.length()), X_TOOTH + 5, Y_TOOTH + 30);
+                } else if (this.state.length() > 11) {
+                    g2d.drawString(this.state.substring(0, 4), X_TOOTH + 7, Y_TOOTH + 20);
+                    g2d.drawString(this.state.substring(5, 6) + "...", X_TOOTH + 5, Y_TOOTH + 30);
+                } else {
+                    g2d.drawString(this.state, X_TOOTH+ 5, Y_TOOTH + 30);
+                }
+//                g2d.drawString(this.state.substring(0, 4) + "...", X_TOOTH + 5, Y_TOOTH + 30);
                 this.setForeground(new Color(55, 100, 200));
                 break;
         }

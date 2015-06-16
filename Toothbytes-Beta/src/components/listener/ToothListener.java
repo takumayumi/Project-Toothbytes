@@ -11,4 +11,5 @@ package components.listener;
  */
 public interface ToothListener {
     void notify(int number, String state);
+//    void notify(int number, String state, String altState);
 }
