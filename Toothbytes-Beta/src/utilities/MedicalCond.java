@@ -172,8 +172,8 @@ public class MedicalCond {
      * Medical_History table from the Toothbytes database schema.
      * @return  Identity value while inserting records into database.
      */
-    public void Update(int patientID) {
-        try{
+    public void UpdateMedCon(int patientID) {
+        /*try{
             System.out.println(bloodType);
             if(bloodType.equalsIgnoreCase("null")){
                 bloodType = null;
@@ -189,7 +189,42 @@ public class MedicalCond {
                 + ""+bloodType+",'"+bloodPressure+"', '"+q10+"', '"+q11+"', '"+q12+"', NOW())";
         
         System.out.println(UpdateMedicalCon);
-        DBAccess.dbQuery(UpdateMedicalCon);
+        DBAccess.dbQuery(UpdateMedicalCon);*/
+        
+        String sql = "SELECT * FROM MEDICAL_HISTORY WHERE PATIENTID = " + patientID;
+        DBAccess.dbQuery(sql);
+        
+        if(sql == null){
+            String UpdateMedicalCon = "INSERT INTO MEDICAL_HISTORY VALUES(DEFAULT, "+patientID+", '"+q1+"', "
+                + "'"+q2+"', '"+q3+"', '"+q4+"', '"+q5+"', '"+q6+"', '"+q7+"', '"+q8a+"', '"+q8b+"', '"+q8c+"', '"+q9+"', "
+                + ""+bloodType+",'"+bloodPressure+"', '"+q10+"', '"+q11+"', '"+q12+"', NOW())";
+        
+            System.out.println(UpdateMedicalCon);
+            DBAccess.dbQuery(UpdateMedicalCon);
+        }else{
+            String UpdateMedicalCon = "UPDATE MEDICAL_HISTORY SET " 
+                    + "Q1_GOODHEALTH = '"+q1+"', "
+                    + "Q2_CONDITION = '"+q2+"', "
+                    + "Q3_SERIOUSILLNESS = '"+q3+"', "
+                    + "Q4_HOSPITALIZED = '"+q4+"', "
+                    + "Q5_PRESCRIPTION = '"+q5+"', "
+                    + "Q6_TOBACCO = '"+q6+"', "
+                    + "Q7_DRUGS = '"+q7+"', "
+                    + "Q8_PREGNANT = '"+q8a+"', "
+                    + "Q8_NURSING = '"+q8b+"', "
+                    + "Q8_BIRTHCONTROL = '"+q8c+"', "
+                    + "Q9_ALLERGY = '"+q9+"', "
+                    + "Q9_OTHERALLERGY = '"+q11+"', "
+                    + "Q10_BLOODTYPE = '"+bloodPressure+"', "
+                    + "Q11_BLOODPRESSURE = '"+q10+"', "
+                    //+ "Q12_ILLLNESS = '"+q11+"', "
+                    + "Q12_OTHERILLNESS = '"+q12+"', "
+                    + "DATE = NOW() "
+                    + "WHERE PATIENTID = "+patientID+";";
+            
+            System.out.println(UpdateMedicalCon);
+            DBAccess.dbQuery(UpdateMedicalCon);
+        }
     }
     
 }

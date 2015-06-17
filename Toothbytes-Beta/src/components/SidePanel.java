@@ -48,11 +48,11 @@ public class SidePanel extends JPanel{
         // APPOINTMENTS
         sideAppointment = new JPanel();
         sideAppointment.setLayout(new BorderLayout());
-        sideTabsPane.add("Patients for today", sideAppointment);
+        sideTabsPane.add("Appointments for today", sideAppointment);
         
         sideAppList = new JList();
         sideAppScroll = new JScrollPane(sideAppList);
-        sideAppointment.add(sideAppScroll, BorderLayout.CENTER);
+        sideAppointment.setLayout(new BoxLayout(sideAppointment,BoxLayout.Y_AXIS));
         
         appointmentToday = new ArrayList<>();
         appointmentToday = DBAccess.getAppointmentData("");
@@ -135,12 +135,10 @@ public class SidePanel extends JPanel{
             String inCalendar = sdf.format(inCal.getTime());
             String inAppointment = sdf.format(inApp.getTime());
             
-            //int date = inCal.compareTo(inApp);
             boolean same = inCalendar.equalsIgnoreCase(inAppointment);
             
             if(same == true){
                 System.out.println(inCalendar + " = " + inAppointment);
-                System.out.println(same);
                 return true;
             }else{
                 return false;

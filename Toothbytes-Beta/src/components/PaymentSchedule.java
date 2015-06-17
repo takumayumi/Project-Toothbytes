@@ -70,6 +70,8 @@ public class PaymentSchedule extends javax.swing.JPanel {
             }
         });
 
+        setBackground(new java.awt.Color(250, 250, 250));
+
         NameLabel.setText("Name");
 
         TimeLabel.setText("Time");

@@ -5,21 +5,11 @@
 */
 package window.forms;
 
-import java.awt.Image;
 import java.awt.Window;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import utilities.PersonalInfo;
 
 public class PersonalInformation extends javax.swing.JPanel {
@@ -27,7 +17,6 @@ public class PersonalInformation extends javax.swing.JPanel {
     private String patientID;
     private boolean newPatient = true;
     private final String BUTTON_DIR = "res/buttons/";
-    private final String PATIENTS_DIR = "res/patients/";
     
     public PersonalInformation() {
         initComponents();
@@ -437,11 +426,7 @@ public class PersonalInformation extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelButtonActionPerformed
     
     private void updatePersonalInfo(){
-        if(newPatient){
-            pi.NewPersonalInfo();
-        } else {
-            pi.UpdatePersonalInfo(patientID);
-        }
+        pi.NewPersonalInfo();
         
         Window w = SwingUtilities.getWindowAncestor(this);
         w.dispose();

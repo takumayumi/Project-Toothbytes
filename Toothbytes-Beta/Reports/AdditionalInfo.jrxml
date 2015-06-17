@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e5c24018-b5ae-414f-a5b2-05963263772d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[SELECT CONCAT(pa.patient_LastName, ',', ' ', pa.patient_FirstName, ' ', pa.patient_MiddleInitial, '.') AS "PATIENT NAME", DENTALINSURANCE, EFFECTIVEDATE, GUARDIANNAME, GUARDIANOCCUPATION, PREVIOUSDENTIST, LASTDENTALVISIT, PHYSICIANNAME, PHYSICIANSPECIALTY, PHYSICIANCONTACTNO, PHYSICIANOFFICE FROM ADDITIONAL_INFO AI
+JOIN PATIENT PA ON AI.PATIENTID = PA.PATIENTID]]>
+	</queryString>
+	<field name="PATIENT NAME" class="java.lang.String"/>
+	<field name="DENTALINSURANCE" class="java.lang.String"/>
+	<field name="EFFECTIVEDATE" class="java.sql.Date"/>
+	<field name="GUARDIANNAME" class="java.lang.String"/>
+	<field name="GUARDIANOCCUPATION" class="java.lang.String"/>
+	<field name="PREVIOUSDENTIST" class="java.lang.String"/>
+	<field name="LASTDENTALVISIT" class="java.sql.Date"/>
+	<field name="PHYSICIANNAME" class="java.lang.String"/>
+	<field name="PHYSICIANSPECIALTY" class="java.lang.String"/>
+	<field name="PHYSICIANCONTACTNO" class="java.lang.String"/>
+	<field name="PHYSICIANOFFICE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="66" backcolor="#000000" uuid="96ebaa5f-f341-4366-b63f-7a02cb0e81ce"/>
+				<staticText>
+					<reportElement style="Title" x="0" y="0" width="555" height="66" uuid="feb90c89-b3e3-401b-aff4-7fd35876b54b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="32" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Dr. Ruben Pascual General Dentistry]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="6" width="555" height="20" uuid="792e6613-7a6c-4e93-8eca-283047c6cda0"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Additional Information]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="300" splitType="Stretch">
+			<staticText>
+				<reportElement x="37" y="0" width="100" height="20" uuid="7665b938-0002-40ae-a0e7-0e48c5031ff3"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="30" width="100" height="20" uuid="1bcbdfae-c922-4600-a4d3-3227463b629b"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Dental Insurance:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="61" width="100" height="20" uuid="5dd46ebf-a3c3-48c0-9a6c-40920ad807a2"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Effective Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="92" width="100" height="20" uuid="fea92c3d-2a74-42ad-b9ec-dd6c1f1a958c"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Guardian Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="122" width="113" height="20" uuid="fc50bbf5-c6e9-4957-b8db-ada553d3a4e3"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Guardian Occupation:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="152" width="100" height="20" uuid="1ec696a6-ded3-4b9b-be0a-b69eab2e1bab"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Previous Dentist:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="183" width="100" height="20" uuid="b1e7ae5a-12c5-4c4c-8d68-3771c67150df"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Last Dental Visit:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="213" width="100" height="20" uuid="23a083f7-752e-4b0e-b271-85cbe4e0a768"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Physician:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="243" width="100" height="20" uuid="57feee22-ceb0-451c-8290-3bf76102bcf5"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Specialization:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="275" width="100" height="20" uuid="db267bb7-3e9a-4273-8a94-960c7fb64fbe"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Contact No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="275" width="100" height="20" uuid="b1ecf9ec-2732-43f1-b35a-04df3f6eb8ec"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Office No:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="168" y="0" width="245" height="20" uuid="16ee77de-9cc4-4b9d-bf7f-803f06fe54cd"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PATIENT NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="30" width="345" height="20" uuid="1ce4a20b-9431-41e2-a563-321787198522"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DENTALINSURANCE} == "NULL" ? $F{DENTALINSURANCE} : "n/a"]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy" isBlankWhenNull="true">
+				<reportElement x="168" y="61" width="144" height="20" uuid="7f135731-b0b7-4045-9718-9da7f846c2a3"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EFFECTIVEDATE} == "NULL" ? $F{EFFECTIVEDATE} : "n/a"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="92" width="245" height="20" uuid="02e5800f-3667-4c9e-992e-27d3d6608ff5"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GUARDIANNAME} == "NULL" ? $F{GUARDIANNAME} : "n/a"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="122" width="244" height="20" uuid="027823ae-c50a-4eb2-89fb-720f3de9686f"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GUARDIANOCCUPATION} == "NULL" ? $F{GUARDIANOCCUPATION} : "n/a"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="152" width="244" height="20" uuid="bf1f006f-29f1-491e-8659-40586a685b4c"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PREVIOUSDENTIST} == "NULL" ? $F{PREVIOUSDENTIST} : "n/a"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="275" width="131" height="20" uuid="e5e14b5d-a371-454f-b334-6411ca2a4b87"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PHYSICIANCONTACTNO} == "NULL" ? $F{PHYSICIANCONTACTNO} : "n/a"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="413" y="275" width="113" height="20" uuid="5a2e4381-832e-49db-bbba-ce24c0b01650"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PHYSICIANOFFICE}  == "NULL" ? $F{PHYSICIANOFFICE} : "n/a"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="213" width="244" height="20" uuid="e4ba673f-840e-415b-b305-a95a6ea42e9a"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PHYSICIANNAME} == "NULL" ? $F{PHYSICIANNAME} : "n/a"]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy" isBlankWhenNull="true">
+				<reportElement x="168" y="183" width="144" height="20" uuid="b9bd8816-16e9-42ce-98cb-107741621fd1"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LASTDENTALVISIT} == "NULL" ? $F{LASTDENTALVISIT} : "n/a"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="243" width="345" height="20" uuid="513dec8f-ccd3-4918-bce0-815623ffb7af"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PHYSICIANSPECIALTY} == "NULL" ? $F{PHYSICIANSPECIALTY} : "n/a"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="4025ea59-d98e-4769-9d2a-da55f6e6ba3a"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#000000" uuid="0b61c4fd-5d49-4d49-a41a-1ff323031cff"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF" uuid="86116e11-23e4-4526-ac27-82f35be4df54"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="433" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="d27b6c40-244d-4e5d-afec-85240eb1d7c2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="MMMMM dd, yyyy">
+					<reportElement style="Column header" x="7" y="1" width="197" height="20" forecolor="#FFFFFF" uuid="2d7915f5-182d-415e-bc13-213c4ec10f25"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

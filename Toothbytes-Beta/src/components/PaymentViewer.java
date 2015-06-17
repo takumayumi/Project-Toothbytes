@@ -254,7 +254,7 @@ public class PaymentViewer extends JPanel{
         homeNoLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         homeNoLabel.setText("HomeNo");
 
-        patientImage.setBackground(new java.awt.Color(204, 204, 204));
+        patientImage.setBackground(new java.awt.Color(250, 250, 250));
         patientImage.setOpaque(true);
 
         javax.swing.GroupLayout personalInformationPanelLayout = new javax.swing.GroupLayout(personalInformationPanel);
@@ -263,8 +263,8 @@ public class PaymentViewer extends JPanel{
             personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(personalInformationPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(patientImage, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(patientImage, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(personalInformationPanelLayout.createSequentialGroup()
                         .addGroup(personalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

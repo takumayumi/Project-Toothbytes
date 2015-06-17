@@ -226,6 +226,11 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
         genderCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Gender", "Male", "Female" }));
 
         bdayYearTF.setText("Year");
+        bdayYearTF.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bdayYearTFMouseClicked(evt);
+            }
+        });
 
         saveButton.setIcon(new javax.swing.ImageIcon(BUTTON_DIR + "Save.png"));
         saveButton.setText("Save");
@@ -483,13 +488,13 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
             
         }
     }//GEN-LAST:event_addImageButtonActionPerformed
+
+    private void bdayYearTFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bdayYearTFMouseClicked
+        bdayYearTF.setText("");
+    }//GEN-LAST:event_bdayYearTFMouseClicked
     
     private void updatePersonalInfo(){
-        if(newPatient){
-            pi.NewPersonalInfo();           
-        } else {
-            pi.UpdatePersonalInfo(patientID);
-        }
+        pi.UpdatePersonalInfo(patientID);
         
         Window w = SwingUtilities.getWindowAncestor(this);
         w.dispose();

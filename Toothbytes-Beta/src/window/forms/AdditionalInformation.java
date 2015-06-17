@@ -439,11 +439,13 @@ public class AdditionalInformation extends javax.swing.JPanel {
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void updateAdditionalInfo() {
-        if(toggle){
+        /*if(toggle){
             ai.UpdateAdditionalInfo(patientID, ai);
         } else {
             ai.EditAdditionalInfo(additionalInfoID);
-        }
+        }*/
+        
+        ai.EditUpdateAdditional(patientID);
         Window w = SwingUtilities.getWindowAncestor(this);
         w.dispose();
     }

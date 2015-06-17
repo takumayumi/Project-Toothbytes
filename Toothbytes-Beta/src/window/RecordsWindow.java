@@ -74,7 +74,7 @@ public class RecordsWindow extends ModuleWindow {
     private MigLayout layout, formLayout, chartLayout;
     private JScrollPane scrollInfo, scrollDental, scrollGallery;
     private PatientX current;
-    private JButton patientRepBut, editInfoBut, addInfoBut, editMedCon, checkup, history;
+    private JButton patientAddBut, patientRepBut, editInfoBut, addInfoBut, editMedCon, checkup, history;
     
     private static JDBCConnection conn = null;
     private static String dir = "data/db";
@@ -314,50 +314,50 @@ public class RecordsWindow extends ModuleWindow {
             photo.setIcon(new ImageIcon("res/images/patient.png"));
         }
 
-        infoViewer.add(photo, "wrap");
+        infoViewer.add(photo, "gapleft 20, wrap");
         
-        infoViewer.add(lblName);
+        infoViewer.add(lblName, "gapleft 20");
         infoViewer.add(name[0], "split 3");
         infoViewer.add(name[1]);
         infoViewer.add(name[2], "wrap");
 
-        infoViewer.add(lblAge);
+        infoViewer.add(lblAge, "gapleft 20");
         infoViewer.add(age, "wrap");
 
-        infoViewer.add(lblBdate);
+        infoViewer.add(lblBdate, "gapleft 20");
         infoViewer.add(bdate, "wrap");
 
-        infoViewer.add(lblOccupation);
+        infoViewer.add(lblOccupation, "gapleft 20");
         infoViewer.add(occupation, "wrap");
 
-        infoViewer.add(lblCivstat);
+        infoViewer.add(lblCivstat, "gapleft 20");
         infoViewer.add(civstat, "wrap");
 
-        infoViewer.add(lblGender);
+        infoViewer.add(lblGender, "gapleft 20");
         infoViewer.add(gender, "wrap");
 
-        infoViewer.add(lblNname);
+        infoViewer.add(lblNname, "gapleft 20");
         infoViewer.add(nName, "wrap");
 
-        infoViewer.add(lblHomeadd);
+        infoViewer.add(lblHomeadd, "gapleft 20");
         infoViewer.add(homeadd, "wrap");
 
-        infoViewer.add(lblHomeno);
+        infoViewer.add(lblHomeno, "gapleft 20");
         infoViewer.add(homeno, "wrap");
 
-        infoViewer.add(lblOfficeno);
+        infoViewer.add(lblOfficeno, "gapleft 20");
         infoViewer.add(officeno, "wrap");
 
-        infoViewer.add(lblFaxno);
+        infoViewer.add(lblFaxno, "gapleft 20");
         infoViewer.add(faxno, "wrap");
 
-        infoViewer.add(lblFaxno);
+        infoViewer.add(lblFaxno, "gapleft 20");
         infoViewer.add(faxno, "wrap");
 
-        infoViewer.add(lblCellno);
+        infoViewer.add(lblCellno, "gapleft 20");
         infoViewer.add(cellno, "wrap");
 
-        infoViewer.add(lblEadd);
+        infoViewer.add(lblEadd, "gapleft 20");
         infoViewer.add(eAdd, "wrap");
         
         //Print Report
@@ -366,8 +366,17 @@ public class RecordsWindow extends ModuleWindow {
         patientRepBut.setToolTipText("Print Patient Records");
         
         PatientRecordsReport prr = new PatientRecordsReport();
-        recordsBar.add(patientRepBut, "skip 100, split 4");
+        recordsBar.add(patientRepBut, "skip 100, split 5");
         patientRepBut.addActionListener(prr);
+        
+        //Print AddInfo
+        patientAddBut = new JButton(new ImageIcon(BUTTON_DIR + "ReportGenPatient-30x30.png"));
+        patientAddBut.setBackground(WHITE);
+        patientAddBut.setToolTipText("Print Additional Information");
+        
+        PrintAdditionalInfo pai = new PrintAdditionalInfo();
+        recordsBar.add(patientAddBut);
+        patientAddBut.addActionListener(pai);
 
         //EditInfoBut
         editInfoBut = new JButton(new ImageIcon(BUTTON_DIR + "EditPersonalRecord.png"));
@@ -475,6 +484,32 @@ public class RecordsWindow extends ModuleWindow {
         }
     }
     
+    public void printAdditionalInfo(){
+        try{
+            Class.forName("org.hsqldb.jdbcDriver");
+            String dbConn = "jdbc:hsqldb:file:"+dir+";user=root";
+            conn = (JDBCConnection) JDBCDriver.getConnection(dbConn, null);
+            File path = new File("Reports/AdditionalInfo.jrxml");
+            String reportPath = path.getCanonicalPath();
+            JasperDesign jd = JRXmlLoader.load(reportPath);
+            String sql = "SELECT CONCAT(pa.patient_LastName, ',', ' ', pa.patient_FirstName, ' ', \n" +
+                    "pa.patient_MiddleInitial, '.') AS \"PATIENT NAME\", DENTALINSURANCE, EFFECTIVEDATE, \n" +
+                    "GUARDIANNAME, GUARDIANOCCUPATION, PREVIOUSDENTIST, LASTDENTALVISIT, PHYSICIANNAME, \n" +
+                    "PHYSICIANSPECIALTY, PHYSICIANCONTACTNO, PHYSICIANOFFICE FROM ADDITIONAL_INFO AI\n" +
+                    "JOIN PATIENT PA ON AI.PATIENTID = PA.PATIENTID\n" +
+                    "WHERE PA.PATIENTID = "+ current.getId();
+            JRDesignQuery newQuery = new JRDesignQuery();
+            newQuery.setText(sql);
+            jd.setQuery(newQuery);
+            JasperReport jrCompile = JasperCompileManager.compileReport(jd);
+            JasperPrint jpPrint = JasperFillManager.fillReport(jrCompile, null, conn);
+            JasperViewer.viewReport(jpPrint, false);
+            conn.close();
+        }catch(ClassNotFoundException | SQLException | IOException | JRException error){
+            JOptionPane.showMessageDialog(null,error);
+        }
+    }
+    
     private void gallerySetUp(Patient p){
         JButton uploadImage = new JButton("Save Image");
         uploadImage.addActionListener(new ActionListener() {
@@ -530,6 +565,22 @@ public class RecordsWindow extends ModuleWindow {
 
                     public void run() {
                         printPatientRecords();
+                    }
+                }
+                );
+            }         
+        }
+    }
+    
+    public class PrintAdditionalInfo implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == patientAddBut) {
+                java.awt.EventQueue.invokeLater(new Runnable() {
+
+                    public void run() {
+                        printAdditionalInfo();
                     }
                 }
                 );
