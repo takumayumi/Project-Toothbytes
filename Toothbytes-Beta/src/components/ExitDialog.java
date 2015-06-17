@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import net.miginfocom.swing.MigLayout;
 import utilities.DBAccess;
+import utilities.DataMan;
 
 /**
  * <h1>LoginDialog</h1>
@@ -48,18 +49,17 @@ public class ExitDialog extends JDialog {
         this.getContentPane().setLayout(new BorderLayout());
         this.setResizable(false);
 
+        panel = new JPanel(new MigLayout("fill"));
+        this.setContentPane(panel);
+        
         buttons = new JPanel();
-        this.getContentPane().add(buttons, BorderLayout.SOUTH);
 
-        panel = new JPanel(new MigLayout("fillx, wrap 6", "[][fill]push[fill]push[fill]push[fill]push[fill]", "[]10px[]"));
-
-        this.getContentPane().add(panel, BorderLayout.CENTER);
-
-        logo = new JLabel(new ImageIcon("res\\buttons\\Cancel.png"));
+        logo = new JLabel(DataMan.ResizeImage("res\\buttons\\quit_b.png", 50, 50));
         info = new JLabel("Are you sure you want to exit?");
 
-        panel.add(logo, "span 1");
-        panel.add(info, "span 5");
+        panel.add(logo, "gapx 15 0");
+        panel.add(info, "gapx 0 15");
+        panel.add(buttons, "south");
 
         yes = new JButton("Yes");
         no = new JButton("No");

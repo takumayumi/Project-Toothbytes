@@ -14,6 +14,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -59,8 +60,8 @@ public class OtherTreatmentDialog extends JDialog{
             }
         };
         
-        fill = initButtons("FL", "fill");
-        brush = initButtons("MK", "marker");
+        fill = initButtons("res/buttons/fill.png", "fill");
+        brush = initButtons("res/buttons/marker.png", "marker");
         toolGroup.add(fill);
         toolGroup.add(brush);
         
@@ -100,7 +101,8 @@ public class OtherTreatmentDialog extends JDialog{
     }
     
     public JToggleButton initButtons(String path, String tool) {
-        JToggleButton temp = new JToggleButton(path);
+        JToggleButton temp = new JToggleButton(new ImageIcon(path));
+        temp.setToolTipText(tool+" tool");
         temp.addActionListener(new ActionListener(){
 
             @Override

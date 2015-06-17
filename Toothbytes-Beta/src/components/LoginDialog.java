@@ -77,8 +77,8 @@ public class LoginDialog extends JDialog {
         form.add(pwdLabel, "span 1");
         form.add(pwd, "span 5");
         
-        login = new JButton("LOGIN");
-        exit = new JButton("EXIT");
+        login = new JButton("LOGIN", new ImageIcon("res/buttons/login.png"));
+        exit = new JButton("EXIT", new ImageIcon("res/buttons/quit.png"));
         buttons.add(login);
         buttons.add(exit);
         
@@ -116,17 +116,6 @@ public class LoginDialog extends JDialog {
                 System.exit(0);
             }
 
-            @Override
-            public void windowActivated(WindowEvent e) {
-//                f.setGlassPane(new JComponent(){
-//                    public void paintComponent(Graphics g) {
-//                        g.setColor(new Color(0, 0, 0, 200));
-//                        g.fillRect(0, 0, getWidth(), getHeight());
-//                        super.paintComponents(g);
-//                    }
-//                });
-//                f.getGlassPane().setVisible(true);
-            }
         });
     }
     

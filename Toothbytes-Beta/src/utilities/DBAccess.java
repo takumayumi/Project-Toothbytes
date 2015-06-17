@@ -552,13 +552,11 @@ public class DBAccess {
         try {
             rs = (JDBCResultSet) stmt.executeQuery(query);
             while (rs.next()) {
-                System.out.println("Checking service:" + rs.getString("SERVICETYPE"));
                 boolean b = !(rs.getString("SERVICETYPE").equals("Extraction")
                         || rs.getString("SERVICETYPE").equals("Laser Bleaching")
                         || rs.getString("SERVICETYPE").equals("Bridge")
                         || rs.getString("SERVICETYPE").equals("Filling")
                         || rs.getString("SERVICETYPE").equals("Crown"));
-                System.out.println(b);
                 if (b) {
                     tList.add(rs.getString("SERVICETYPE"));
                 }
@@ -569,6 +567,27 @@ public class DBAccess {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
         return tList;
+    }
+
+    public static double getServiceFee(String service) {
+        PreparedStatement findFee = null;
+        char a = service.toUpperCase().charAt(0);
+        String up = a+service.substring(1);
+        System.out.println(up);
+        
+        String query = "SELECT SERVICEFEE FROM SERVICES "
+                + "where SERVICETYPE = ?";
+        try {
+            findFee = conn.prepareStatement(query);
+            findFee.setString(1, up);
+            rs = (JDBCResultSet) findFee.executeQuery();
+            if(rs.next()) {
+                return rs.getDouble("SERVICEFEE");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 
     public static ArrayList<Treatment> getTreatmentList(int id) {

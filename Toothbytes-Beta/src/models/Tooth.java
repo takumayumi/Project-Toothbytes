@@ -42,7 +42,7 @@ public class Tooth extends JComponent {
 
     private final Image NORMAL_STATE, UNERUPTED_STATE, MISSING_STATE,
             LASER_STATE, CROWN_STATE, BRIDGE_STATE, MISSING_BRIDGED_STATE,
-            EXTRACTED_STATE, DEFAULT_STATE;
+            EXTRACTED_STATE, DEFAULT_STATE, FILL_STATE;
 
     private int pointerX = -10;
     private int pointerY = -10;
@@ -69,6 +69,7 @@ public class Tooth extends JComponent {
         BRIDGE_STATE = ImageIO.read(new File("res/teeth/bridge.png"));
         DEFAULT_STATE = ImageIO.read(new File("res/teeth/bridged.png"));
         EXTRACTED_STATE = ImageIO.read(new File("res/teeth/extract.png"));
+        FILL_STATE = ImageIO.read(new File("res/teeth/fill.png"));
 
         MouseHandler mh = new MouseHandler();
         MouseMotionHandler mmh = new MouseMotionHandler();
@@ -97,7 +98,8 @@ public class Tooth extends JComponent {
         BRIDGE_STATE = ImageIO.read(new File("res/teeth/bridge.png"));
         DEFAULT_STATE = ImageIO.read(new File("res/teeth/bridged.png"));
         EXTRACTED_STATE = ImageIO.read(new File("res/teeth/extract.png"));
-
+        FILL_STATE = ImageIO.read(new File("res/teeth/fill.png"));
+        
         MouseHandler mh = new MouseHandler();
         MouseMotionHandler mmh = new MouseMotionHandler();
         this.addMouseListener(mh);
@@ -197,8 +199,13 @@ public class Tooth extends JComponent {
                 }
             }
 
-            if (preState.matches("decayed") || preState.matches("filling") || preState.matches("marker")) {
+            if (preState.matches("decayed") || preState.matches("filling")) {
+                this.setToolTipText(this.state);
                 markings.add(new Area(drawBrush(pointerX, pointerY, 4, 4)));
+                repaint();
+            } else if (preState.matches("marker")) {
+                markings.add(new Area(drawBrush(pointerX, pointerY, 4, 4)));
+                this.setToolTipText(this.getSecondState());
                 repaint();
             }
         }
@@ -335,7 +342,7 @@ public class Tooth extends JComponent {
                 g2d.fill(markings);
                 break;
             case "fill":
-                g2d.drawImage(DEFAULT_STATE, X_TOOTH, Y_TOOTH, null);
+                g2d.drawImage(FILL_STATE, X_TOOTH, Y_TOOTH, null);
                 if (this.secondState.length() > 9 && this.secondState.length() <= 11) {
                     g2d.drawString(this.secondState.substring(0, 4), X_TOOTH + 7, Y_TOOTH + 20);
                     g2d.drawString(this.secondState.substring(4, this.secondState.length()), X_TOOTH + 5, Y_TOOTH + 30);

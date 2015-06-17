@@ -9,6 +9,6 @@ package components.listener;
  *
  * @author Jolas
  */
-public interface ToothListener {
-    void notify(int number, String state);
+public interface ChartListener {
+    void notify(boolean changed);
 }

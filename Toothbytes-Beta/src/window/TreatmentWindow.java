@@ -6,8 +6,11 @@
 package window;
 
 import components.Camera;
+import components.LoadingScreen;
 import components.OtherTreatmentDialog;
+import components.listener.ChartListener;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -18,26 +21,30 @@ import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 import models.DentalChart;
 import models.Patient;
 import net.miginfocom.swing.MigLayout;
 import utilities.Configuration;
+import utilities.DBAccess;
 import utilities.DataMan;
 
 /**
  *
  * @author Jolas
  */
-public class TreatmentWindow extends JDialog {
+public class TreatmentWindow extends JDialog implements ChartListener{
 
     private JPanel mainP, patientInfo;
     private JLabel photo, name, bp, bpIcon, today;
@@ -47,16 +54,16 @@ public class TreatmentWindow extends JDialog {
     private DentalChart dc;
     private JToolBar toolbox, ctoolbox, ttoolbox;
     private JScrollPane dcScroll;
-    private static JTable table;
     private MigLayout layout;
-    private String selectedTool;
     private ToolsHandler th;
     private OtherTreatmentDialog otd;
     private ButtonGroup toolsGroup;
+    private LoadingScreen ls;
 
     public TreatmentWindow(JFrame f, Patient p) {
         super(f);
         dc = new DentalChart(true);
+        dc.addChartListener(this);
         initComponents(p);
 //        this.pack();
     }
@@ -64,6 +71,7 @@ public class TreatmentWindow extends JDialog {
     public TreatmentWindow(JFrame f, Patient p, DentalChart dcPassed) {
         super(f);
         this.dc = new DentalChart(true);
+        dc.addChartListener(this);
         for (int i = 0; i < dcPassed.getTable().getRowCount(); i++) {
             this.dc.updateTooth((Integer) dcPassed.getTable().getValueAt(i, 0), (String) dcPassed.getTable().getValueAt(i, 1), false);
         }
@@ -75,6 +83,10 @@ public class TreatmentWindow extends JDialog {
 
     public void initComponents(Patient p) {
         this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height - 75);
+
+        ls = new LoadingScreen("Treatment Starting...");
+        this.setGlassPane(ls);
+        this.getGlassPane().setVisible(true);
 
         layout = new MigLayout("wrap 6", "[110px][fill]push[fill]push[fill]push[fill]push[fill]", "[]");
 
@@ -102,6 +114,13 @@ public class TreatmentWindow extends JDialog {
         today.setFont(Configuration.TB_FONT_BANNER);
 
         save = new JButton("Save & Finish", new ImageIcon("res/buttons/save.png"));
+        save.setEnabled(false);
+        save.addActionListener((ActionEvent e) -> {
+            FinishDialog fd = new FinishDialog((JDialog)save.getParent().getParent().getParent().getParent(), dc.getBreakDown());
+            fd.setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
+            fd.setVisible(true);
+        });
+        
         mainP.add(save, "width 50:150:150, height 40:40:40,gapy 0 5,south, center");
 
         name.setForeground(new Color(65, 200, 115));
@@ -164,7 +183,7 @@ public class TreatmentWindow extends JDialog {
         toolbox.add(ctoolbox);
         toolbox.add(ttoolbox);
 
-        camera = new JButton( "Intraoral Camera", new ImageIcon("res/buttons/camera.png"));
+        camera = new JButton("Intraoral Camera", new ImageIcon("res/buttons/camera.png"));
         camera.setFont(Configuration.TB_FONT_HEADER);
         camera.addActionListener(new ActionListener() {
 
@@ -188,13 +207,32 @@ public class TreatmentWindow extends JDialog {
 
         this.addWindowListener(new WindowAdapter() {
             @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
             public void windowClosing(WindowEvent e) {
 
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                unlock();
             }
         });
 
         dc.setEnabled(true);
 
+    }
+
+    private void unlock() {
+        this.getGlassPane().setVisible(false);
     }
 
     private JToolBar createToolBar(String title) {
@@ -212,6 +250,11 @@ public class TreatmentWindow extends JDialog {
         temp.addActionListener(th);
         toolsGroup.add(temp);
         return temp;
+    }
+
+    @Override
+    public void notify(boolean changed) {
+        save.setEnabled(changed);
     }
 
     public class ToolsHandler implements ActionListener {
@@ -261,11 +304,92 @@ public class TreatmentWindow extends JDialog {
         dc.updatePreState(temp[0], temp[1]);
     }
 
-//    public static void main(String[] args) {
-//        JFrame f = new JFrame();
-//        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        f.setVisible(true);
-//        TreatmentWindow tw = new TreatmentWindow(f, new Patient(1, "asd", "asd", "a"));
-//        tw.setVisible(true);
-//    }
+    public class FinishDialog extends JDialog {
+
+        private JPanel panel, buttons;
+        private JTable bdTable;
+        private JLabel logo, info;
+        private JPasswordField pwd;
+        private JButton yes, no;
+        private boolean granted;
+
+        /**
+         * This constructor creates the login window and layouts it's
+         * components.
+         */
+        public FinishDialog(JDialog d, Object[][] bDown) {
+            super(d);
+            this.setTitle("Fees");
+            this.setSize(250, 400);
+            this.setLocationRelativeTo(null);
+            this.setResizable(false);
+
+            panel = new JPanel(new MigLayout("fill"));
+            this.setContentPane(panel);
+
+            bdTable = new JTable(new DefaultTableModel(bDown, new Object[]{"Treatments", "Quantity", "Price"}) {
+                @Override
+                public boolean isCellEditable(int row, int col) {
+                    if (col == 2) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
+            JScrollPane scrollTable = new JScrollPane(bdTable);
+            panel.add(scrollTable, "center");
+            
+            
+            buttons = new JPanel();
+//        logo = new JLabel(DataMan.ResizeImage("res\\buttons\\quit_b.png", 50, 50));
+//        info = new JLabel("Are you sure you want to exit?");
+
+//        panel.add(logo, "gapx 15 0");
+//        panel.add(info, "gapx 0 15");
+            panel.add(buttons, "south");
+            yes = new JButton("Confirm");
+            no = new JButton("Cancel");
+            buttons.add(yes);
+            buttons.add(no);
+
+            this.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowActivated(WindowEvent e) {
+                    d.setGlassPane(new JComponent() {
+                        public void paintComponent(Graphics g) {
+                            g.setColor(new Color(0, 0, 0, 200));
+                            g.fillRect(0, 0, getWidth(), getHeight());
+                            super.paintComponents(g);
+                        }
+                    });
+                    d.getGlassPane().setVisible(true);
+                }
+            });
+
+            yes.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Closing database");
+                    DBAccess.closeDB();
+                    System.out.println("bye!");
+                    System.exit(0);
+                }
+            });
+
+            no.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    cancelled();
+                }
+            });
+        }
+
+        public void cancelled() {
+            this.dispose();
+            JFrame f = (JFrame) super.getOwner();
+            f.getGlassPane().setVisible(false);
+        }
+
+    }
 }

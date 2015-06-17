@@ -5,6 +5,7 @@
  */
 package models;
 
+import components.listener.ChartListener;
 import components.listener.ToothListener;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -13,6 +14,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -29,6 +34,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import net.miginfocom.swing.MigLayout;
 import utilities.Configuration;
+import utilities.DBAccess;
 
 /**
  *
@@ -47,10 +53,13 @@ public class DentalChart extends JPanel implements ToothListener {
     private JTable table;
     private JPanel tablePanel;
     private ChartPanel chartPanel;
+    private String[] conditions = {"normal", "missing", "unerupted", "decayed"};
+    private ArrayList<String> feeList;
+    private ChartListener cl;
 
     public DentalChart(boolean tableEnabled) {
         this.tableEnabled = tableEnabled;
-        mainLayout = new MigLayout("wrap 4", "[][][][]", "[300px][250px]");
+        mainLayout = new MigLayout("wrap 4", "[][][][]", "[300px][180px]");
 
         this.setSize(970, 600);
         this.setLayout(mainLayout);
@@ -110,19 +119,6 @@ public class DentalChart extends JPanel implements ToothListener {
             chartPanel.add(l7.get(i), "span 1");
         }
 
-//        tablePop = new JPopupMenu();
-//        deleteRow = new JMenuItem("Delete Entry");
-//        deleteRow.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                JTable t = (JTable) e.getSource();
-//                t.getValueAt(t.getSelectedRow(), 0);
-//                tableModel.removeRow(t.getSelectedRow());
-//            }
-//        });
-//        tablePop.add(deleteRow);
-//        table = new JTable();
-//        table.setComponentPopupMenu(tablePop);
         tableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int col) {
@@ -140,6 +136,7 @@ public class DentalChart extends JPanel implements ToothListener {
 //        tableScroll.setVisible(tableEnabled);
 //        tablePanel.add(tableScroll, BorderLayout.CENTER);
         this.add(tableScroll, "span 4 1, grow");
+        feeList = new ArrayList<String>();
     }
 
     public JTable getTable() {
@@ -232,6 +229,35 @@ public class DentalChart extends JPanel implements ToothListener {
         this.updateUI();
     }
 
+    public Object[][] getBreakDown() {
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        for (int i = 0; i < feeList.size(); i++) {
+            if (map.isEmpty()) {
+                map.put(feeList.get(i), 1);
+            } else {
+                if (!map.containsKey(feeList.get(i))) {
+                    map.put(feeList.get(i), 1);
+                } else {
+                    map.replace(feeList.get(i), map.get(feeList.get(i)) + 1);
+                }
+            }
+        }
+
+        Object[][] bDown = new Object[map.size()][3];
+        Set ents = map.entrySet();
+        Iterator entIterator = ents.iterator();
+
+        int i = 0;
+        while (entIterator.hasNext()) {
+            Map.Entry mapping = (Map.Entry) entIterator.next();
+            bDown[i][0] = mapping.getKey();
+            bDown[i][1] = mapping.getValue();
+            bDown[i][2] = DBAccess.getServiceFee((String) mapping.getKey()) * (Integer) mapping.getValue();
+            i++;
+        }
+        return bDown;
+    }
+
     public void setTableEnabled(boolean b) {
         this.tableEnabled = b;
     }
@@ -318,14 +344,19 @@ public class DentalChart extends JPanel implements ToothListener {
                 table.setValueAt("Delete Entry", tableModel.getRowCount() - 1, 3);
             }
         }
+        for (int i = 0; i < conditions.length; i++) {
+            if (!s.matches(conditions[i])) {
+                feeList.add(s);
+            }
+        }
     }
 
     public void notify(int number, String state) {
         updateTable(number, state);
+        if (cl != null) {
+            notifyChartListener(true);
+        }
     }
-//        public void notify(int number, String state, String altState) {
-//        updateTable(number, altState);
-//    }
 
     class ButtonRenderer extends JButton implements TableCellRenderer {
 
@@ -347,6 +378,14 @@ public class DentalChart extends JPanel implements ToothListener {
         }
     }
 
+    public void addChartListener(ChartListener cl) {
+        this.cl = cl;
+    }
+
+    public void notifyChartListener(boolean b) {
+        cl.notify(b);
+    }
+
     class ButtonEditor extends DefaultCellEditor {
 
         protected JButton button;
@@ -363,6 +402,11 @@ public class DentalChart extends JPanel implements ToothListener {
             button.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 //                    fireEditingStopped();
+                    if (tableModel.getRowCount() == 1) {
+                        if (cl != null) {
+                            notifyChartListener(true);
+                        }
+                    }
                     deleteActionFired();
                     cancelCellEditing();
                 }
