@@ -932,7 +932,7 @@ public class MedicalCondition extends javax.swing.JPanel {
     }
 
     public void updateDatabase() {
-            mc.UpdateMedCon(patientID);
+            mc.Update(patientID);
         
     }
     

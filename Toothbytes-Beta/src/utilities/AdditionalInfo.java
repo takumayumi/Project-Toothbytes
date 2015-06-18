@@ -108,7 +108,7 @@ public class AdditionalInfo {
      *          If the program failed to update or insert the data the user 
      *          input for the database.
      */
-    /*public void UpdateAdditionalInfo(int patientID, AdditionalInfo ai) {
+    public void UpdateAdditionalInfo(int patientID, AdditionalInfo ai) {
         try{
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String effectiveDate = "";
@@ -190,68 +190,9 @@ public class AdditionalInfo {
         }catch(Exception e){
             System.out.println("AdditionalInfo - EditAdditionalInfo Error: " + e);
         }
-    }*/
-    
-    public void EditUpdateAdditional(int patientID){
-        try{
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String seffectiveDate = "";
-            String slastDentalVisit = "";
-            
-            try{
-                if(sdf.format(effectiveDate.getTime()).isEmpty()){
-                    seffectiveDate = "0000-00-00";
-                } else {
-                    seffectiveDate = "'"+sdf.format(effectiveDate.getTime())+"'";
-                }
-            }catch(Exception e){
-                seffectiveDate = "DEFAULT";
-            }
-            
-            try{
-                if(sdf.format(lastDentalVisit.getTime()).isEmpty()){
-                    slastDentalVisit = "0000-00-00";
-                } else {
-                    slastDentalVisit = "'"+sdf.format(lastDentalVisit.getTime())+"'";
-                }
-            }catch(Exception e){
-                slastDentalVisit = "DEFAULT";
-            }
-            
-            String sql = "SELECT * FROM ADDITIONAL_INFO WHERE PATIENTID = " + patientID;
-            DBAccess.dbQuery(sql);
-            
-            if(sql == null){
-                String additionalInfoUpdate = "INSERT INTO ADDITIONAL_INFO VALUES(DEFAULT, "+patientID+", '"+ai.getDentalInsurance()+"', "
-                    + ""+effectiveDate+" , '"+ai.getGuardianName()+"', '"+ai.getOccupation()+"', '"+ai.getReferrer()+"', "
-                    + "'"+ai.getReason()+"', '"+ai.getPreviousDentist()+"', "+lastDentalVisit+", '"+ai.getPhysicianName()+"', "
-                    + "'"+ai.getOfficeAddress()+"', '"+ai.getSpecialization()+"', '"+ai.getOfficeNumber()+"')";
-                
-                System.out.println(additionalInfoUpdate);
-                DBAccess.dbQuery(additionalInfoUpdate);
-            }else{
-                String additionalInfoUpdate = "UPDATE ADDITIONAL_INFO SET "
-                    + "DENTALINSURANCE = '"+dentalInsurance+"', "
-                    + "EFFECTIVEDATE = "+seffectiveDate+", "
-                    + "GUARDIANNAME = '"+guardiansName+"', "
-                    + "GUARDIANOCCUPATION = '"+occupation+"', "
-                    + "REFERRAL = '"+referrer+"', "
-                    + "REMARKS = '"+reason+"', "
-                    + "PREVIOUSDENTIST = '"+previousDentist+"', "
-                    + "LASTDENTALVISIT = "+slastDentalVisit+", "
-                    + "PHYSICIANNAME = '"+nameOfPhysician+"', "
-                    + "PHYSICIANOFFICE = '"+officeAddress+"', "
-                    + "PHYSICIANSPECIALTY = '"+specialization+"', "
-                    + "PHYSICIANCONTACTNO = '"+officeNumber+"' "
-                    + "WHERE PATIENTID = "+patientID+";";
-                
-                System.out.println(additionalInfoUpdate);
-                DBAccess.dbQuery(additionalInfoUpdate);
-            }
-        }catch(Exception e){
-            System.out.println("AdditionalInfo - EditAdditionalInfo Error: " + e);
-        }
     }
+    
+    
     
     public int getAdditionalInfoID(){
         return additionalInfoID;

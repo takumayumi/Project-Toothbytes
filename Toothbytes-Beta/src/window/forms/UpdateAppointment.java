@@ -5,15 +5,13 @@
  */
 package window.forms;
 
-import java.awt.Color;
 import java.awt.Window;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import models.Appointment;
@@ -25,31 +23,33 @@ import utilities.DBAccess;
  * @author Ecchi Powa
  */
 public class UpdateAppointment extends javax.swing.JPanel {
+    
+    private final String BUTTON_DIR = "res/buttons/";
 
     /**
      * Creates new form SetAppointment
      */
-    private String BUTTON_DIR = "res/buttons/";
+    
+    private int appointmentID;
     private Appointment appointment;
     private ArrayList<PatientX> patientList = DBAccess.getPatientXData("");
-    private ArrayList<Appointment> appointmentData = DBAccess.getAppointmentData("");
     private Calendar now = Calendar.getInstance();
     private int monthMod = now.get(Calendar.MONTH);
     private int yearMod = now.get(Calendar.YEAR);
     private int initCharNo = 254;
     private int charTyped = 0;
+    private boolean toggle = true;
     
     public UpdateAppointment() {
         initComponents();
-        setIDValue();
         setMonthValues();
         setPatientValues();
-
     }
     
     public UpdateAppointment(Appointment appointment){
         initComponents();
         this.appointment = appointment;
+        appointmentID = appointment.getAppointmentID();
         String[] appDate = appointment.getAppointmentDate().split("-");
         monthMod = Integer.parseInt(appDate[1])-1;
         yearMod = Integer.parseInt(appDate[0]);
@@ -63,7 +63,7 @@ public class UpdateAppointment extends javax.swing.JPanel {
     }
     
     public UpdateAppointment(String date){
-        initComponents();
+initComponents();
         String[] dateArr = date.split("-");
         monthMod = Integer.parseInt(dateArr[1]);
         yearMod = Integer.parseInt(dateArr[0]);
@@ -71,6 +71,7 @@ public class UpdateAppointment extends javax.swing.JPanel {
         setPatientValues();
         now.set(Integer.parseInt(dateArr[0]), Integer.parseInt(dateArr[1]), Integer.parseInt(dateArr[2]));
         sptMiniCalendar.changeSelection(now.get(Calendar.DAY_OF_WEEK_IN_MONTH)-1, now.get(Calendar.DAY_OF_WEEK)-1, true, false);
+
     }
     
     public UpdateAppointment(int patientID, String reason){
@@ -85,41 +86,17 @@ public class UpdateAppointment extends javax.swing.JPanel {
     
     public void setAppointmentValues(){
         String[] startHour = appointment.getAppointmentTime().split(":");
-        sptStartHour.setSelectedItem("Hour");
-        sptStartMin.setSelectedItem("Minute");
+        sptStartHour.setSelectedItem(String.valueOf(startHour[0]));
+        sptStartMin.setSelectedItem(String.valueOf(startHour[1]));
         
-        String[] duration = appointment.getAppointmentEndTime().split(":");
-        int durHour = Integer.parseInt(duration[0]);
-        int durMin = Integer.parseInt(duration[1]);
+        String[] endHour = appointment.getAppointmentEndTime().split(":");
+        sptDurHour.setSelectedItem(String.valueOf(endHour[0]));
+        sptDurMin.setSelectedItem(String.valueOf(endHour[1]));
         
-        if(durHour >= Integer.parseInt(startHour[0])){
-            durHour = durHour - Integer.parseInt(startHour[0]);
-        } else {
-            durHour = durHour + 12;
-            durHour = durHour - Integer.parseInt(startHour[0]);
-        }
-        
-        if(durMin >= Integer.parseInt(startHour[1])){
-            durMin = durMin - Integer.parseInt(startHour[1]);
-        } else {
-            durMin = durMin + 60;
-            durMin = durMin - Integer.parseInt(startHour[1]);
-        }
-        
-        sptDurHour.setSelectedItem(String.valueOf(durHour));
-        sptDurMin.setSelectedItem(String.valueOf(durMin));
-        
+        sptID.setText("Appointment Number: " +(String.valueOf(appointmentID)));
         sptReason.setText(appointment.getAppointmentRemarks());
     }
-    
-    public void setIDValue(){
-        for(int i = 0; i < appointmentData.size(); i++){
-            appointmentNumber.setText(String.valueOf(appointment.getAppointmentID()));
-            //System.out.println(patientList.get(i).getFullName());
-        }
-        //appointmentNumber.setText(String.valueOf(appointment.getAppointmentID()));
-    }
-    
+        
     public void setPatientValues(){
         for(int i = 0; i < patientList.size(); i++){
             sptPatient.addItem(patientList.get(i).getFullName());
@@ -134,7 +111,36 @@ public class UpdateAppointment extends javax.swing.JPanel {
             }
         }
     }
+     public boolean hasNumbers(String numberlessString){
+        String pattern = "[0-9]";
+        if(Pattern.compile(pattern).matcher(numberlessString).find()){
+            // There is a number in the string
+            return true;
+        }else{
+            // The string has no numbers
+            return false;
+        }
+    }
     
+    public boolean hasSpecialCharacters(String specialCharacterlessString){
+        String pattern = "[^A-Za-z0-9]+";
+        if(Pattern.compile(pattern).matcher(specialCharacterlessString).find()){
+            // There is a special character in the string
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public boolean hasLetters(String letterlessString){
+        String pattern = "[A-Za-z]";
+        if(Pattern.compile(pattern).matcher(letterlessString).find()){
+            // There is a letter on the string
+            return true;
+        }else{
+            return false;
+        }   
+    }
     public void setMonthValues(){
         if(monthMod > 11){
             yearMod = yearMod + 1;
@@ -170,9 +176,8 @@ public class UpdateAppointment extends javax.swing.JPanel {
                 }
             }
         }catch(Exception e){
-            System.out.println("SetAppointment - setMonthValues Error: "+e);
+            System.out.println("UpdateAppointment - setMonthValues Error: "+e);
         }
-        
     }
     
     public void genCalendar(){
@@ -205,11 +210,9 @@ public class UpdateAppointment extends javax.swing.JPanel {
     public Appointment getAppointmentValues(){
         Appointment appointment = new Appointment();
         
-        //int appointmentID = 0;
         int patientIDx = 0;
         String appointmentDate = "";
-        String appointmentTime = "";
-        String appointmentEndTime = "";
+
         String appointmentRemarks = "";
         
         for(int i = 0; i < patientList.size(); i++){
@@ -243,23 +246,11 @@ public class UpdateAppointment extends javax.swing.JPanel {
             }
         }
         
-        appointmentTime = sptStartHour.getSelectedItem() + ":" + sptStartMin.getSelectedItem();
-        
-        int appointmentEndMinute = Integer.parseInt((String) sptDurMin.getSelectedItem());
-        int appointmentEndHour = Integer.parseInt((String) sptDurHour.getSelectedItem());
-        
-        if(appointmentEndMinute > 60){
-            appointmentEndHour++;
-            appointmentEndMinute = appointmentEndMinute - 60;
-        }
-        
-        appointmentEndTime = appointmentEndHour + ":" + appointmentEndMinute;
-        
+        String appointmentTime = sptStartHour.getSelectedItem() + ":" + sptStartMin.getSelectedItem() + ":00";
+        String appointmentEndTime = sptDurHour.getSelectedItem() + ":" +sptDurMin.getSelectedItem() + ":00";
+
         appointmentRemarks = sptReason.getText();
-        //appointmentID = appointmentNumber.setText(setIDValue());
-        
-        
-        //appointment.setAppointmentID(appointmentID);
+        appointment.setAppointmentID(appointmentID);
         appointment.setPatientID(patientIDx);
         appointment.setAppointmentDate(appointmentDate);
         appointment.setAppointmentTime(appointmentTime);
@@ -278,7 +269,6 @@ public class UpdateAppointment extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        sptPatient = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         sptMiniCalendar = new javax.swing.JTable();
         sptNext = new javax.swing.JButton();
@@ -293,18 +283,19 @@ public class UpdateAppointment extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         sptCharLeft = new javax.swing.JLabel();
         sptYear = new javax.swing.JLabel();
-        appointmentNumber = new javax.swing.JLabel();
+        sptPatient = new javax.swing.JComboBox();
         sptStartHour = new javax.swing.JComboBox();
         sptStartMin = new javax.swing.JComboBox();
         sptDurHour = new javax.swing.JComboBox();
         sptDurMin = new javax.swing.JComboBox();
+        sptID = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(250, 255, 250));
-        setMaximumSize(new java.awt.Dimension(508, 462));
-        setMinimumSize(new java.awt.Dimension(508, 462));
-        setPreferredSize(new java.awt.Dimension(508, 462));
-
-        sptPatient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Patient" }));
+        setToolTipText("");
+        setMaximumSize(new java.awt.Dimension(520, 500));
+        setMinimumSize(new java.awt.Dimension(520, 500));
+        setName(""); // NOI18N
+        setPreferredSize(new java.awt.Dimension(520, 500));
 
         sptMiniCalendar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -334,7 +325,6 @@ public class UpdateAppointment extends javax.swing.JPanel {
         jScrollPane1.setViewportView(sptMiniCalendar);
 
         sptNext.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Next.png"));
-        sptNext.setToolTipText("Next");
         sptNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sptNextActionPerformed(evt);
@@ -342,7 +332,6 @@ public class UpdateAppointment extends javax.swing.JPanel {
         });
 
         sptPrevious.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Back.png"));
-        sptPrevious.setToolTipText("Previous");
         sptPrevious.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sptPreviousActionPerformed(evt);
@@ -374,7 +363,7 @@ public class UpdateAppointment extends javax.swing.JPanel {
         });
 
         sptSave.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Save.png"));
-        sptSave.setToolTipText("Update");
+        sptSave.setToolTipText("Save ");
         sptSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sptSaveActionPerformed(evt);
@@ -392,15 +381,21 @@ public class UpdateAppointment extends javax.swing.JPanel {
         sptYear.setFont(new java.awt.Font("Vijaya", 1, 18)); // NOI18N
         sptYear.setText("Year");
 
-        appointmentNumber.setText(" ");
+        sptPatient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Patient" }));
 
         sptStartHour.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Hour", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        sptStartHour.setSelectedItem("Hour");
 
         sptStartMin.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Minute", "00", "15", "30", "45" }));
+        sptStartMin.setSelectedItem("Minute");
 
         sptDurHour.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Hour", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        sptDurHour.setSelectedItem("Hour");
 
         sptDurMin.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Minute", "00", "15", "30", "45" }));
+        sptDurMin.setSelectedItem("Minute");
+
+        sptID.setText("Appointment Number: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -410,68 +405,58 @@ public class UpdateAppointment extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(sptPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(108, 108, 108)
+                        .addComponent(sptMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(sptYear, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(sptNext, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1)
+                    .addComponent(sptPatient, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(sptStartHour, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(sptDurHour, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(sptStartMin, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(sptDurMin, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(sptCharLeft))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(sptStartHour, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(sptCharLeft))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(sptCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(sptSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(sptPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(sptMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)
-                                .addComponent(sptYear, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(89, 89, 89)
-                                .addComponent(sptNext, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(22, 22, 22))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(sptPatient, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(appointmentNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(sptStartMin, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(sptDurHour, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(sptDurMin, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(sptID)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(sptCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(sptSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(appointmentNumber)
-                    .addComponent(sptPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(sptPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(sptMonth, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(sptNext, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(sptYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(sptPrevious, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(sptMonth, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(sptYear, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sptNext, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(sptPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -487,15 +472,20 @@ public class UpdateAppointment extends javax.swing.JPanel {
                             .addComponent(sptDurHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(sptDurMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(sptCharLeft))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sptCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sptSave, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(sptCharLeft))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(sptCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(sptSave, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(sptID))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        getAccessibleContext().setAccessibleName("");
     }// </editor-fold>//GEN-END:initComponents
 
     private void sptPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sptPreviousActionPerformed
@@ -546,6 +536,30 @@ public class UpdateAppointment extends javax.swing.JPanel {
         } else if ("".equals(sptPatient.getSelectedItem()) || sptPatient.getSelectedItem().equals("Select Patient")){
             sptPatient.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0 ,51)));
             JOptionPane.showMessageDialog(null, "No patient selected");
+        } else if (sptStartHour.getSelectedItem().equals("")){
+            sptStartHour.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0 ,51)));
+            JOptionPane.showMessageDialog(null, "No patient selected");
+        } else if (sptStartMin.getSelectedItem().equals("")){
+            sptStartMin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0 ,51)));
+            JOptionPane.showMessageDialog(null, "No patient selected");
+        } else if (sptDurHour.getSelectedItem().equals("")){
+            sptDurHour.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0 ,51)));
+            JOptionPane.showMessageDialog(null, "No patient selected");
+        } else if (sptDurMin.getSelectedItem().equals("")){
+            sptDurMin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0 ,51)));
+            JOptionPane.showMessageDialog(null, "No patient selected");
+        } else if (!hasNumbers((String) sptStartHour.getSelectedItem())){
+            sptStartHour.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0 ,51)));
+            JOptionPane.showMessageDialog(null, "No patient selected");
+        } else if (!hasNumbers((String) sptStartMin.getSelectedItem())){
+            sptStartMin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0 ,51)));
+            JOptionPane.showMessageDialog(null, "No patient selected");
+        } else if (!hasNumbers((String) sptDurHour.getSelectedItem())){
+            sptDurHour.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0 ,51)));
+            JOptionPane.showMessageDialog(null, "No patient selected");
+        } else if (!hasNumbers((String) sptDurMin.getSelectedItem())){
+            sptDurMin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0 ,51)));
+            JOptionPane.showMessageDialog(null, "No patient selected");
         } else {
             
                     try{
@@ -555,18 +569,16 @@ public class UpdateAppointment extends javax.swing.JPanel {
                         
                     }catch(Exception e){
                         
-                        System.out.println("SetAppointment - sptSaveActionPerformed Error: " + e);
+                        System.out.println("UpdateAppointment - sptSaveActionPerformed Error: " + e);
                     }
+                    
+                    Window w = SwingUtilities.getWindowAncestor(this);
+                    w.dispose();
         }
-              
-        
-        Window w = SwingUtilities.getWindowAncestor(this);
-        w.dispose();
     }//GEN-LAST:event_sptSaveActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel appointmentNumber;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -576,6 +588,7 @@ public class UpdateAppointment extends javax.swing.JPanel {
     private javax.swing.JLabel sptCharLeft;
     private javax.swing.JComboBox sptDurHour;
     private javax.swing.JComboBox sptDurMin;
+    private javax.swing.JLabel sptID;
     private javax.swing.JTable sptMiniCalendar;
     private javax.swing.JLabel sptMonth;
     private javax.swing.JButton sptNext;

@@ -299,8 +299,9 @@ public class InfoEditor extends javax.swing.JPanel {
         editModel.addColumn("Nursing");
         editModel.addColumn("Birth Control");
         editModel.addColumn("Allergy");
-        editModel.addColumn("BloodType");
-        editModel.addColumn("BloodPressure");
+        editModel.addColumn("Other Allergy");
+        editModel.addColumn("Blood Type");
+        editModel.addColumn("Blood Pressure");
         editModel.addColumn("Illness");
         editModel.addColumn("Date");
         

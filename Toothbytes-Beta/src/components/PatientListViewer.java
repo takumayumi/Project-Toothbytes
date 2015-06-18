@@ -8,17 +8,22 @@ package components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -33,6 +38,7 @@ import javax.swing.event.ListSelectionListener;
 import models.Patient;
 import models.TBListModel;
 import utilities.Configuration;
+import utilities.DBAccess;
 import utilities.DataMan;
 
 /**
@@ -45,6 +51,7 @@ public class PatientListViewer extends JPanel {
     private JList viewer;
     private JTextField searchField;
     private JButton searchBut;
+    private final JButton refreshB;
     int keyLength;
     /**
      * This method is used to construct the interface for viewing the list of
@@ -60,7 +67,7 @@ public class PatientListViewer extends JPanel {
         viewer.setCellRenderer(new PatientCellRenderer());
 
         JScrollPane scroll = new JScrollPane(viewer);
-
+        refreshB = new JButton("Refresh");
         searchField = new JTextField("Search Patient");
         searchField.setFont(Configuration.TB_FONT_NORMAL);
         searchField.setForeground(Color.gray);
@@ -116,8 +123,21 @@ public class PatientListViewer extends JPanel {
                     }
                 }
         );
+        
+        refreshB.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    updateList();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PatientListViewer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         this.add(searchField, BorderLayout.NORTH);
         this.add(scroll, BorderLayout.CENTER);
+        this.add(refreshB, BorderLayout.SOUTH);
     }
 
     /**
@@ -193,7 +213,15 @@ public class PatientListViewer extends JPanel {
 
     DefaultListModel filteredModel;
     DefaultListModel noMatchModel;
-
+    
+    private void updateList() throws SQLException{
+       ArrayList<Patient> rList = DBAccess.initPatientList();
+       System.out.println(rList);
+       iMap = mapImages(rList);
+       viewer.setModel(new TBListModel(rList));
+       repaint();
+    }
+    
     /**
      * This method sets up the environment for the logic function of the program
      * and sets hold NO DUPLICATE values. Following logic is used to find an

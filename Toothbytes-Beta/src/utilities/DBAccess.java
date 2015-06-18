@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import models.Accounts;
 import models.Patient;
 import models.PatientX;
@@ -113,6 +114,7 @@ public class DBAccess {
      * @see SQLException
      */
     public static ArrayList<Patient> initPatientList() throws SQLException {
+        System.out.flush();
         rs = (JDBCResultSet) stmt.executeQuery("SELECT PATIENTID, PATIENT_LASTNAME, PATIENT_FIRSTNAME, PATIENT_MIDDLEINITIAL FROM PATIENT");
         ArrayList<Patient> patientList = new ArrayList<Patient>();
         while (rs.next()) {
@@ -312,39 +314,16 @@ public class DBAccess {
 
     public static void updateAppointmentData(Appointment appointment) {
         //ArrayList<Appointment> appointmentDate = getAppointmentData;
-        String updateAppointmentDate = "UPDATE APPOINTMENT SET APPOINTMENTDATE = '" + appointment.getAppointmentDate() + "' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
-        String updateAppointmentTime = "UPDATE APPOINTMENT SET APPOINTMENTTIME = '" + appointment.getAppointmentTime() + "' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
-        String updateAppointmentEndTime = "UPDATE APPOINTMENT SET APPOINTMENTENDTIME = '" + appointment.getAppointmentEndTime() + "' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
-        String updateAppointmentRemarks = "UPDATE APPOINTMENT SET APPOINTMENTREMARKS = '" + appointment.getAppointmentRemarks() + "' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
-
+        String updateAppointmentDate            = "UPDATE APPOINTMENT SET APPOINTMENTDATE = '" +appointment.getAppointmentDate()+"', APPOINTMENTTIME = '" +appointment.getAppointmentTime()+ "', APPOINTMENTENDTIME = '"+appointment.getAppointmentEndTime()+"', APPOINTMENTREMARKS = '"+appointment.getAppointmentRemarks()+"' WHERE appointmentID = " + appointment.getAppointmentID()  + ";";
+        
         try {
             rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentDate);
             rs.next();
             System.out.println(appointment.getAppointmentID());
             System.out.println(updateAppointmentDate);
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
             System.out.println("updateAppointmentDate Error: " + e);
-        }
-
-        try {
-            rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentTime);
-            rs.next();
-        } catch (Exception e) {
-            System.out.println("updateAppointmentTime Error: " + e);
-        }
-
-        try {
-            rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentEndTime);
-            rs.next();
-        } catch (Exception e) {
-            System.out.println("updateAppointmentEndTime Error: " + e);
-        }
-
-        try {
-            rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentRemarks);
-            rs.next();
-        } catch (Exception e) {
-            System.out.println("updateAppointmentRemarks Error: " + e);
         }
 
     }

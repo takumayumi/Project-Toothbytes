@@ -54,4 +54,13 @@ public class TBListModel extends AbstractListModel{
     public int getElementID(int index) {
         return list.get(index).getId();
     }
+    
+    public void update(){
+        this.fireContentsChanged(this, 0, list.size()-1);
+    }
+    
+    public void addElement(Patient o){
+        list.add(o);
+        this.fireIntervalAdded(o, list.size()-1, list.size()-1);
+    }
 }

@@ -183,7 +183,7 @@ public class TreatmentWindow extends JDialog implements ChartListener{
         toolbox.add(ctoolbox);
         toolbox.add(ttoolbox);
 
-        camera = new JButton("Intraoral Camera", new ImageIcon("res/buttons/camera.png"));
+        camera = new JButton("Intraoral Camera", new ImageIcon("res/buttons/Camera v2.png"));
         camera.setFont(Configuration.TB_FONT_HEADER);
         camera.addActionListener(new ActionListener() {
 

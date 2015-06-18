@@ -2,16 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/Z:/final-tb/toothbytes/Toothbytes-Beta/src/utilities/DBAccess.java</file>
-            <file>file:/Z:/final-tb/toothbytes/Toothbytes-Beta/src/components/TreatmentWindow.java</file>
-            <file>file:/Z:/final-tb/toothbytes/Toothbytes-Beta/src/models/Patient.java</file>
-            <file>file:/Z:/final-tb/toothbytes/Toothbytes-Beta/src/Toothbytes/ToothbytesApp.java</file>
-            <file>file:/Z:/final-tb/toothbytes/Toothbytes-Beta/src/models/Tooth.java</file>
-            <file>file:/Z:/final-tb/toothbytes/Toothbytes-Beta/src/window/RecordsWindow.java</file>
-            <file>file:/Z:/final-tb/toothbytes/Toothbytes-Beta/src/components/LoadingScreen.java</file>
-            <file>file:/Z:/final-tb/toothbytes/Toothbytes-Beta/src/components/PatientListViewer.java</file>
-            <file>file:/Z:/final-tb/toothbytes/Toothbytes-Beta/src/window/MainScreen.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

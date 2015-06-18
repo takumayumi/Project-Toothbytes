@@ -57,6 +57,7 @@ import utilities.DBAccess;
 import utilities.DataMan;
 import utilities.PersonalInfo;
 import window.forms.AdditionalInformation;
+import window.forms.InfoEditor;
 import window.forms.MedicalCondition;
 import window.forms.UpdatePersonalInformation;
 
@@ -175,6 +176,7 @@ public class RecordsWindow extends ModuleWindow {
         }
         
         history =  new JButton("View History");
+        history.setIcon(new ImageIcon(ICON_DIR + "History.png"));
         history.setEnabled(false);
         
         if (otList.size() >= 1) {
@@ -366,11 +368,11 @@ public class RecordsWindow extends ModuleWindow {
         patientRepBut.setToolTipText("Print Patient Records");
         
         PatientRecordsReport prr = new PatientRecordsReport();
-        recordsBar.add(patientRepBut, "skip 100, split 5");
+        recordsBar.add(patientRepBut, "skip 100, split 4");
         patientRepBut.addActionListener(prr);
         
         //Print AddInfo
-        patientAddBut = new JButton(new ImageIcon(BUTTON_DIR + "ReportGenPatient-30x30.png"));
+        patientAddBut = new JButton(new ImageIcon(BUTTON_DIR + "GenerateAdditionalInfo.png"));
         patientAddBut.setBackground(WHITE);
         patientAddBut.setToolTipText("Print Additional Information");
         
@@ -409,14 +411,14 @@ public class RecordsWindow extends ModuleWindow {
         //Edit Additional info
         addInfoBut = new JButton(new ImageIcon(BUTTON_DIR + "EditAdditionalInfo.png"));
         addInfoBut.setBackground(WHITE);
-        addInfoBut.setToolTipText("Edit Addtional Information");
+        addInfoBut.setToolTipText("Edit Addtional/Medical Information");
         recordsBar.add(addInfoBut);
         addInfoBut.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 java.awt.EventQueue.invokeLater(new Runnable(){
                     public void run(){
                         JDialog ai = new JDialog();
-                        ai.add(new AdditionalInformation(current.getId()));
+                        ai.add(new InfoEditor(current.getId()));
                         ai.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                         ai.pack();
                         ai.setVisible(true);
@@ -426,27 +428,8 @@ public class RecordsWindow extends ModuleWindow {
             }
         });
         
-        //Edit Additional/Med Records
-        editMedCon = new JButton(new ImageIcon(BUTTON_DIR + "Edit MedicalInfo.png"));
-        editMedCon.setBackground(WHITE);
-        editMedCon.setToolTipText("Edit Medical Information");
-        recordsBar.add(editMedCon);
-        editMedCon.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){                
-                java.awt.EventQueue.invokeLater(new Runnable(){
-                    public void run(){
-                        JDialog mc = new JDialog();
-                        mc.add(new MedicalCondition(current.getId()));
-                        mc.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                        mc.pack();
-                        mc.setVisible(true);
-                        mc.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                    }
-                });
-            }
-        });
-        
-        infoViewer.add(recordsBar, "skip 15");
+        recordsBar.setBackground(WHITE);
+        infoViewer.add(recordsBar, "gapleft 25");
         SwingUtilities.updateComponentTreeUI(infoViewer);
     }
     

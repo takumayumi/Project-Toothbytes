@@ -66,17 +66,6 @@ public class PaymentViewer extends JPanel{
         px = DBAccess.getData(patientID);
         patientNameLabel.setText(px.getFullName());
         
-        File f = new File("res/patients/" + px.getId() + ".jpg");
-        String path = PATIENTS_DIR + px.getId() + ".jpg";
-        ImageIcon croppedImg = ResizeImage(path);
-        
-        if (f.exists()) {
-            patientImage.setIcon(croppedImg);
-        } else {
-            patientImage.setIcon(new ImageIcon("res/images/patient.png"));
-        }
-        
-        
         try{
             if(!px.getCellNo().equalsIgnoreCase("NULL")){
                 cellphoneNo.setText(px.getCellNo());
