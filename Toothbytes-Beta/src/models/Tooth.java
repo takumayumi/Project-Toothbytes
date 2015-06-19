@@ -108,6 +108,14 @@ public class Tooth extends JComponent {
         pop = new JPopupMenu("Tooth Popup");
     }
 
+    public Area getMarkings() {
+        return markings;
+    }
+
+    public void setMarkings(Area markings) {
+        this.markings = markings;
+    }
+
     public boolean isModified() {
         return modified;
     }

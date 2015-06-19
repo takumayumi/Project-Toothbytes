@@ -12,6 +12,7 @@ import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Area;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +54,7 @@ public class DentalChart extends JPanel implements ToothListener {
     private JTable table;
     private JPanel tablePanel;
     private ChartPanel chartPanel;
+    private ArrayList<SaveFile> saveList;
     private String[] conditions = {"normal", "missing", "unerupted", "decayed"};
     private ArrayList<String> feeList;
     private ChartListener cl;
@@ -261,6 +263,15 @@ public class DentalChart extends JPanel implements ToothListener {
     public void setTableEnabled(boolean b) {
         this.tableEnabled = b;
     }
+    
+    public Tooth getTooth(int num) {
+        for(int i=0; i<allTeeth.size(); i++) {
+            if(allTeeth.get(i).getNumber()==num) {
+                return allTeeth.get(i);
+            }
+        }
+        return null;
+    }
 
     public void setupTable() {
         tableModel.addColumn("Tooth No.");
@@ -346,7 +357,7 @@ public class DentalChart extends JPanel implements ToothListener {
         }
         updateFeeList(s);
     }
-    
+
     public void updateFeeList(String s) {
         boolean trigger = true;
         for (int i = 0; i < conditions.length; i++) {
@@ -355,9 +366,24 @@ public class DentalChart extends JPanel implements ToothListener {
                 break;
             }
         }
-        if(trigger) {
+        if (trigger) {
             feeList.add(s);
         }
+    }
+
+    public ArrayList<SaveFile> getSaveList() {
+        saveList = new ArrayList<SaveFile>();
+        for (int i = 0; i < table.getRowCount(); i++) {
+            
+            int num = (Integer) table.getValueAt(i, 0);
+            String s = (String) table.getValueAt(i, 1);
+            String r = (String) table.getValueAt(i, 2);
+            Area m = getTooth(num).getMarkings();
+            Double d = DBAccess.getServiceFee(s);
+            saveList.add(new SaveFile(num, s, r, m, d));
+            System.out.println("Saving tooth:"+num+" state:"+s+" fee:"+d);
+        }
+        return saveList;
     }
 
     public void notify(int number, String state) {

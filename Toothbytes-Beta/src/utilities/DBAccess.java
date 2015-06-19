@@ -27,6 +27,7 @@ import org.hsqldb.jdbc.JDBCResultSet;
 import org.hsqldb.jdbc.JDBCStatement;
 import models.Appointment;
 import models.Picture;
+import models.SaveFile;
 import models.Treatment;
 
 /**
@@ -314,8 +315,8 @@ public class DBAccess {
 
     public static void updateAppointmentData(Appointment appointment) {
         //ArrayList<Appointment> appointmentDate = getAppointmentData;
-        String updateAppointmentDate            = "UPDATE APPOINTMENT SET APPOINTMENTDATE = '" +appointment.getAppointmentDate()+"', APPOINTMENTTIME = '" +appointment.getAppointmentTime()+ "', APPOINTMENTENDTIME = '"+appointment.getAppointmentEndTime()+"', APPOINTMENTREMARKS = '"+appointment.getAppointmentRemarks()+"' WHERE appointmentID = " + appointment.getAppointmentID()  + ";";
-        
+        String updateAppointmentDate = "UPDATE APPOINTMENT SET APPOINTMENTDATE = '" + appointment.getAppointmentDate() + "', APPOINTMENTTIME = '" + appointment.getAppointmentTime() + "', APPOINTMENTENDTIME = '" + appointment.getAppointmentEndTime() + "', APPOINTMENTREMARKS = '" + appointment.getAppointmentRemarks() + "' WHERE appointmentID = " + appointment.getAppointmentID() + ";";
+
         try {
             rs = (JDBCResultSet) stmt.executeQuery(updateAppointmentDate);
             rs.next();
@@ -550,20 +551,46 @@ public class DBAccess {
 
     public static double getServiceFee(String service) {
         PreparedStatement findFee = null;
-        
+
         String query = "SELECT SERVICEFEE FROM SERVICES "
                 + "where LCASE(SERVICETYPE) = ?";
         try {
             findFee = conn.prepareStatement(query);
             findFee.setString(1, service);
             rs = (JDBCResultSet) findFee.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 return rs.getDouble("SERVICEFEE");
             }
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
+    }
+
+    public static void saveTreatment(int patient, String date,  ArrayList<SaveFile> sList) {
+        String query = "INSERT INTO DENTAL_RECORDS"
+                + "(DENTALRECORDID, PATIENTID, TREATMENTDATE, TOOTHNO, PROCEDURE, DENTIST, AMOUNTCHARGED, BALANCE) VALUES"
+                + "(DEFAULT, ?, TO_DATE(?, 'MM/DD/YYYY'), ?, ?, ?, ?, ?)";
+        PreparedStatement saveTreats = null;
+        String dent = "Dr. Ruben Pascual";
+        try {
+            for (int i = 0; i < sList.size(); i++) {
+                System.out.println();
+                System.out.println("saving data...");
+                saveTreats = conn.prepareStatement(query);
+                saveTreats.setInt(1, patient);
+                saveTreats.setString(2, date);
+                saveTreats.setInt(3, sList.get(i).getNum());
+                saveTreats.setString(4, sList.get(i).getState());
+                saveTreats.setString(5, dent);
+                saveTreats.setDouble(6, sList.get(i).getPrice());
+                saveTreats.setDouble(7, sList.get(i).getPrice());
+                saveTreats.executeUpdate();
+                System.out.println("Saving tooth:"+sList.get(i).getNum()+" state:"+sList.get(i).getState()+" fee:"+sList.get(i).getPrice());
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static ArrayList<Treatment> getTreatmentList(int id) {

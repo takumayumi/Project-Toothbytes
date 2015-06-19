@@ -17,13 +17,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -36,13 +44,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
-import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import models.DentalChart;
 import models.Patient;
+import models.SaveFile;
 import net.miginfocom.swing.MigLayout;
 import utilities.Configuration;
 import utilities.DBAccess;
@@ -67,7 +74,10 @@ public class TreatmentWindow extends JDialog implements ChartListener {
     private OtherTreatmentDialog otd;
     private ButtonGroup toolsGroup;
     private LoadingScreen ls;
-
+    private Date date;
+    
+    private ObjectOutputStream oos;
+    private int pID;
     public TreatmentWindow(JFrame f, Patient p) {
         super(f);
         dc = new DentalChart(true);
@@ -90,6 +100,7 @@ public class TreatmentWindow extends JDialog implements ChartListener {
     private final String PATIENTS_DIR = "res/patients/";
 
     public void initComponents(Patient p) {
+        pID = p.getId();
         this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height - 75);
 
         ls = new LoadingScreen("Treatment Starting...");
@@ -117,6 +128,12 @@ public class TreatmentWindow extends JDialog implements ChartListener {
         int year = LocalDateTime.now().getYear();
         int month = LocalDateTime.now().getMonthValue();
         int day = LocalDateTime.now().getDayOfMonth();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        try {
+            date = sdf.parse(month+"/"+day+"/"+year);
+        } catch (ParseException ex) {
+            Logger.getLogger(TreatmentWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         today = new JLabel(month + "/" + day + "/" + year);
         today.setFont(Configuration.TB_FONT_BANNER);
@@ -237,6 +254,18 @@ public class TreatmentWindow extends JDialog implements ChartListener {
 
         dc.setEnabled(true);
 
+        File sav = new File("data/tooth/" + p.getId() + ".tbf");
+        try {
+            if (sav.exists()) {
+                oos = new ObjectOutputStream(
+                        new FileOutputStream(p.getId() + ".tbf"));
+            } else {
+                sav.createNewFile();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(TreatmentWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private void unlock() {
@@ -332,19 +361,19 @@ public class TreatmentWindow extends JDialog implements ChartListener {
             this.setSize(500, 400);
             this.setLocationRelativeTo(null);
             this.setResizable(false);
-            
+
             panel = new JPanel(new MigLayout("fill"));
             this.setContentPane(panel);
-            
+
             info = new JLabel("You can still edit the desired Amount to your desired Price before saving it", JLabel.LEFT);
             info.setFont(Configuration.TB_FONT_HEADER);
             info.setForeground(Color.GREEN);
             panel.add(info, "gapx 10 0, gapy 10 10,north");
-            
+
             fdtm = new DefaultTableModel(bDown, new Object[]{"Treatments", "Quantity", "Amount"}) {
                 @Override
                 public boolean isCellEditable(int row, int col) {
-                    if (col == 2 && !(row == this.getRowCount()-1)) {
+                    if (col == 2 && !(row == this.getRowCount() - 1)) {
                         return true;
                     } else {
                         return false;
@@ -388,10 +417,15 @@ public class TreatmentWindow extends JDialog implements ChartListener {
             yes.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-//                    System.out.println("Closing database");
-//                    DBAccess.closeDB();
-//                    System.out.println("bye!");
-//                    System.exit(0);
+//                    ArrayList<SaveFile> sf = dc.getSaveList();
+                    
+                        DBAccess.saveTreatment(pID, today.getText(), dc.getSaveList());
+//                            try {
+//                                oos.writeObject(date);
+//                                oos.writeObject(sf.get(i).getMark());
+//                            } catch (IOException ex) {
+//                                Logger.getLogger(TreatmentWindow.class.getName()).log(Level.SEVERE, null, ex);
+//                            }                        
                 }
             });
 
@@ -408,18 +442,19 @@ public class TreatmentWindow extends JDialog implements ChartListener {
             JDialog f = (JDialog) super.getOwner();
             f.getGlassPane().setVisible(false);
         }
-
+        
+        double total = 0;
         public void totalFee() {
-            double total = 0;
+            
             boolean hasTotal = false;
             for (int i = 0; i < bdTable.getRowCount(); i++) {
-                System.out.println("Amount: "+bdTable.getValueAt(i, 2));
+                System.out.println("Amount: " + bdTable.getValueAt(i, 2));
                 if (bdTable.getValueAt(i, 1).equals("TOTAL")) {
                     hasTotal = true;
                     break;
                 } else {
-                    System.out.println("casting"+ bdTable.getValueAt(i, 2));
-                    String temp = bdTable.getValueAt(i, 2)+"";
+                    System.out.println("casting" + bdTable.getValueAt(i, 2));
+                    String temp = bdTable.getValueAt(i, 2) + "";
                     total += Double.parseDouble(temp);
                 }
 
@@ -500,7 +535,7 @@ public class TreatmentWindow extends JDialog implements ChartListener {
             }
 
             protected void fireEditingStopped() {
-                if(validateCell()){
+                if (validateCell()) {
                     super.fireEditingStopped();
                     bdTable.updateUI();
                     totalFee();
