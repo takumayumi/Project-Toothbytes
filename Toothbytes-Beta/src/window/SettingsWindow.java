@@ -164,7 +164,7 @@ public class SettingsWindow extends javax.swing.JDialog {
             }
         });
 
-        resetButtonExisting.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Undo.png"));
+        resetButtonExisting.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Reset.png"));
         resetButtonExisting.setText("Reset");
         resetButtonExisting.setToolTipText("");
         resetButtonExisting.addActionListener(new java.awt.event.ActionListener() {

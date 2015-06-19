@@ -363,7 +363,7 @@ public class RecordsWindow extends ModuleWindow {
         infoViewer.add(eAdd, "wrap");
         
         //Print Report
-        patientRepBut = new JButton(new ImageIcon(BUTTON_DIR + "ReportGenPatient-30x30.png"));
+        patientRepBut = new JButton(new ImageIcon(BUTTON_DIR + "ReportGenPatient.png"));
         patientRepBut.setBackground(WHITE);
         patientRepBut.setToolTipText("Print Patient Records");
         
@@ -381,7 +381,7 @@ public class RecordsWindow extends ModuleWindow {
         patientAddBut.addActionListener(pai);
 
         //EditInfoBut
-        editInfoBut = new JButton(new ImageIcon(BUTTON_DIR + "EditPersonalRecord.png"));
+        editInfoBut = new JButton(new ImageIcon(BUTTON_DIR + "EditPersonalInfo.png"));
         editInfoBut.setBackground(WHITE);
         editInfoBut.setToolTipText("Edit Personal Information");
         recordsBar.add(editInfoBut);
