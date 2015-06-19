@@ -325,6 +325,8 @@ public class InfoEditor extends javax.swing.JPanel {
                 ai.pack();
                 ai.setVisible(true);
                 ai.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                Window w = SwingUtilities.getWindowAncestor(ai);
+                w.dispose();
             }
         });
     }
@@ -337,6 +339,8 @@ public class InfoEditor extends javax.swing.JPanel {
                 ai.pack();
                 ai.setVisible(true);
                 ai.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                Window w = SwingUtilities.getWindowAncestor(ai);
+                w.dispose();
             }
         });
     }

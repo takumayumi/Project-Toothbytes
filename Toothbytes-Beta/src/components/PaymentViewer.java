@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import models.PatientX;
 import models.PaymentX;
 import models.RecordsX;
@@ -65,6 +66,17 @@ public class PaymentViewer extends JPanel{
     private void setPatientInfo(){
         px = DBAccess.getData(patientID);
         patientNameLabel.setText(px.getFullName());
+        
+        File f = new File("res/patients/" + px.getId() + ".jpg");
+        String path = PATIENTS_DIR + px.getId() + ".jpg";
+        ImageIcon croppedImg = ResizeImage(path);
+        
+        if (f.exists()) {
+            patientImage.setIcon(croppedImg);
+        } else {
+            patientImage.setIcon(new ImageIcon("res/images/patient.png"));
+        }
+        
         
         try{
             if(!px.getCellNo().equalsIgnoreCase("NULL")){
@@ -141,6 +153,12 @@ public class PaymentViewer extends JPanel{
         }
     }
     
+    public void refreshContentTable(){
+        recordsX = DBAccess.getRecordsData(patientID);
+        
+        DecimalFormat df = new DecimalFormat("#,###.00");
+    }
+    
     public ImageIcon ResizeImage(String imagePath){
         ImageIcon MyImage = new ImageIcon(imagePath);
         Image img = MyImage.getImage();        
@@ -150,9 +168,13 @@ public class PaymentViewer extends JPanel{
     }
     
     private void setTransactionsTable(){
+
         recordsX = DBAccess.getRecordsData(patientID);
         
         DecimalFormat df = new DecimalFormat("#,###.00");
+        
+        DefaultTableModel dtm = ((DefaultTableModel)transactionsTable.getModel());
+        Object[] rows;
         
         for(int x = 0; x < recordsX.size(); x++){
             RecordsX rx = new RecordsX();
@@ -190,6 +212,7 @@ public class PaymentViewer extends JPanel{
                 transactionsTable.getModel().setValueAt("Existing Balance", x, 4);
             }
         }
+        
         transactionsTable.addMouseListener(tableClickListener);
     }
     
@@ -215,6 +238,7 @@ public class PaymentViewer extends JPanel{
         transactionPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         transactionsTable = new javax.swing.JTable();
+        refreshButton = new javax.swing.JButton();
 
         BillingPanel.setBackground(new java.awt.Color(250, 255, 250));
 
@@ -339,9 +363,7 @@ public class PaymentViewer extends JPanel{
         );
         detailsPanelLayout.setVerticalGroup(
             detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(detailsPanelLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         transactionPanel.setBackground(new java.awt.Color(250, 255, 250));
@@ -391,6 +413,13 @@ public class PaymentViewer extends JPanel{
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
         );
 
+        refreshButton.setText("Refresh");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout BillingPanelLayout = new javax.swing.GroupLayout(BillingPanel);
         BillingPanel.setLayout(BillingPanelLayout);
         BillingPanelLayout.setHorizontalGroup(
@@ -400,7 +429,10 @@ public class PaymentViewer extends JPanel{
                 .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(personalInformationPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(transactionPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(detailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(detailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BillingPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(refreshButton)))
                 .addContainerGap())
         );
         BillingPanelLayout.setVerticalGroup(
@@ -411,8 +443,10 @@ public class PaymentViewer extends JPanel{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(transactionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(detailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(3, 3, 3))
+                .addComponent(detailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(refreshButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -423,13 +457,19 @@ public class PaymentViewer extends JPanel{
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(BillingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(BillingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void transactionsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionsTableMouseClicked
 
     }//GEN-LAST:event_transactionsTableMouseClicked
+
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        // TODO add your handling code here:
+        setTransactionsTable();
+        transactionsTable.clearSelection();
+    }//GEN-LAST:event_refreshButtonActionPerformed
     
     private MouseListener tableClickListener = new MouseAdapter(){
         @Override
@@ -456,11 +496,13 @@ public class PaymentViewer extends JPanel{
                         detailsTable.getModel().setValueAt(df.format(recordsX.get(i).getBalance()), i, 4);
                     } else {
                         detailsTable.getModel().setValueAt("-----", i, 4);
+                        detailsTable.addMouseListener(null);
                     }
                 }
             }
+                detailsTable.addMouseListener(tableRightClicked);
+
             
-            detailsTable.addMouseListener(tableRightClicked);
         }
     };
     
@@ -476,6 +518,7 @@ public class PaymentViewer extends JPanel{
                   @Override
                   public void actionPerformed(ActionEvent e) {
                       java.awt.EventQueue.invokeLater(new Runnable(){
+                        @Override
                         public void run(){
                             JDialog mb = new JDialog();
                             MiniBilling miniBill = new MiniBilling(mb, patientID);
@@ -494,6 +537,7 @@ public class PaymentViewer extends JPanel{
               
               JMenuItem setPaymentSchedule = new JMenuItem("Set payment schedule.");
               setPaymentSchedule.addMouseListener(new java.awt.event.MouseAdapter(){
+                  @Override
                   public void mousePressed(java.awt.event.MouseEvent evt){
                       java.awt.EventQueue.invokeLater(new Runnable(){
                         public void run(){
@@ -535,6 +579,7 @@ public class PaymentViewer extends JPanel{
     private javax.swing.JLabel patientImage;
     private javax.swing.JLabel patientNameLabel;
     private javax.swing.JPanel personalInformationPanel;
+    private javax.swing.JButton refreshButton;
     private javax.swing.JPanel transactionPanel;
     private javax.swing.JTable transactionsTable;
     // End of variables declaration//GEN-END:variables

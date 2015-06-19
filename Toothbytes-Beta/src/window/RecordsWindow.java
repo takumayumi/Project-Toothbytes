@@ -259,7 +259,7 @@ public class RecordsWindow extends ModuleWindow {
 
         this.current = p;     
 
-        JLabel[] name = new JLabel[]{new JLabel(p.getLastName()), new JLabel(p.getFirstName()), new JLabel(p.getMidName())};
+        JLabel[] name = new JLabel[]{new JLabel(p.getFirstName()), new JLabel(p.getLastName()), new JLabel(p.getMidName())};
         for (JLabel n : name) {
             n.setFont(Configuration.TB_FONT_NORMAL);
         }

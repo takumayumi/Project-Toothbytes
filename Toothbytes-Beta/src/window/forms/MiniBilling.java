@@ -244,10 +244,13 @@ public class MiniBilling extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-            // TODO add your handling code here:
-        setUP();
-        miniBill.dispose();
-        
+        if(TotalBalanceField.getText().equalsIgnoreCase(".00")){
+            JOptionPane.showMessageDialog(this, "You've already paid your outstanding balance.");
+            miniBill.dispose();
+        } else {
+            setUP();
+            miniBill.dispose();
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
 
