@@ -54,7 +54,7 @@ public class ExitDialog extends JDialog {
         
         buttons = new JPanel();
 
-        logo = new JLabel(DataMan.ResizeImage("res\\buttons\\quit_b.png", 50, 50));
+        logo = new JLabel(DataMan.ResizeImage("res\\buttons\\exit.png", 50, 50));
         info = new JLabel("Are you sure you want to exit?");
 
         panel.add(logo, "gapx 15 0");
