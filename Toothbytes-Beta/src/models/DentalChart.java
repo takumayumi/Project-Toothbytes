@@ -223,7 +223,7 @@ public class DentalChart extends JPanel implements ToothListener {
     }
 
     public void deleteRow(int i) {
-        System.out.println("Update tooth at:" + (Integer) table.getValueAt(i, 0));
+        feeList.remove(table.getValueAt(i, 1));
         updateTooth((Integer) table.getValueAt(i, 0), "normal", true);
         tableModel.removeRow(i);
         this.updateUI();
@@ -344,10 +344,19 @@ public class DentalChart extends JPanel implements ToothListener {
                 table.setValueAt("Delete Entry", tableModel.getRowCount() - 1, 3);
             }
         }
+        updateFeeList(s);
+    }
+    
+    public void updateFeeList(String s) {
+        boolean trigger = true;
         for (int i = 0; i < conditions.length; i++) {
-            if (!s.matches(conditions[i])) {
-                feeList.add(s);
+            if (s.matches(conditions[i])) {
+                trigger = false;
+                break;
             }
+        }
+        if(trigger) {
+            feeList.add(s);
         }
     }
 
@@ -404,7 +413,7 @@ public class DentalChart extends JPanel implements ToothListener {
 //                    fireEditingStopped();
                     if (tableModel.getRowCount() == 1) {
                         if (cl != null) {
-                            notifyChartListener(true);
+                            notifyChartListener(false);
                         }
                     }
                     deleteActionFired();

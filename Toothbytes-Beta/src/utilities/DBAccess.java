@@ -550,15 +550,12 @@ public class DBAccess {
 
     public static double getServiceFee(String service) {
         PreparedStatement findFee = null;
-        char a = service.toUpperCase().charAt(0);
-        String up = a+service.substring(1);
-        System.out.println(up);
         
         String query = "SELECT SERVICEFEE FROM SERVICES "
-                + "where SERVICETYPE = ?";
+                + "where LCASE(SERVICETYPE) = ?";
         try {
             findFee = conn.prepareStatement(query);
-            findFee.setString(1, up);
+            findFee.setString(1, service);
             rs = (JDBCResultSet) findFee.executeQuery();
             if(rs.next()) {
                 return rs.getDouble("SERVICEFEE");

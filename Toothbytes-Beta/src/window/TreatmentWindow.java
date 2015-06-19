@@ -10,6 +10,7 @@ import components.LoadingScreen;
 import components.OtherTreatmentDialog;
 import components.listener.ChartListener;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,20 +20,27 @@ import java.io.File;
 import java.time.LocalDateTime;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import models.DentalChart;
 import models.Patient;
 import net.miginfocom.swing.MigLayout;
@@ -44,7 +52,7 @@ import utilities.DataMan;
  *
  * @author Jolas
  */
-public class TreatmentWindow extends JDialog implements ChartListener{
+public class TreatmentWindow extends JDialog implements ChartListener {
 
     private JPanel mainP, patientInfo;
     private JLabel photo, name, bp, bpIcon, today;
@@ -116,11 +124,11 @@ public class TreatmentWindow extends JDialog implements ChartListener{
         save = new JButton("Save & Finish", new ImageIcon("res/buttons/save.png"));
         save.setEnabled(false);
         save.addActionListener((ActionEvent e) -> {
-            FinishDialog fd = new FinishDialog((JDialog)save.getParent().getParent().getParent().getParent(), dc.getBreakDown());
+            FinishDialog fd = new FinishDialog((JDialog) save.getParent().getParent().getParent().getParent(), dc.getBreakDown());
             fd.setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
             fd.setVisible(true);
         });
-        
+
         mainP.add(save, "width 50:150:150, height 40:40:40,gapy 0 5,south, center");
 
         name.setForeground(new Color(65, 200, 115));
@@ -312,6 +320,7 @@ public class TreatmentWindow extends JDialog implements ChartListener{
         private JPasswordField pwd;
         private JButton yes, no;
         private boolean granted;
+        private DefaultTableModel fdtm;
 
         /**
          * This constructor creates the login window and layouts it's
@@ -319,34 +328,43 @@ public class TreatmentWindow extends JDialog implements ChartListener{
          */
         public FinishDialog(JDialog d, Object[][] bDown) {
             super(d);
-            this.setTitle("Fees");
-            this.setSize(250, 400);
+            this.setTitle("Total Fee");
+            this.setSize(500, 400);
             this.setLocationRelativeTo(null);
             this.setResizable(false);
-
+            
             panel = new JPanel(new MigLayout("fill"));
             this.setContentPane(panel);
-
-            bdTable = new JTable(new DefaultTableModel(bDown, new Object[]{"Treatments", "Quantity", "Price"}) {
+            
+            info = new JLabel("You can still edit the desired Amount to your desired Price before saving it", JLabel.LEFT);
+            info.setFont(Configuration.TB_FONT_HEADER);
+            info.setForeground(Color.GREEN);
+            panel.add(info, "gapx 10 0, gapy 10 10,north");
+            
+            fdtm = new DefaultTableModel(bDown, new Object[]{"Treatments", "Quantity", "Amount"}) {
                 @Override
                 public boolean isCellEditable(int row, int col) {
-                    if (col == 2) {
+                    if (col == 2 && !(row == this.getRowCount()-1)) {
                         return true;
                     } else {
                         return false;
                     }
                 }
-            });
+            };
+
+            bdTable = new JTable(fdtm);
+            bdTable.getColumn("Amount").setCellEditor(new FeeEditor(new JTextField()));
+            bdTable.setFont(Configuration.TB_FONT_HEADER);
+            DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+            rightRenderer.setHorizontalAlignment(JLabel.LEFT);
+            bdTable.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+            totalFee();
+
             JScrollPane scrollTable = new JScrollPane(bdTable);
             panel.add(scrollTable, "center");
-            
-            
-            buttons = new JPanel();
-//        logo = new JLabel(DataMan.ResizeImage("res\\buttons\\quit_b.png", 50, 50));
-//        info = new JLabel("Are you sure you want to exit?");
 
-//        panel.add(logo, "gapx 15 0");
-//        panel.add(info, "gapx 0 15");
+            buttons = new JPanel();
+
             panel.add(buttons, "south");
             yes = new JButton("Confirm");
             no = new JButton("Cancel");
@@ -370,10 +388,10 @@ public class TreatmentWindow extends JDialog implements ChartListener{
             yes.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Closing database");
-                    DBAccess.closeDB();
-                    System.out.println("bye!");
-                    System.exit(0);
+//                    System.out.println("Closing database");
+//                    DBAccess.closeDB();
+//                    System.out.println("bye!");
+//                    System.exit(0);
                 }
             });
 
@@ -387,9 +405,129 @@ public class TreatmentWindow extends JDialog implements ChartListener{
 
         public void cancelled() {
             this.dispose();
-            JFrame f = (JFrame) super.getOwner();
+            JDialog f = (JDialog) super.getOwner();
             f.getGlassPane().setVisible(false);
         }
 
+        public void totalFee() {
+            double total = 0;
+            boolean hasTotal = false;
+            for (int i = 0; i < bdTable.getRowCount(); i++) {
+                System.out.println("Amount: "+bdTable.getValueAt(i, 2));
+                if (bdTable.getValueAt(i, 1).equals("TOTAL")) {
+                    hasTotal = true;
+                    break;
+                } else {
+                    System.out.println("casting"+ bdTable.getValueAt(i, 2));
+                    String temp = bdTable.getValueAt(i, 2)+"";
+                    total += Double.parseDouble(temp);
+                }
+
+            }
+
+            if (hasTotal) {
+                bdTable.setValueAt(total, bdTable.getRowCount() - 1, 2);
+            } else {
+//                fdtm.addRow(new Object[]{});
+                fdtm.addRow(new Object[]{"", "TOTAL", total});
+            }
+
+        }
+
+        public void lockButton() {
+            yes.setEnabled(false);
+        }
+
+        public void unlockButton() {
+            yes.setEnabled(true);
+        }
+
+        class FeeEditor extends DefaultCellEditor {
+
+            protected JTextField text;
+
+            private String label;
+
+            private boolean isPushed;
+            private int delRow;
+
+            public FeeEditor(JTextField text) {
+                super(text);
+                this.text = text;
+                text = new JTextField();
+                text.setOpaque(true);
+                text.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        fireEditingStopped();
+                    }
+                });
+            }
+
+            public Component getTableCellEditorComponent(JTable table, Object value,
+                    boolean isSelected, int row, int column) {
+                if (isSelected) {
+                    text.setForeground(table.getSelectionForeground());
+                    text.setBackground(table.getSelectionBackground());
+                } else {
+                    text.setForeground(table.getForeground());
+                    text.setBackground(table.getBackground());
+                }
+                label = (value == null) ? "" : value.toString();
+                delRow = row;
+                isPushed = true;
+                return text;
+            }
+
+            public Object getCellEditorValue() {
+                return new String(text.getText());
+            }
+
+            private boolean validateCell() {
+                try {
+                    Double.parseDouble(text.getText());
+                } catch (NumberFormatException e) {
+                    text.setText("");
+                    lockButton();
+                    JOptionPane.showMessageDialog(null, "Invalid Amount", "You must enter a number for the amount", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+                unlockButton();
+                return true;
+            }
+
+            public boolean stopCellEditing() {
+                return super.stopCellEditing();
+            }
+
+            protected void fireEditingStopped() {
+                if(validateCell()){
+                    super.fireEditingStopped();
+                    bdTable.updateUI();
+                    totalFee();
+                } else {
+                    super.cancelCellEditing();
+                }
+            }
+        }
     }
+
+//    class ButtonRenderer extends JButton implements TableCellRenderer {
+//
+//        public ButtonRenderer() {
+//            setOpaque(true);
+//        }
+//
+//        public Component getTableCellRendererComponent(JTable table, Object value,
+//                boolean isSelected, boolean hasFocus, int row, int column) {
+//            if (isSelected) {
+//                setForeground(table.getSelectionForeground());
+//                setBackground(table.getSelectionBackground());
+//            } else {
+//                setForeground(table.getForeground());
+//                setBackground(UIManager.getColor("Button.background"));
+//            }
+//            setText((value == null) ? "" : value.toString());
+//            return this;
+//        }
+//    }
 }
