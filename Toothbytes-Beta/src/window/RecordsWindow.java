@@ -76,7 +76,7 @@ public class RecordsWindow extends ModuleWindow {
     private MigLayout layout, formLayout, chartLayout;
     private JScrollPane scrollInfo, scrollDental, scrollGallery;
     private PatientX current;
-    private JButton patientAddBut, patientRepBut, editInfoBut, addInfoBut, editMedCon, checkup, history;
+    private JButton patientAddBut, patientRepBut, editInfoBut, addInfoBut, editMedCon, checkup, history, uploadImage;
     
     private static JDBCConnection conn = null;
     private static String dir = "data/db";
@@ -85,7 +85,7 @@ public class RecordsWindow extends ModuleWindow {
     private JFrame owner;
     private final String ICON_DIR = "res/buttons/";
     
-    private JToolBar dentalBar, recordsBar;
+    private JToolBar dentalBar, recordsBar, gallerySave;
     private JLabel chart;
     private boolean trigger = false;
     private DentalChart dc = new DentalChart(false);
@@ -244,6 +244,7 @@ public class RecordsWindow extends ModuleWindow {
     
     final String BUTTON_DIR = "res/buttons/";
     final String PATIENTS_DIR = "res/patients/";
+    final String GALLERY_DIR = "res/gallery/";
     /**
      * This method shows the information about the Patient from the database.
      *
@@ -494,10 +495,7 @@ public class RecordsWindow extends ModuleWindow {
         }
     }
     
-        private void gallerySetUp(Patient p){
-       
-
-
+    private void gallerySetUp(Patient p){
         //if there is a selected patient clear the viewer
         if (this.current != null) {
             gallery.removeAll();
@@ -505,7 +503,10 @@ public class RecordsWindow extends ModuleWindow {
         
         //this.current = p;
        
-        JButton uploadImage = new JButton("Save Image");
+        uploadImage = new JButton("Save Image");
+        uploadImage = new JButton(new ImageIcon(BUTTON_DIR + "Save.png"));
+        uploadImage.setBackground(WHITE);
+        gallerySave.add(uploadImage);
         uploadImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -522,7 +523,7 @@ public class RecordsWindow extends ModuleWindow {
             }
         });
      
-        File folder = new File("res/patients");
+        File folder = new File("res/gallery");
         FilenameFilter beginswith = new FilenameFilter(){ 
 
             @Override
@@ -535,14 +536,14 @@ public class RecordsWindow extends ModuleWindow {
         
         for(int i = 0; i < listOfFiles.length; i++){
             if(listOfFiles[i].isFile()){
-                String data = "/res/patients" + listOfFiles[i].getName();
-                gallery.add(new JButton(new ImageIcon(PATIENTS_DIR + listOfFiles[i].getName())));
+                String data = "/res/gallery" + listOfFiles[i].getName();
+                gallery.add(new JButton(new ImageIcon(GALLERY_DIR + listOfFiles[i].getName())));
                 System.out.println("File " + listOfFiles[i].getName());
             } else if (listOfFiles[i].isDirectory()) {
                 System.out.println("File " + listOfFiles[i].getName());
             }
         }
-        gallery.add(uploadImage, BorderLayout.SOUTH);
+        gallery.add(uploadImage, BorderLayout.NORTH);
       // gallery.add(photo);
     }
 

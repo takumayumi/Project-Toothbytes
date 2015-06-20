@@ -31,7 +31,7 @@ import static utilities.DataMan.ResizeImage;
 public class ImageManager extends javax.swing.JPanel {
 
     private final String BUTTON_DIR = "res/buttons/";
-    private final String PATIENTS_DIR = "res/patients";
+    private final String GALLERY_DIR = "res/gallery/";
     /**
      * Creates new form ImageManager
      */
@@ -95,6 +95,11 @@ public class ImageManager extends javax.swing.JPanel {
         cancel.setIcon(new javax.swing.ImageIcon(BUTTON_DIR+"Cancel.png"));
         cancel.setText("Cancel");
         cancel.setToolTipText("");
+        cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelActionPerformed(evt);
+            }
+        });
 
         tagSelect.setText("inputTag");
         tagSelect.setToolTipText("Tag");
@@ -169,7 +174,7 @@ public class ImageManager extends javax.swing.JPanel {
             imagePane.setIcon(ResizeImage(path));
             fileName = p.getId() + "-"+tag+"-"+date+"-" + picNo + ".jpg";
             BufferedImage image;    
-            String patientPicDatabase = "res/patients/" +fileName;
+            String patientPicDatabase = GALLERY_DIR +fileName;
             System.out.println(patientPicDatabase);
             System.out.println(path);
             try{
@@ -218,6 +223,11 @@ public class ImageManager extends javax.swing.JPanel {
             evt.consume();
         }
     }//GEN-LAST:event_remarksKeyReleased
+
+    private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
+        Window w = SwingUtilities.getWindowAncestor(this);
+        w.dispose();
+    }//GEN-LAST:event_cancelActionPerformed
     public ImageIcon ResizeImage(String imgPath){
         ImageIcon MyImage = new ImageIcon(imgPath);
         Image img = MyImage.getImage();
