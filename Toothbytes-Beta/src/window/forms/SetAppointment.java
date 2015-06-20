@@ -91,7 +91,7 @@ public class SetAppointment extends javax.swing.JPanel {
         sptDurHour.setSelectedItem(String.valueOf(endHour[0]));
         sptDurMin.setSelectedItem(String.valueOf(endHour[1]));
         
-        sptID.setText("Appointment Number: " +(String.valueOf(appointmentID)));
+        //sptID.setText("Appointment Number: " +(String.valueOf(appointmentID)));
         sptReason.setText(appointment.getAppointmentRemarks());
     }
         

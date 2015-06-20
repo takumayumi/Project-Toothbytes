@@ -16,6 +16,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -493,7 +494,17 @@ public class RecordsWindow extends ModuleWindow {
         }
     }
     
-    private void gallerySetUp(Patient p){
+        private void gallerySetUp(Patient p){
+       
+
+
+        //if there is a selected patient clear the viewer
+        if (this.current != null) {
+            gallery.removeAll();
+        }
+        
+        //this.current = p;
+       
         JButton uploadImage = new JButton("Save Image");
         uploadImage.addActionListener(new ActionListener() {
             @Override
@@ -510,14 +521,29 @@ public class RecordsWindow extends ModuleWindow {
                 });
             }
         });
-        gallery.add(uploadImage);
+     
+        File folder = new File("res/patients");
+        FilenameFilter beginswith = new FilenameFilter(){ 
+
+            @Override
+            public boolean accept(File directory, String filename) {
+                return filename.startsWith(String.valueOf(p.getId()));
+            }
+        };
         
-        ArrayList<Picture> pictureList = new ArrayList<>();
-        pictureList = DBAccess.getPictureData(p.getId());
+        File[] listOfFiles = folder.listFiles(beginswith);
         
-        for(int i = 0; i < pictureList.size(); i++){
-            gallery.add(new JLabel(pictureList.get(i).getImageLocation()));
+        for(int i = 0; i < listOfFiles.length; i++){
+            if(listOfFiles[i].isFile()){
+                String data = "/res/patients" + listOfFiles[i].getName();
+                gallery.add(new JButton(new ImageIcon(PATIENTS_DIR + listOfFiles[i].getName())));
+                System.out.println("File " + listOfFiles[i].getName());
+            } else if (listOfFiles[i].isDirectory()) {
+                System.out.println("File " + listOfFiles[i].getName());
+            }
         }
+        gallery.add(uploadImage, BorderLayout.SOUTH);
+      // gallery.add(photo);
     }
 
     /**

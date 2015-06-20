@@ -5,18 +5,24 @@
  */
 package window;
 
+import java.awt.Image;
 import java.awt.Window;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import models.Patient;
 import utilities.DBAccess;
+import static utilities.DataMan.ResizeImage;
 
 /**
  *
@@ -25,6 +31,7 @@ import utilities.DBAccess;
 public class ImageManager extends javax.swing.JPanel {
 
     private final String BUTTON_DIR = "res/buttons/";
+    private final String PATIENTS_DIR = "res/patients";
     /**
      * Creates new form ImageManager
      */
@@ -47,7 +54,6 @@ public class ImageManager extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imagePane = new javax.swing.JPanel();
         imageLoad = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         remarks = new javax.swing.JTextPane();
@@ -56,19 +62,7 @@ public class ImageManager extends javax.swing.JPanel {
         save = new javax.swing.JButton();
         cancel = new javax.swing.JButton();
         tagSelect = new javax.swing.JTextField();
-
-        imagePane.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-
-        javax.swing.GroupLayout imagePaneLayout = new javax.swing.GroupLayout(imagePane);
-        imagePane.setLayout(imagePaneLayout);
-        imagePaneLayout.setHorizontalGroup(
-            imagePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
-        );
-        imagePaneLayout.setVerticalGroup(
-            imagePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 245, Short.MAX_VALUE)
-        );
+        imagePane = new javax.swing.JLabel();
 
         imageLoad.setText("Load Image");
         imageLoad.addActionListener(new java.awt.event.ActionListener() {
@@ -112,14 +106,12 @@ public class ImageManager extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(imagePane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(imageLoad)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tagSelect))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(imagePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(tagSelect, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,8 +129,8 @@ public class ImageManager extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imagePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(imagePane, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(imageLoad)
                     .addComponent(tagSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -157,29 +149,61 @@ public class ImageManager extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void imageLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageLoadActionPerformed
-        fileLocation = promptForFile();
-        JLabel image = new JLabel(fileLocation);
-        imagePane.add(image);
+         tag = String.valueOf(p.getId());
+            date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+            remark = remarks.getText();
+            
+            picNo = DBAccess.getLastNo("DENTAL_PICTURES WHERE patientID = " + p.getId());
+            picNo++;
+            
+        JFileChooser fc = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.IMG", "jpg","png");
+        fc.setFileFilter(filter);
+        int result = fc.showOpenDialog(null);
+        
+        if(result == JFileChooser.APPROVE_OPTION){
+            File selectedFile = fc.getSelectedFile();
+            String fileName = selectedFile.getName();
+            String path = selectedFile.getAbsolutePath();
+            System.out.println("You chose to open this file: " + selectedFile.getName());            
+            imagePane.setIcon(ResizeImage(path));
+            fileName = p.getId() + "-"+tag+"-"+date+"-" + picNo + ".jpg";
+            BufferedImage image;    
+            String patientPicDatabase = "res/patients/" +fileName;
+            System.out.println(patientPicDatabase);
+            System.out.println(path);
+            try{
+                image = ImageIO.read(selectedFile);
+                ImageIO.write(image, "jpg", new File(patientPicDatabase));
+            }catch(IOException error){
+                                            
+            } 
+            String query = "INSERT INTO DENTAL_PICTURES VALUES(DEFAULT, "+p.getId()+", null, NOW(), '"+remark+"', '"+tag+"','"+patientPicDatabase+"')";
+            DBAccess.dbQuery(query);
+            System.out.println(query);
+        }else if (result == JFileChooser.CANCEL_OPTION){ 
+            
+        }
+       //JLabel image = new JLabel(fileLocation);
+        //imagePane.add(image);
     }//GEN-LAST:event_imageLoadActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         try {
-            tag = tagSelect.getText();
+            /*
+            tag = String.valueOf(p.getId());
             date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
             remark = remarks.getText();
             
             picNo = DBAccess.getLastNo("DENTAL_PICTURES WHERE patientID = " + p.getId());
             picNo++;
 
-            String patientPicDatabase = "res/photos/" + p.getId() + "-"+tag+"-"+date+"-" + picNo + ".jpg";
-            File source = new File(fileLocation);
-            File output = new File(patientPicDatabase);
-
-            Files.copy(source.toPath(), output.toPath(), REPLACE_EXISTING);
             
-            String query = "INSERT INTO DENTAL_PICTURES VALUES(DEFAULT, "+p.getId()+", null, NOW(), '"+remark+"', '"+tag+"', '"+patientPicDatabase+"')";
+            
+            String query = "INSERT INTO DENTAL_PICTURES VALUES(DEFAULT, "+p.getId()+", null, NOW(), '"+remark+"', '"+tag+"')";
             DBAccess.dbQuery(query);
-            
+            System.out.println(query);
+            */
             Window w = SwingUtilities.getWindowAncestor(this);
             w.dispose();
         } catch (Exception ex) {
@@ -194,21 +218,38 @@ public class ImageManager extends javax.swing.JPanel {
             evt.consume();
         }
     }//GEN-LAST:event_remarksKeyReleased
-
+    public ImageIcon ResizeImage(String imgPath){
+        ImageIcon MyImage = new ImageIcon(imgPath);
+        Image img = MyImage.getImage();
+        Image newImage = img.getScaledInstance(145, 145, Image.SCALE_SMOOTH);        
+        ImageIcon image = new ImageIcon(newImage);
+        return image;
+    }
+    /*
     private String promptForFile() {
         JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showSaveDialog(this);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.IMG", "jpg","png");
+        fc.setFileFilter(filter);
+        
+        int returnVal = fc.showSaveDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fc.getSelectedFile();
+            String fileName = selectedFile.getName();
+            String path = selectedFile.getAbsolutePath();
+            System.out.println("You chose to open this file: " + selectedFile.getName());            
+            imagePane.setIcon(ResizeImage(path));
+            fileName = p.getId() + ".jpg";
+            
             return fc.getSelectedFile().getAbsolutePath();
         } else {
             return null;
         }
     }
-
+*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancel;
     private javax.swing.JButton imageLoad;
-    private javax.swing.JPanel imagePane;
+    private javax.swing.JLabel imagePane;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane remarks;
