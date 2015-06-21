@@ -136,7 +136,8 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
         
         scrollDental = new JScrollPane(dentalViewer);
         scrollInfo = new JScrollPane(infoViewer);
-        scrollGallery = new JScrollPane(gallery);
+        scrollGallery = new JScrollPane(gallery, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                        JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         tabsPane.addTab("Personal Info", new ImageIcon(ICON_DIR + "PersonalInfo.png"), scrollInfo);
         tabsPane.addTab("Dental Info", new ImageIcon(ICON_DIR + "DentalRecords.png"), scrollDental);
@@ -259,7 +260,7 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
      * @param p Object representation of PatientX.
      */
     public void showInfo(PatientX p) {      
-        recordsBar = new JToolBar("dentalBar");
+        recordsBar = new JToolBar("recordsBar");
         recordsBar.setFloatable(false);
 
         //if there is a selected patient clear the viewer
@@ -496,55 +497,57 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
     }
     
     private void gallerySetUp(Patient p){
+        gallerySave = new JToolBar("gallerybar");
+        gallerySave.setFloatable(false);
+        gallerySave.setBackground(new Color(240, 240, 240));
+        
         //if there is a selected patient clear the viewer
         if (this.current != null) {
             gallery.removeAll();
         }
         
-        //this.current = p;
-       
-//        uploadImage = new JButton("Save Image");
-//        uploadImage = new JButton(new ImageIcon(BUTTON_DIR + "Save.png"));
-//        uploadImage.setBackground(WHITE);
-//        gallerySave.add(uploadImage);
-//        uploadImage.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                java.awt.EventQueue.invokeLater(new Runnable() {
-//                    public void run() {
-//                        JDialog im = new JDialog();
-//                        im.add(new ImageManager(p));
-//                        im.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-//                        im.pack();
-//                        im.setVisible(true);
-//                        im.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//                    }
-//                });
-//            }
-//        });
-//     
-//        File folder = new File("res/gallery");
-//        FilenameFilter beginswith = new FilenameFilter(){ 
-//
-//            @Override
-//            public boolean accept(File directory, String filename) {
-//                return filename.startsWith(String.valueOf(p.getId()));
-//            }
-//        };
-//        
-//        File[] listOfFiles = folder.listFiles(beginswith);
-//        
-//        for(int i = 0; i < listOfFiles.length; i++){
-//            if(listOfFiles[i].isFile()){
-//                String data = "/res/gallery" + listOfFiles[i].getName();
-//                gallery.add(new JButton(new ImageIcon(GALLERY_DIR + listOfFiles[i].getName())));
-//                System.out.println("File " + listOfFiles[i].getName());
-//            } else if (listOfFiles[i].isDirectory()) {
-//                System.out.println("File " + listOfFiles[i].getName());
-//            }
-//        }
-//        gallery.add(uploadImage, BorderLayout.NORTH);
-      // gallery.add(photo);
+        uploadImage = new JButton("Upload Image");
+        uploadImage.setIcon(new ImageIcon(ICON_DIR + "Images.png"));
+        gallerySave.add(uploadImage);
+        uploadImage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        JDialog im = new JDialog();
+                        im.add(new ImageManager(p));
+                        im.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                        im.pack();
+                        im.setVisible(true);
+                        im.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    }
+                });
+            }
+        });
+        
+        File folder = new File(GALLERY_DIR);
+        FilenameFilter beginswith = new FilenameFilter(){ 
+            @Override
+            public boolean accept(File directory, String filename) {
+                return filename.startsWith(String.valueOf(p.getId()));
+            }
+        };
+        
+        File[] listOfFiles = folder.listFiles(beginswith);
+        
+        for(int i = 0; i < listOfFiles.length; i++){
+            if(listOfFiles[i].isFile()){
+                String data = GALLERY_DIR + listOfFiles[i].getName();
+                gallery.add(new JLabel(new ImageIcon(GALLERY_DIR + listOfFiles[i].getName())));
+                System.out.println("File " + listOfFiles[i].getName());
+            } else if (listOfFiles[i].isDirectory()) {
+                System.out.println("File " + listOfFiles[i].getName());
+            }
+        }
+        
+        uploadImage.setFont(Configuration.TB_FONT_HEADER);
+        gallery.add(gallerySave, BorderLayout.NORTH);
+        SwingUtilities.updateComponentTreeUI(gallery);
     }
 
     /**
