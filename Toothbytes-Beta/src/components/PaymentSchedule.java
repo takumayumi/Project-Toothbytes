@@ -5,9 +5,11 @@
 */
 package components;
 
+import java.awt.Window;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 import models.RecordsX;
 import utilities.DBAccess;
 import models.Appointment;
@@ -44,6 +46,10 @@ public class PaymentSchedule extends javax.swing.JPanel {
             total = total + recordsX.get(i).getBalance();
         }
         
+        if(total == 0){
+            Window w = SwingUtilities.getWindowAncestor(this);
+            w.dispose();
+        }
         return total;
     }
 
