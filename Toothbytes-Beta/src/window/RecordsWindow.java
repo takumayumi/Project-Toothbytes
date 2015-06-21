@@ -7,6 +7,7 @@ package window;
 
 import components.ModuleWindow;
 import components.PatientListViewer;
+import components.listener.TreatmentListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import static java.awt.Color.WHITE;
@@ -67,7 +68,7 @@ import window.forms.UpdatePersonalInformation;
  * The {@code RecordsWindow class constructs the Records Window to be able to
  * see the list of patients and their respective attributes.
  */
-public class RecordsWindow extends ModuleWindow {
+public class RecordsWindow extends ModuleWindow implements TreatmentListener {
 
     private Graphics2D g2d;
     private PatientListViewer plv;
@@ -88,7 +89,6 @@ public class RecordsWindow extends ModuleWindow {
     private JToolBar dentalBar, recordsBar, gallerySave;
     private JLabel chart;
     private boolean trigger = false;
-    private DentalChart dc = new DentalChart(false);
 
     /**
      * This constructor layouts the Records Window.
@@ -157,14 +157,14 @@ public class RecordsWindow extends ModuleWindow {
     private boolean isTriggered() {
         return trigger;
     }
+    
+    private DentalChart dc;
     public void showDental(Patient p) {
-//        chartLayout = new MigLayout("wrap 4, filly", "[]push[]push[]push[]", "[]");
-        //if there is a selected patient clear the viewer
         if (this.current != null) {
             dentalViewer.removeAll();
         }
-
-//        JPanel dentalPanel = new JPanel(chartLayout);
+        
+        
         ArrayList<OrganizedTreatment> otList = DataMan.organizeTreatment(DBAccess.getTreatmentList(p.getId()));
         for (int i = 0; i < otList.size(); i++) {
             OrganizedTreatment temp = otList.get(i);
@@ -187,7 +187,7 @@ public class RecordsWindow extends ModuleWindow {
             
             for (int i = 1; i < 53; i++) {
                 if (otList.get(0).getHm().containsKey(i)) {
-                    dc.updateTooth(i + 1, otList.get(0).getHm().get(i).toLowerCase(), false);
+                    dc.updateTooth(i , otList.get(0).getHm().get(i).toLowerCase(), false);
                     dc.updateUI();
                 }
             }
@@ -215,17 +215,20 @@ public class RecordsWindow extends ModuleWindow {
         
         checkup = new JButton("Start Checkup!");
         checkup.setIcon(new ImageIcon(ICON_DIR + "\\BeginTreatment.png"));
+        RecordsWindow itself = this;
         checkup.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (trigger) {
                     TreatmentWindow tw = new TreatmentWindow(getOwner(), p, dc);
+                    tw.addTreatmentListener(itself);
                     tw.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     tw.setVisible(true);
                     
                 } else {
                     TreatmentWindow tw = new TreatmentWindow(getOwner(), p);
+                    tw.addTreatmentListener(itself);
                     tw.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     tw.setVisible(true);
                 }
@@ -240,6 +243,11 @@ public class RecordsWindow extends ModuleWindow {
         
         dentalViewer.add(dentalBar, BorderLayout.NORTH);
         SwingUtilities.updateComponentTreeUI(dentalViewer);
+    }
+    
+    @Override
+    public void fireTreatmentRefresh() {
+        showDental(current);
     }
     
     final String BUTTON_DIR = "res/buttons/";
@@ -310,7 +318,7 @@ public class RecordsWindow extends ModuleWindow {
         
         File f = new File("res/patients/" + p.getId() + ".jpg");
         String path = PATIENTS_DIR + p.getId() + ".jpg";
-        ImageIcon croppedImg = ResizeImage(path);
+        ImageIcon croppedImg = DataMan.ResizeImage(path);
         
         if (f.exists()) {
             photo.setIcon(croppedImg);
@@ -435,14 +443,6 @@ public class RecordsWindow extends ModuleWindow {
         SwingUtilities.updateComponentTreeUI(infoViewer);
     }
     
-    public ImageIcon ResizeImage(String imagePath){
-        ImageIcon MyImage = new ImageIcon(imagePath);
-        Image img = MyImage.getImage();        
-        Image newImage = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        ImageIcon image = new ImageIcon(newImage);
-        return image;
-    }
-    
     public void printPatientRecords(){        
         try{
             Class.forName("org.hsqldb.jdbcDriver");
@@ -503,47 +503,47 @@ public class RecordsWindow extends ModuleWindow {
         
         //this.current = p;
        
-        uploadImage = new JButton("Save Image");
-        uploadImage = new JButton(new ImageIcon(BUTTON_DIR + "Save.png"));
-        uploadImage.setBackground(WHITE);
-        gallerySave.add(uploadImage);
-        uploadImage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                java.awt.EventQueue.invokeLater(new Runnable() {
-                    public void run() {
-                        JDialog im = new JDialog();
-                        im.add(new ImageManager(p));
-                        im.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                        im.pack();
-                        im.setVisible(true);
-                        im.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                    }
-                });
-            }
-        });
-     
-        File folder = new File("res/gallery");
-        FilenameFilter beginswith = new FilenameFilter(){ 
-
-            @Override
-            public boolean accept(File directory, String filename) {
-                return filename.startsWith(String.valueOf(p.getId()));
-            }
-        };
-        
-        File[] listOfFiles = folder.listFiles(beginswith);
-        
-        for(int i = 0; i < listOfFiles.length; i++){
-            if(listOfFiles[i].isFile()){
-                String data = "/res/gallery" + listOfFiles[i].getName();
-                gallery.add(new JButton(new ImageIcon(GALLERY_DIR + listOfFiles[i].getName())));
-                System.out.println("File " + listOfFiles[i].getName());
-            } else if (listOfFiles[i].isDirectory()) {
-                System.out.println("File " + listOfFiles[i].getName());
-            }
-        }
-        gallery.add(uploadImage, BorderLayout.NORTH);
+//        uploadImage = new JButton("Save Image");
+//        uploadImage = new JButton(new ImageIcon(BUTTON_DIR + "Save.png"));
+//        uploadImage.setBackground(WHITE);
+//        gallerySave.add(uploadImage);
+//        uploadImage.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                java.awt.EventQueue.invokeLater(new Runnable() {
+//                    public void run() {
+//                        JDialog im = new JDialog();
+//                        im.add(new ImageManager(p));
+//                        im.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+//                        im.pack();
+//                        im.setVisible(true);
+//                        im.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//                    }
+//                });
+//            }
+//        });
+//     
+//        File folder = new File("res/gallery");
+//        FilenameFilter beginswith = new FilenameFilter(){ 
+//
+//            @Override
+//            public boolean accept(File directory, String filename) {
+//                return filename.startsWith(String.valueOf(p.getId()));
+//            }
+//        };
+//        
+//        File[] listOfFiles = folder.listFiles(beginswith);
+//        
+//        for(int i = 0; i < listOfFiles.length; i++){
+//            if(listOfFiles[i].isFile()){
+//                String data = "/res/gallery" + listOfFiles[i].getName();
+//                gallery.add(new JButton(new ImageIcon(GALLERY_DIR + listOfFiles[i].getName())));
+//                System.out.println("File " + listOfFiles[i].getName());
+//            } else if (listOfFiles[i].isDirectory()) {
+//                System.out.println("File " + listOfFiles[i].getName());
+//            }
+//        }
+//        gallery.add(uploadImage, BorderLayout.NORTH);
       // gallery.add(photo);
     }
 

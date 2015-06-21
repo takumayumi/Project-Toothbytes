@@ -6,8 +6,12 @@
 package utilities;
 
 import java.awt.Image;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.ImageIcon;
 import models.OrganizedTreatment;
 import models.Treatment;
@@ -32,13 +36,25 @@ public class DataMan {
     public static ArrayList<OrganizedTreatment> organizeTreatment(ArrayList<Treatment> tList) {
         int added = 0;
         ArrayList<OrganizedTreatment> newList = new ArrayList<OrganizedTreatment>();
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        
+//        for(int i=0; i<tList.size(); i++) {
+//            System.out.println("sList CREATION "+sdf.format(tList.get(i).getDate().getTime()));
+//        }
+        
         for (int i = 0; i < tList.size(); i++) {
             try {
+                
                 OrganizedTreatment ot = new OrganizedTreatment(tList.get(i).getDate(),
                         Integer.parseInt(tList.get(i).getTooth()), tList.get(i).getProcedure());
+                
                 for (int j = i + 1; j < tList.size(); j++) {
-
-                    if (ot.getDate().equals(tList.get(j).getDate())) {
+                    
+                    System.out.println(sdf.format(ot.getDate().getTime())+" vs "+sdf.format(tList.get(j).getDate().getTime()));
+                    System.out.println(ot.getDate().getTime().equals(tList.get(j).getDate().getTime()));
+                    
+                    if (ot.getDate().getTime().equals(tList.get(j).getDate().getTime())) {
                         ot.getHm().put(Integer.parseInt(tList.get(j).getTooth()), tList.get(j).getProcedure());
                         added++;
                     }
@@ -51,6 +67,18 @@ public class DataMan {
                 }
             } catch (NumberFormatException nfe) {
                 System.out.println("Error: " + tList.get(i).getTooth() + " can't be converted to int");
+            }
+        }
+        
+        System.out.println("Treatments Organized...");
+        
+        for(int i = 0; i<newList.size(); i++ ) {
+            System.out.println("Treatment at: "+sdf.format(newList.get(i).getDate().getTime()));
+            Set s = newList.get(i).getHm().entrySet();
+            Iterator it = s.iterator();
+            while(it.hasNext()) {
+                Map.Entry mapping = (Map.Entry) it.next();
+                System.out.println("Tooth No: "+mapping.getKey()+" State: "+mapping.getValue());
             }
         }
 

@@ -323,8 +323,6 @@ public class DentalChart extends JPanel implements ToothListener {
             boolean trigger = true;
             for (int i = 0; i < tableModel.getRowCount(); i++) {
                 boolean check = table.getValueAt(i, 0).toString().equals(n);
-                System.out.println(table.getValueAt(i, 0).toString() + " vs " + n + " = " + check);
-
                 if (Integer.parseInt(table.getValueAt(i, 0).toString()) == n) {
 
                     table.setValueAt(n, i, 0);
@@ -374,7 +372,6 @@ public class DentalChart extends JPanel implements ToothListener {
     public ArrayList<SaveFile> getSaveList() {
         saveList = new ArrayList<SaveFile>();
         for (int i = 0; i < table.getRowCount(); i++) {
-            
             int num = (Integer) table.getValueAt(i, 0);
             String s = (String) table.getValueAt(i, 1);
             String r = (String) table.getValueAt(i, 2);
@@ -469,13 +466,6 @@ public class DentalChart extends JPanel implements ToothListener {
         }
 
         public Object getCellEditorValue() {
-            if (isPushed) {
-                // 
-                // 
-                JOptionPane.showMessageDialog(button, label + ": Ouch!");
-                // System.out.println(label + ": Ouch!");
-            }
-            isPushed = false;
             return new String(label);
         }
 
