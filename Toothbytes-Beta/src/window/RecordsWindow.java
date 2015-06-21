@@ -7,6 +7,7 @@ package window;
 
 import components.ModuleWindow;
 import components.PatientListViewer;
+import components.listener.TreatmentListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import static java.awt.Color.WHITE;
@@ -67,7 +68,7 @@ import window.forms.UpdatePersonalInformation;
  * The {@code RecordsWindow class constructs the Records Window to be able to
  * see the list of patients and their respective attributes.
  */
-public class RecordsWindow extends ModuleWindow {
+public class RecordsWindow extends ModuleWindow implements TreatmentListener {
 
     private Graphics2D g2d;
     private PatientListViewer plv;
@@ -87,8 +88,7 @@ public class RecordsWindow extends ModuleWindow {
     
     private JToolBar dentalBar, recordsBar, gallerySave;
     private JLabel chart;
-    private boolean trigger = false;
-    private DentalChart dc = new DentalChart(false);
+//    private boolean trigger = false;
 
     /**
      * This constructor layouts the Records Window.
@@ -136,7 +136,8 @@ public class RecordsWindow extends ModuleWindow {
         
         scrollDental = new JScrollPane(dentalViewer);
         scrollInfo = new JScrollPane(infoViewer);
-        scrollGallery = new JScrollPane(gallery);
+        scrollGallery = new JScrollPane(gallery, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                        JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         tabsPane.addTab("Personal Info", new ImageIcon(ICON_DIR + "PersonalInfo.png"), scrollInfo);
         tabsPane.addTab("Dental Info", new ImageIcon(ICON_DIR + "DentalRecords.png"), scrollDental);
@@ -154,17 +155,17 @@ public class RecordsWindow extends ModuleWindow {
         return owner;
     }
     
-    private boolean isTriggered() {
-        return trigger;
-    }
+//    private boolean isTriggered() {
+//        return trigger;
+//    }
+    
+    private DentalChart dc;
     public void showDental(Patient p) {
-//        chartLayout = new MigLayout("wrap 4, filly", "[]push[]push[]push[]", "[]");
-        //if there is a selected patient clear the viewer
         if (this.current != null) {
             dentalViewer.removeAll();
         }
-
-//        JPanel dentalPanel = new JPanel(chartLayout);
+        
+        
         ArrayList<OrganizedTreatment> otList = DataMan.organizeTreatment(DBAccess.getTreatmentList(p.getId()));
         for (int i = 0; i < otList.size(); i++) {
             OrganizedTreatment temp = otList.get(i);
@@ -181,13 +182,13 @@ public class RecordsWindow extends ModuleWindow {
         history.setEnabled(false);
         
         if (otList.size() >= 1) {
-            trigger = true;
+//            trigger = true;
             //chart
             dc = new DentalChart(false);
             
             for (int i = 1; i < 53; i++) {
                 if (otList.get(0).getHm().containsKey(i)) {
-                    dc.updateTooth(i + 1, otList.get(0).getHm().get(i).toLowerCase(), false);
+                    dc.updateTooth(i , otList.get(0).getHm().get(i).toLowerCase(), false);
                     dc.updateUI();
                 }
             }
@@ -215,17 +216,20 @@ public class RecordsWindow extends ModuleWindow {
         
         checkup = new JButton("Start Checkup!");
         checkup.setIcon(new ImageIcon(ICON_DIR + "\\BeginTreatment.png"));
+        RecordsWindow itself = this;
         checkup.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (trigger) {
+                if (otList.size() >= 1) {
                     TreatmentWindow tw = new TreatmentWindow(getOwner(), p, dc);
+                    tw.addTreatmentListener(itself);
                     tw.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     tw.setVisible(true);
                     
                 } else {
                     TreatmentWindow tw = new TreatmentWindow(getOwner(), p);
+                    tw.addTreatmentListener(itself);
                     tw.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     tw.setVisible(true);
                 }
@@ -242,6 +246,11 @@ public class RecordsWindow extends ModuleWindow {
         SwingUtilities.updateComponentTreeUI(dentalViewer);
     }
     
+    @Override
+    public void fireTreatmentRefresh() {
+        showDental(current);
+    }
+    
     final String BUTTON_DIR = "res/buttons/";
     final String PATIENTS_DIR = "res/patients/";
     final String GALLERY_DIR = "res/gallery/";
@@ -251,7 +260,7 @@ public class RecordsWindow extends ModuleWindow {
      * @param p Object representation of PatientX.
      */
     public void showInfo(PatientX p) {      
-        recordsBar = new JToolBar("dentalBar");
+        recordsBar = new JToolBar("recordsBar");
         recordsBar.setFloatable(false);
 
         //if there is a selected patient clear the viewer
@@ -310,7 +319,7 @@ public class RecordsWindow extends ModuleWindow {
         
         File f = new File("res/patients/" + p.getId() + ".jpg");
         String path = PATIENTS_DIR + p.getId() + ".jpg";
-        ImageIcon croppedImg = ResizeImage(path);
+        ImageIcon croppedImg = DataMan.ResizeImage(path);
         
         if (f.exists()) {
             photo.setIcon(croppedImg);
@@ -435,14 +444,6 @@ public class RecordsWindow extends ModuleWindow {
         SwingUtilities.updateComponentTreeUI(infoViewer);
     }
     
-    public ImageIcon ResizeImage(String imagePath){
-        ImageIcon MyImage = new ImageIcon(imagePath);
-        Image img = MyImage.getImage();        
-        Image newImage = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        ImageIcon image = new ImageIcon(newImage);
-        return image;
-    }
-    
     public void printPatientRecords(){        
         try{
             Class.forName("org.hsqldb.jdbcDriver");
@@ -496,16 +497,17 @@ public class RecordsWindow extends ModuleWindow {
     }
     
     private void gallerySetUp(Patient p){
+        gallerySave = new JToolBar("gallerybar");
+        gallerySave.setFloatable(false);
+        gallerySave.setBackground(new Color(240, 240, 240));
+        
         //if there is a selected patient clear the viewer
         if (this.current != null) {
             gallery.removeAll();
         }
         
-        //this.current = p;
-       
-        uploadImage = new JButton("Save Image");
-        uploadImage = new JButton(new ImageIcon(BUTTON_DIR + "Save.png"));
-        uploadImage.setBackground(WHITE);
+        uploadImage = new JButton("Upload Image");
+        uploadImage.setIcon(new ImageIcon(ICON_DIR + "Images.png"));
         gallerySave.add(uploadImage);
         uploadImage.addActionListener(new ActionListener() {
             @Override
@@ -522,10 +524,9 @@ public class RecordsWindow extends ModuleWindow {
                 });
             }
         });
-     
-        File folder = new File("res/gallery");
+        
+        File folder = new File(GALLERY_DIR);
         FilenameFilter beginswith = new FilenameFilter(){ 
-
             @Override
             public boolean accept(File directory, String filename) {
                 return filename.startsWith(String.valueOf(p.getId()));
@@ -536,15 +537,17 @@ public class RecordsWindow extends ModuleWindow {
         
         for(int i = 0; i < listOfFiles.length; i++){
             if(listOfFiles[i].isFile()){
-                String data = "/res/gallery" + listOfFiles[i].getName();
-                gallery.add(new JButton(new ImageIcon(GALLERY_DIR + listOfFiles[i].getName())));
+                String data = GALLERY_DIR + listOfFiles[i].getName();
+                gallery.add(new JLabel(new ImageIcon(GALLERY_DIR + listOfFiles[i].getName())));
                 System.out.println("File " + listOfFiles[i].getName());
             } else if (listOfFiles[i].isDirectory()) {
                 System.out.println("File " + listOfFiles[i].getName());
             }
         }
-        gallery.add(uploadImage, BorderLayout.NORTH);
-      // gallery.add(photo);
+        
+        uploadImage.setFont(Configuration.TB_FONT_HEADER);
+        gallery.add(gallerySave, BorderLayout.NORTH);
+        SwingUtilities.updateComponentTreeUI(gallery);
     }
 
     /**

@@ -596,7 +596,6 @@ public class DBAccess {
     public static ArrayList<Treatment> getTreatmentList(int id) {
         ArrayList<Treatment> tList = new ArrayList<Treatment>();
         PreparedStatement queryTreatment = null;
-        Calendar cal = Calendar.getInstance();
 
         String query = "select TREATMENTDATE, TOOTHNO, PROCEDURE from DENTAL_RECORDS "
                 + "where PATIENTID = ?";
@@ -609,8 +608,10 @@ public class DBAccess {
             while (rs.next()) {
                 if (rs.getString(2) != null) {
                     if (!rs.getString(2).equals("null")) {
+                        Calendar cal = Calendar.getInstance();
                         cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(1)));
                         Treatment temp = new Treatment(cal, rs.getString(2), rs.getString(3));
+//                        System.out.println("TList CREATION"+new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
                         tList.add(temp);
                     }
                 }
@@ -619,6 +620,10 @@ public class DBAccess {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for(int i=0; i<tList.size(); i++) {
+            System.out.println("tList CREATION "+new SimpleDateFormat("yyyy-MM-dd").format(tList.get(i).getDate().getTime()));
         }
         return tList;
     }

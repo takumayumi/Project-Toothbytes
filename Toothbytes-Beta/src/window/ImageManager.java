@@ -5,24 +5,21 @@
  */
 package window;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import models.Patient;
 import utilities.DBAccess;
-import static utilities.DataMan.ResizeImage;
 
 /**
  *
@@ -32,10 +29,7 @@ public class ImageManager extends javax.swing.JPanel {
 
     private final String BUTTON_DIR = "res/buttons/";
     private final String GALLERY_DIR = "res/gallery/";
-    /**
-     * Creates new form ImageManager
-     */
-    
+   
     private Patient p;
     private String fileLocation, tag, date, remark;
     private int picNo, remarkNo;
@@ -171,44 +165,47 @@ public class ImageManager extends javax.swing.JPanel {
             String fileName = selectedFile.getName();
             String path = selectedFile.getAbsolutePath();
             System.out.println("You chose to open this file: " + selectedFile.getName());            
-            imagePane.setIcon(ResizeImage(path));
-            fileName = p.getId() + "-"+tag+"-"+date+"-" + picNo + ".jpg";
-            BufferedImage image;    
-            String patientPicDatabase = GALLERY_DIR +fileName;
+            imagePane.setIcon(ResizeGalImage(path));
+            fileName = p.getId() + "-"  +tag+"-"+date+"-" + picNo + ".jpg";
+            BufferedImage image, resizedImg;   
+            String patientPicDatabase = GALLERY_DIR + fileName;
             System.out.println(patientPicDatabase);
             System.out.println(path);
             try{
                 image = ImageIO.read(selectedFile);
-                ImageIO.write(image, "jpg", new File(patientPicDatabase));
+                int type = image.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : image.getType();
+                resizedImg = resizeImage(image, type, 450, 450);
+                ImageIO.write(resizedImg, "jpg", new File(patientPicDatabase));
             }catch(IOException error){
                                             
             } 
-            String query = "INSERT INTO DENTAL_PICTURES VALUES(DEFAULT, "+p.getId()+", null, NOW(), '"+remark+"', '"+tag+"','"+patientPicDatabase+"')";
+            String query = "INSERT INTO DENTAL_PICTURES VALUES(DEFAULT, "+p.getId()+", '"+patientPicDatabase+"', NOW(), '"+remark+"', '"+tag+"')";
             DBAccess.dbQuery(query);
             System.out.println(query);
         }else if (result == JFileChooser.CANCEL_OPTION){ 
             
         }
-       //JLabel image = new JLabel(fileLocation);
-        //imagePane.add(image);
     }//GEN-LAST:event_imageLoadActionPerformed
+    
+    private static BufferedImage resizeImage(BufferedImage originalImage, int type, int IMG_WIDTH, int IMG_HEIGHT) {
+        BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, type);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
+        g.dispose();
 
+        return resizedImage;
+    }
+    
+    public ImageIcon ResizeGalImage(String imagePath){
+        ImageIcon MyImage = new ImageIcon(imagePath);
+        Image img = MyImage.getImage();        
+        Image newImage = img.getScaledInstance(255, 245, Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImage);
+        return image;
+    }
+    
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         try {
-            /*
-            tag = String.valueOf(p.getId());
-            date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-            remark = remarks.getText();
-            
-            picNo = DBAccess.getLastNo("DENTAL_PICTURES WHERE patientID = " + p.getId());
-            picNo++;
-
-            
-            
-            String query = "INSERT INTO DENTAL_PICTURES VALUES(DEFAULT, "+p.getId()+", null, NOW(), '"+remark+"', '"+tag+"')";
-            DBAccess.dbQuery(query);
-            System.out.println(query);
-            */
             Window w = SwingUtilities.getWindowAncestor(this);
             w.dispose();
         } catch (Exception ex) {
@@ -228,34 +225,7 @@ public class ImageManager extends javax.swing.JPanel {
         Window w = SwingUtilities.getWindowAncestor(this);
         w.dispose();
     }//GEN-LAST:event_cancelActionPerformed
-    public ImageIcon ResizeImage(String imgPath){
-        ImageIcon MyImage = new ImageIcon(imgPath);
-        Image img = MyImage.getImage();
-        Image newImage = img.getScaledInstance(145, 145, Image.SCALE_SMOOTH);        
-        ImageIcon image = new ImageIcon(newImage);
-        return image;
-    }
-    /*
-    private String promptForFile() {
-        JFileChooser fc = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.IMG", "jpg","png");
-        fc.setFileFilter(filter);
-        
-        int returnVal = fc.showSaveDialog(null);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fc.getSelectedFile();
-            String fileName = selectedFile.getName();
-            String path = selectedFile.getAbsolutePath();
-            System.out.println("You chose to open this file: " + selectedFile.getName());            
-            imagePane.setIcon(ResizeImage(path));
-            fileName = p.getId() + ".jpg";
-            
-            return fc.getSelectedFile().getAbsolutePath();
-        } else {
-            return null;
-        }
-    }
-*/
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancel;
     private javax.swing.JButton imageLoad;

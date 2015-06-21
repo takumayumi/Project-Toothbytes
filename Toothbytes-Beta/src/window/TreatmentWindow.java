@@ -6,9 +6,11 @@
 package window;
 
 import components.Camera;
+import components.ConfirmationDialog;
 import components.LoadingScreen;
 import components.OtherTreatmentDialog;
 import components.listener.ChartListener;
+import components.listener.TreatmentListener;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -23,7 +25,6 @@ import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,12 +45,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import models.DentalChart;
 import models.Patient;
-import models.SaveFile;
 import net.miginfocom.swing.MigLayout;
 import utilities.Configuration;
 import utilities.DBAccess;
@@ -75,15 +76,15 @@ public class TreatmentWindow extends JDialog implements ChartListener {
     private ButtonGroup toolsGroup;
     private LoadingScreen ls;
     private Date date;
-    
+
     private ObjectOutputStream oos;
     private int pID;
+
     public TreatmentWindow(JFrame f, Patient p) {
         super(f);
-        dc = new DentalChart(true);
-        dc.addChartListener(this);
+        this.dc = new DentalChart(true);
+        this.dc.addChartListener(this);
         initComponents(p);
-//        this.pack();
     }
 
     public TreatmentWindow(JFrame f, Patient p, DentalChart dcPassed) {
@@ -94,12 +95,12 @@ public class TreatmentWindow extends JDialog implements ChartListener {
             this.dc.updateTooth((Integer) dcPassed.getTable().getValueAt(i, 0), (String) dcPassed.getTable().getValueAt(i, 1), false);
         }
         initComponents(p);
-//        this.pack();
     }
 
     private final String PATIENTS_DIR = "res/patients/";
 
     public void initComponents(Patient p) {
+
         pID = p.getId();
         this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height - 75);
 
@@ -130,7 +131,7 @@ public class TreatmentWindow extends JDialog implements ChartListener {
         int day = LocalDateTime.now().getDayOfMonth();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         try {
-            date = sdf.parse(month+"/"+day+"/"+year);
+            date = sdf.parse(month + "/" + day + "/" + year);
         } catch (ParseException ex) {
             Logger.getLogger(TreatmentWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -140,10 +141,13 @@ public class TreatmentWindow extends JDialog implements ChartListener {
 
         save = new JButton("Save & Finish", new ImageIcon("res/buttons/save.png"));
         save.setEnabled(false);
-        save.addActionListener((ActionEvent e) -> {
-            FinishDialog fd = new FinishDialog((JDialog) save.getParent().getParent().getParent().getParent(), dc.getBreakDown());
-            fd.setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
-            fd.setVisible(true);
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FinishDialog fd = new FinishDialog((JDialog) save.getParent().getParent().getParent().getParent(), dc.getBreakDown());
+                fd.setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
+                fd.setVisible(true);
+            }
         });
 
         mainP.add(save, "width 50:150:150, height 40:40:40,gapy 0 5,south, center");
@@ -230,20 +234,27 @@ public class TreatmentWindow extends JDialog implements ChartListener {
         mainP.add(toolbox, "gapx 5 1,west, grow");
         mainP.add(dcScroll, "span 5 1, growx");
 
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        JDialog itself = this;
         this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-
-            }
 
             @Override
             public void windowClosing(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-
+                if (save.isEnabled()) {
+                    ConfirmationDialog cd = new ConfirmationDialog(itself);
+                    cd.addSaveListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            FinishDialog fd = new FinishDialog((JDialog) save.getParent().getParent().getParent().getParent(), dc.getBreakDown());
+                            fd.setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
+                            fd.setVisible(true);
+                        }
+                    });
+                    cd.setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
+                    cd.setVisible(true);
+                } else {
+                    itself.dispose();
+                }
             }
 
             @Override
@@ -266,6 +277,12 @@ public class TreatmentWindow extends JDialog implements ChartListener {
             Logger.getLogger(TreatmentWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    TreatmentListener myListener;
+
+    public void addTreatmentListener(TreatmentListener l) {
+        myListener = l;
     }
 
     private void unlock() {
@@ -333,7 +350,6 @@ public class TreatmentWindow extends JDialog implements ChartListener {
                 dc.updatePreState(temp[0], temp[1]);
             }
         }
-
     }
 
     public void refresh() {
@@ -365,9 +381,9 @@ public class TreatmentWindow extends JDialog implements ChartListener {
             panel = new JPanel(new MigLayout("fill"));
             this.setContentPane(panel);
 
-            info = new JLabel("You can still edit the desired Amount to your desired Price before saving it", JLabel.LEFT);
+            info = new JLabel("Total Services Rendered", JLabel.LEFT);
             info.setFont(Configuration.TB_FONT_HEADER);
-            info.setForeground(Color.GREEN);
+
             panel.add(info, "gapx 10 0, gapy 10 10,north");
 
             fdtm = new DefaultTableModel(bDown, new Object[]{"Treatments", "Quantity", "Amount"}) {
@@ -417,15 +433,8 @@ public class TreatmentWindow extends JDialog implements ChartListener {
             yes.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-//                    ArrayList<SaveFile> sf = dc.getSaveList();
-                    
-                        DBAccess.saveTreatment(pID, today.getText(), dc.getSaveList());
-//                            try {
-//                                oos.writeObject(date);
-//                                oos.writeObject(sf.get(i).getMark());
-//                            } catch (IOException ex) {
-//                                Logger.getLogger(TreatmentWindow.class.getName()).log(Level.SEVERE, null, ex);
-//                            }                        
+                    DBAccess.saveTreatment(pID, today.getText(), dc.getSaveList());
+                    exit();
                 }
             });
 
@@ -442,10 +451,18 @@ public class TreatmentWindow extends JDialog implements ChartListener {
             JDialog f = (JDialog) super.getOwner();
             f.getGlassPane().setVisible(false);
         }
-        
+
+        public void exit() {
+            this.dispose();
+            JDialog f = (JDialog) super.getOwner();
+            f.dispose();
+            myListener.fireTreatmentRefresh();
+        }
+
         double total = 0;
+
         public void totalFee() {
-            
+
             boolean hasTotal = false;
             for (int i = 0; i < bdTable.getRowCount(); i++) {
                 System.out.println("Amount: " + bdTable.getValueAt(i, 2));

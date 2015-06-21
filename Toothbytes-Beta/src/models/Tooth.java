@@ -373,7 +373,7 @@ public class Tooth extends JComponent {
                 g2d.fill(markings);
                 break;
             default:
-                g2d.drawImage(DEFAULT_STATE, X_TOOTH, Y_TOOTH, null);
+                g2d.drawImage(FILL_STATE, X_TOOTH, Y_TOOTH, null);
                 if (this.state.length() > 5 && this.state.length() <= 11) {
                     g2d.drawString(this.state.substring(0, 4), X_TOOTH + 7, Y_TOOTH + 20);
                     g2d.drawString(this.state.substring(5, this.state.length()), X_TOOTH + 5, Y_TOOTH + 30);

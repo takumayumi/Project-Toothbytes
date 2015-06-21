@@ -35,18 +35,20 @@ public class HistoryWindow extends JDialog {
 
         JList list = new JList(dates);
         JScrollPane scroll = new JScrollPane(list);
-        dc = new DentalChart(false);
-        JScrollPane scrollDC = new JScrollPane(dc);
+        
+        JScrollPane scrollDC = new JScrollPane();
 
         list.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
+                    dc = new DentalChart(false);
+                    scrollDC.setViewportView(dc);
                     int j = list.getSelectedIndex();
                     
                     for (int i = 1; i < 53; i++) {
                         if (otList.get(j).getHm().containsKey(i)) {
-                            dc.updateTooth(i + 1, otList.get(j).getHm().get(i).toLowerCase(), false);
+                            dc.updateTooth(i, otList.get(j).getHm().get(i).toLowerCase(), false);
                             dc.updateUI();
                         }
                     }
