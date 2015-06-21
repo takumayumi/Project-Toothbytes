@@ -88,7 +88,7 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
     
     private JToolBar dentalBar, recordsBar, gallerySave;
     private JLabel chart;
-    private boolean trigger = false;
+//    private boolean trigger = false;
 
     /**
      * This constructor layouts the Records Window.
@@ -155,9 +155,9 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
         return owner;
     }
     
-    private boolean isTriggered() {
-        return trigger;
-    }
+//    private boolean isTriggered() {
+//        return trigger;
+//    }
     
     private DentalChart dc;
     public void showDental(Patient p) {
@@ -182,7 +182,7 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
         history.setEnabled(false);
         
         if (otList.size() >= 1) {
-            trigger = true;
+//            trigger = true;
             //chart
             dc = new DentalChart(false);
             
@@ -221,7 +221,7 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (trigger) {
+                if (otList.size() >= 1) {
                     TreatmentWindow tw = new TreatmentWindow(getOwner(), p, dc);
                     tw.addTreatmentListener(itself);
                     tw.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
