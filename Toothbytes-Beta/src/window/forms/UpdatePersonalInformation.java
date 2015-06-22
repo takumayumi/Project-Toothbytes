@@ -113,7 +113,6 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         nicknameTF = new javax.swing.JTextField();
@@ -266,9 +265,6 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
         jLabel21.setForeground(new java.awt.Color(255, 0, 0));
         jLabel21.setText("*");
 
-        jLabel22.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel22.setText("*");
-
         jLabel23.setForeground(new java.awt.Color(255, 0, 0));
         jLabel23.setText("*");
 
@@ -289,8 +285,7 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
                             .addComponent(jLabel17)
                             .addComponent(jLabel19)
                             .addComponent(jLabel20)
-                            .addComponent(jLabel21)
-                            .addComponent(jLabel22)))
+                            .addComponent(jLabel21)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(jLabel23)))
@@ -391,8 +386,7 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(occupationTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel22))
+                    .addComponent(occupationTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
@@ -582,8 +576,8 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
     }
     
     public void insertData(){
-        surnameTF.setText(pi.getSurname());
-        givenNameTF.setText(pi.getGivenName());
+        surnameTF.setText(pi.getGivenName());
+        givenNameTF.setText(pi.getSurname());
         miTF.setText(pi.getMI());
         
         if(pi.getGender().compareTo("M") == 1){
@@ -592,8 +586,8 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
             genderCB.setSelectedIndex(2);
         }
         
-        nicknameTF.setText(pi.getNickname());
-        civilStatusCB.setSelectedItem(pi.getCivilStatus());
+        nicknameTF.setText(pi.getCivilStatus());
+        civilStatusCB.setSelectedItem(pi.getNickname());
         
         //Birthdate
         Calendar birthdate = pi.getBirthDate();
@@ -608,6 +602,7 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
         occupationTF.setText(pi.getOccupation());
         homeAddressTF.setText(pi.getHomeAddress());
         telNoTF.setText(pi.getTelephoneNo());
+        cellPhoneNoTF.setText(pi.getCellphoneNo());
         officeNoTF.setText(pi.getOfficeNo());
         emailAddTF.setText(pi.getEmailAdd());
         faxNoTF.setText(pi.getFaxNo());
@@ -656,7 +651,6 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;

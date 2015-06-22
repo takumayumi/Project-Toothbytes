@@ -289,13 +289,13 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
         JLabel lblOccupation = new JLabel("Occupation:");
 
         JLabel civstat = new JLabel(p.getCivilStatus());
-        JLabel lblCivstat = new JLabel("Civil Status:");
+        JLabel lblCivstat = new JLabel("Nickname:");
 
         JLabel gender = new JLabel(p.getGender() + "");
         JLabel lblGender = new JLabel("Gender:");
 
         JLabel nName = new JLabel(p.getNickname());
-        JLabel lblNname = new JLabel("Nickname:");
+        JLabel lblNname = new JLabel("Civil Status:");
 
         JLabel homeadd = new JLabel(p.getHomeAddress());
         JLabel lblHomeadd = new JLabel("Home Address:");
@@ -343,13 +343,13 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
         infoViewer.add(lblOccupation, "gapleft 20");
         infoViewer.add(occupation, "wrap");
 
-        infoViewer.add(lblCivstat, "gapleft 20");
+        infoViewer.add(lblNname, "gapleft 20");
         infoViewer.add(civstat, "wrap");
 
         infoViewer.add(lblGender, "gapleft 20");
         infoViewer.add(gender, "wrap");
 
-        infoViewer.add(lblNname, "gapleft 20");
+        infoViewer.add(lblCivstat, "gapleft 20");
         infoViewer.add(nName, "wrap");
 
         infoViewer.add(lblHomeadd, "gapleft 20");

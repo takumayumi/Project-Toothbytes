@@ -6,20 +6,17 @@
 package components;
 import java.awt.Dialog;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -34,6 +31,7 @@ public class PaymentViewer extends JPanel{
     PatientX px;
     private int patientID;
     private ArrayList<RecordsX> recordsX;
+    private int dentalRecordID = 0;
     private ArrayList<PaymentX> paymentX;
     private String PATIENTS_DIR = "res/patients/";
     
@@ -43,7 +41,8 @@ public class PaymentViewer extends JPanel{
         setRightAlign();
         setPatientInfo();
         setTransactionsTable();
-        
+        recordsX = DBAccess.getRecordsData(patientID);
+        setOtherInfo();
     }
     
     private void setRightAlign(){
@@ -57,10 +56,10 @@ public class PaymentViewer extends JPanel{
         transactionsTable.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
         transactionsTable.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
         
-        //Details Table
-        detailsTable.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
-        detailsTable.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
-        detailsTable.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+    }
+    private void setOtherInfo(){
+        DecimalFormat df = new DecimalFormat("#,###.00");
+        totalBalance.setText(String.valueOf(df.format(getTotalBalance())));
     }
     
     private void setPatientInfo(){
@@ -154,9 +153,10 @@ public class PaymentViewer extends JPanel{
     }
     
     public void refreshContentTable(){
-        recordsX = DBAccess.getRecordsData(patientID);
-        
+        recordsX = DBAccess.getRecordsData(patientID);        
         DecimalFormat df = new DecimalFormat("#,###.00");
+        //DecimalFormat df = new DecimalFormat("#,###.00");
+        totalBalance.setText(String.valueOf(df.format(getTotalBalance())));
     }
     
     public ImageIcon ResizeImage(String imagePath){
@@ -168,51 +168,42 @@ public class PaymentViewer extends JPanel{
     }
     
     private void setTransactionsTable(){
+        Calendar now = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 
         recordsX = DBAccess.getRecordsData(patientID);
         
         DecimalFormat df = new DecimalFormat("#,###.00");
-        
         DefaultTableModel dtm = ((DefaultTableModel)transactionsTable.getModel());
         Object[] rows;
         
         for(int x = 0; x < recordsX.size(); x++){
             RecordsX rx = new RecordsX();
             rx.setTreatmentDate(recordsX.get(x).getTreatmentDate());
+            rx.setAmountCharged(recordsX.get(x).getAmountCharged());
+            rx.setProcedure(recordsX.get(x).getProcedure());
+            rx.setToothNo(recordsX.get(x).getToothNo());
+            rx.setBalance(recordsX.get(x).getBalance());
+            rx.setRecordsID(recordsX.get(x).getRecordsID());
+            
             for(int y = 0; y < recordsX.size(); y++){
-                if(rx.getTreatmentDate().equals(recordsX.get(y).getTreatmentDate())){
+                if(String.valueOf(rx.getPatientID()).equals(recordsX.get(y).getPatientID())){
                     rx.setAmountCharged(recordsX.get(y).getAmountCharged() + rx.getAmountCharged());
-                    rx.setBalance(recordsX.get(y).getBalance() + rx.getBalance());
-                }
             }
+            }
+          
             double totalAmountPaid = rx.getAmountCharged() - rx.getBalance();
             transactionsTable.getModel().setValueAt(rx.getTreatmentDate(), x, 0);
-            transactionsTable.getModel().setValueAt(df.format(rx.getAmountCharged()), x, 1);
-            try{
-                if(totalAmountPaid > 0){
-                   transactionsTable.getModel().setValueAt(df.format(totalAmountPaid), x, 2); 
-                } else {
-                    transactionsTable.getModel().setValueAt("-----", x, 2);
-                }
-                
-            }catch(Exception e){
-                transactionsTable.getModel().setValueAt("-----", x, 2);
-            }
-           
+            transactionsTable.getModel().setValueAt(rx.getRecordsID(), x, 1);
+            transactionsTable.getModel().setValueAt(rx.getProcedure(), x, 2);
+            transactionsTable.getModel().setValueAt(rx.getToothNo(), x, 3);
+            transactionsTable.getModel().setValueAt(rx.getAmountCharged(), x, 4);
+
             
             if(rx.getBalance() != 0){
-                transactionsTable.getModel().setValueAt(df.format(rx.getBalance()), x, 3);
             } else {
-                transactionsTable.getModel().setValueAt("-----", x, 3);
-            }
-            
-            if(totalAmountPaid == rx.getAmountCharged()){
-                transactionsTable.getModel().setValueAt("Paid", x, 4);
-            } else {
-                transactionsTable.getModel().setValueAt("Existing Balance", x, 4);
             }
         }
-        
         transactionsTable.addMouseListener(tableClickListener);
     }
     
@@ -232,13 +223,29 @@ public class PaymentViewer extends JPanel{
         cellphoneNo = new javax.swing.JLabel();
         homeNoLabel = new javax.swing.JLabel();
         patientImage = new javax.swing.JLabel();
-        detailsPanel = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        detailsTable = new javax.swing.JTable();
         transactionPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         transactionsTable = new javax.swing.JTable();
         refreshButton = new javax.swing.JButton();
+        makePaymentButton = new javax.swing.JButton();
+        totalBalanceLabel = new javax.swing.JLabel();
+        totalBalance = new javax.swing.JLabel();
+        setScheduleButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        totalAmountChargedLabel = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        totalAmountPaidLabel = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        dateOfTransaction = new javax.swing.JLabel();
+        treatmentReceived = new javax.swing.JLabel();
+        toothNumberLabel = new javax.swing.JLabel();
+        amountChargedPerTooth = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        balanceTreatment = new javax.swing.JLabel();
 
         BillingPanel.setBackground(new java.awt.Color(250, 255, 250));
 
@@ -324,48 +331,6 @@ public class PaymentViewer extends JPanel{
                 .addContainerGap())
         );
 
-        detailsPanel.setBackground(new java.awt.Color(250, 255, 250));
-        detailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Details"));
-
-        detailsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Treatment Done", "Tooth No.", "Amount Charged", "Amount Paid", "Outstanding Balance"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        detailsTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane2.setViewportView(detailsTable);
-
-        javax.swing.GroupLayout detailsPanelLayout = new javax.swing.GroupLayout(detailsPanel);
-        detailsPanel.setLayout(detailsPanelLayout);
-        detailsPanelLayout.setHorizontalGroup(
-            detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        );
-        detailsPanelLayout.setVerticalGroup(
-            detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
         transactionPanel.setBackground(new java.awt.Color(250, 255, 250));
         transactionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Transaction"));
 
@@ -383,7 +348,7 @@ public class PaymentViewer extends JPanel{
                 {null, null, null, null, null}
             },
             new String [] {
-                "Date", "Total Amount Charged", "Total Amount Paid", "Total Balance", "Status"
+                "Date", "Record ID", "Treatment Received", "Tooth No", "Amount Charged"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -420,6 +385,62 @@ public class PaymentViewer extends JPanel{
             }
         });
 
+        makePaymentButton.setText("Make Payment");
+        makePaymentButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                makePaymentButtonActionPerformed(evt);
+            }
+        });
+
+        totalBalanceLabel.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        totalBalanceLabel.setText("Total Balance:");
+
+        totalBalance.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        totalBalance.setForeground(new java.awt.Color(255, 0, 0));
+
+        setScheduleButton.setText("Set Schedule");
+        setScheduleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setScheduleButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Total Amount Charged:");
+
+        totalAmountChargedLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        totalAmountChargedLabel.setText(" ");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setText("Total Amount Paid:");
+
+        totalAmountPaidLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        totalAmountPaidLabel.setText(" ");
+
+        jLabel3.setText("jLabel3");
+
+        jLabel6.setText("Amount Charged:");
+
+        jLabel7.setText("Tooth No.:");
+
+        jLabel8.setText("Treatment Received:");
+
+        jLabel9.setText("Date of Transaction:");
+
+        dateOfTransaction.setText(" ");
+
+        treatmentReceived.setText(" ");
+
+        toothNumberLabel.setText(" ");
+
+        amountChargedPerTooth.setText(" ");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setText("Total Balance:");
+
+        balanceTreatment.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        balanceTreatment.setText(" ");
+
         javax.swing.GroupLayout BillingPanelLayout = new javax.swing.GroupLayout(BillingPanel);
         BillingPanel.setLayout(BillingPanelLayout);
         BillingPanelLayout.setHorizontalGroup(
@@ -429,23 +450,97 @@ public class PaymentViewer extends JPanel{
                 .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(personalInformationPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(transactionPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(detailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BillingPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(refreshButton)))
+                    .addGroup(BillingPanelLayout.createSequentialGroup()
+                        .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(totalBalanceLabel)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(BillingPanelLayout.createSequentialGroup()
+                                .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(totalAmountChargedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                                    .addComponent(totalAmountPaidLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(balanceTreatment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(BillingPanelLayout.createSequentialGroup()
+                                        .addGap(80, 80, 80)
+                                        .addComponent(jLabel3))
+                                    .addGroup(BillingPanelLayout.createSequentialGroup()
+                                        .addGap(78, 78, 78)
+                                        .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel7)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jLabel9))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(dateOfTransaction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(treatmentReceived, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(toothNumberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(amountChargedPerTooth, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)))))
+                            .addGroup(BillingPanelLayout.createSequentialGroup()
+                                .addComponent(totalBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(38, 38, 38)
+                                .addComponent(setScheduleButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(makePaymentButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(refreshButton)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         BillingPanelLayout.setVerticalGroup(
             BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BillingPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(personalInformationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(transactionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(detailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(refreshButton)
+                .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(BillingPanelLayout.createSequentialGroup()
+                        .addComponent(personalInformationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(transactionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(totalAmountChargedLabel)))
+                    .addGroup(BillingPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(dateOfTransaction))))
+                .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(BillingPanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(treatmentReceived))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(toothNumberLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(amountChargedPerTooth)))
+                    .addGroup(BillingPanelLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(totalAmountPaidLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(balanceTreatment))))
+                .addGap(25, 25, 25)
+                .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(setScheduleButton)
+                        .addComponent(makePaymentButton)
+                        .addComponent(refreshButton)
+                        .addComponent(totalBalanceLabel))
+                    .addComponent(totalBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -461,126 +556,151 @@ public class PaymentViewer extends JPanel{
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void transactionsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionsTableMouseClicked
+    private void setScheduleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setScheduleButtonActionPerformed
+        // TODO add your handling code here:
+        JDialog mb = new JDialog();
+        SetAppointment sA = new SetAppointment(patientID, "Payment");
+        mb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        mb.setSize(sA.getPreferredSize());
+        mb.add(sA);
+        mb.pack();
+        mb.setVisible(true);
+        mb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_setScheduleButtonActionPerformed
 
-    }//GEN-LAST:event_transactionsTableMouseClicked
+    private void makePaymentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makePaymentButtonActionPerformed
+        // TODO add your handling code here:
+        JDialog mb = new JDialog();
+        MiniBilling miniBill = new MiniBilling(mb, patientID);
+        mb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        mb.setSize(miniBill.getPreferredSize());
+        mb.add(miniBill);
+        mb.pack();
+        mb.setVisible(true);
+        mb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_makePaymentButtonActionPerformed
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         // TODO add your handling code here:
         setTransactionsTable();
         transactionsTable.clearSelection();
     }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void transactionsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionsTableMouseClicked
+
+    }//GEN-LAST:event_transactionsTableMouseClicked
     
     private MouseListener tableClickListener = new MouseAdapter(){
         @Override
         public void mouseClicked(MouseEvent e){
             DecimalFormat df = new DecimalFormat("#,###.00");
             int row = transactionsTable.getSelectedRow();
-            String date = String.valueOf(transactionsTable.getModel().getValueAt(row, 0));
             paymentX = DBAccess.getPaymentData(patientID);
+            
+            String date = String.valueOf(transactionsTable.getModel().getValueAt(row, 0));
+            dateOfTransaction.setText(date);
+            String recordid = String.valueOf(transactionsTable.getModel().getValueAt(row, 1));
+            String patientid = String.valueOf(patientID);
             
             for(int i = 0; i < paymentX.size(); i++){
                 if(paymentX.get(i).getPaymentDate().equals(date)){
-                    double amountPaid = recordsX.get(i).getAmountCharged() - recordsX.get(i).getBalance();
-                        
-                    detailsTable.getModel().setValueAt(recordsX.get(i).getProcedure(), i, 0);
-                    detailsTable.getModel().setValueAt(recordsX.get(i).getToothNo(), i, 1);
-                    detailsTable.getModel().setValueAt(df.format(recordsX.get(i).getAmountCharged()), i, 2);
-                    if(amountPaid > 0){
-                        detailsTable.getModel().setValueAt(df.format(amountPaid), i, 3);
-                    } else {
-                        detailsTable.getModel().setValueAt("-----", i, 3);
-                    }
-                    
-                    if(recordsX.get(i).getBalance() > 0){
-                        detailsTable.getModel().setValueAt(df.format(recordsX.get(i).getBalance()), i, 4);
-                    } else {
-                        detailsTable.getModel().setValueAt("-----", i, 4);
-                        detailsTable.addMouseListener(null);
-                    }
+                double amountPaid = recordsX.get(i).getAmountCharged() - recordsX.get(i).getBalance();
+                totalAmountPaidLabel.setText(String.valueOf(amountPaid));                    
                 }
-            }
-                detailsTable.addMouseListener(tableRightClicked);
-
+        }
             
+  
+            for(int x = 0; x < recordsX.size(); x++){
+                RecordsX rx = new RecordsX();
+                rx.setTreatmentDate(recordsX.get(x).getTreatmentDate());
+                rx.setAmountCharged(recordsX.get(x).getAmountCharged());
+                rx.setProcedure(recordsX.get(x).getProcedure());
+                rx.setToothNo(recordsX.get(x).getToothNo());
+                rx.setBalance(recordsX.get(x).getBalance());
+                rx.setRecordsID(recordsX.get(x).getRecordsID());
+                
+                double totalAmountPaid = rx.getAmountCharged() - rx.getBalance();
+                
+            if(String.valueOf(recordsX.get(x).getRecordsID()).equals(recordid)){
+                treatmentReceived.setText(String.valueOf(recordsX.get(x).getProcedure()));
+                toothNumberLabel.setText(String.valueOf(recordsX.get(x).getRecordsID()));
+                amountChargedPerTooth.setText(String.valueOf(recordsX.get(x).getAmountCharged()));
+                totalAmountChargedLabel.setText(String.valueOf(recordsX.get(x).getAmountCharged()));
+                //double totalBalanceLabel = rx.getAmountCharged() - rx.getBalance();
+                //balanceTreatment.setText(String.valueOf(totalBalanceLabel));
+                balanceTreatment.setText(String.valueOf(recordsX.get(x).getBalance()));
+                totalAmountPaidLabel.setText(String.valueOf(totalAmountPaid));
+                //double totalAmountPaid = (String.valueOf(recordsX.get(x).getBalance()));
+            }
+            /*
+            for(int y = 0; y < recordsX.size(); y++){
+                if(patientid.equals(String.valueOf(recordsX.get(y).getPatientID()))){
+                    rx.setAmountCharged(recordsX.get(y).getAmountCharged());
+                    rx.setBalance(recordsX.get(y).getBalance() + rx.getAmountCharged());                   
+                }
+                
+            }
+                    */
+            
+            //double balanceTreat = rx.getAmountCharged() - getTotalBalance();
+            //balanceTreatment.setText(String.valueOf(balanceTreat));
+            
+            //totalAmountPaidLabel.setText(String.valueOf(totalAmountPaid));
+            //totalAmountChargedLabel.setText(String.valueOf(rx.getAmountCharged()));
+            }
         }
     };
+   
+            
+    private double getTotalBalance(){
+        double total = 0;
+        
+        for (RecordsX recordsX1 : recordsX) {
+            total = total + recordsX1.getBalance();
+            if(recordsX1.getBalance() > 0.0){
+                System.out.println(recordsX1.getRecordsID());
+                dentalRecordID = recordsX1.getRecordsID();
+            }
+        }
+        
+        return total;
+    }
     
-    private MouseListener tableRightClicked = new MouseAdapter(){
-      @Override
-      public void mouseClicked(MouseEvent e){
-          
-              JPopupMenu detailTableMenu = new JPopupMenu("Payment Plans");
-              
-              JMenuItem directPay = new JMenuItem("Pay selected item.");
-              directPay.addActionListener(new ActionListener() {
-
-                  @Override
-                  public void actionPerformed(ActionEvent e) {
-                      java.awt.EventQueue.invokeLater(new Runnable(){
-                        @Override
-                        public void run(){
-                            JDialog mb = new JDialog();
-                            MiniBilling miniBill = new MiniBilling(mb, patientID);
-                            mb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                            mb.setSize(miniBill.getPreferredSize());
-                            mb.add(miniBill);
-                            mb.pack();
-                            mb.setVisible(true);
-                            mb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                        }
-                    });
-                  }
-              });
-              detailTableMenu.add(directPay);
-              
-              
-              JMenuItem setPaymentSchedule = new JMenuItem("Set payment schedule.");
-              setPaymentSchedule.addMouseListener(new java.awt.event.MouseAdapter(){
-                  @Override
-                  public void mousePressed(java.awt.event.MouseEvent evt){
-                      java.awt.EventQueue.invokeLater(new Runnable(){
-                        public void run(){
-                            JDialog mb = new JDialog();
-                            SetAppointment sA = new SetAppointment(patientID, "Payment");
-                            mb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                            mb.setSize(sA.getPreferredSize());
-                            mb.add(sA);
-                            mb.pack();
-                            mb.setVisible(true);
-                            mb.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                        }
-                    });
-                  }
-              });
-              
-              detailTableMenu.add(setPaymentSchedule);
-              
-          if(e.getButton() == 3){ 
-              detailTableMenu.show(e.getComponent(), e.getX(), e.getY());
-              detailTableMenu.setVisible(true);
-          }
-      }
-    };
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BillingPanel;
     private javax.swing.JLabel addressLabel;
     private javax.swing.JLabel ageLabel;
+    private javax.swing.JLabel amountChargedPerTooth;
+    private javax.swing.JLabel balanceTreatment;
     private javax.swing.JLabel cellphoneNo;
-    private javax.swing.JPanel detailsPanel;
-    private javax.swing.JTable detailsTable;
+    private javax.swing.JLabel dateOfTransaction;
     private javax.swing.JLabel emailAddressLabel;
     private javax.swing.JLabel genderLabel;
     private javax.swing.JLabel homeNoLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton makePaymentButton;
     private javax.swing.JLabel occupationLabel;
     private javax.swing.JLabel patientImage;
     private javax.swing.JLabel patientNameLabel;
     private javax.swing.JPanel personalInformationPanel;
     private javax.swing.JButton refreshButton;
+    private javax.swing.JButton setScheduleButton;
+    private javax.swing.JLabel toothNumberLabel;
+    private javax.swing.JLabel totalAmountChargedLabel;
+    private javax.swing.JLabel totalAmountPaidLabel;
+    private javax.swing.JLabel totalBalance;
+    private javax.swing.JLabel totalBalanceLabel;
     private javax.swing.JPanel transactionPanel;
     private javax.swing.JTable transactionsTable;
+    private javax.swing.JLabel treatmentReceived;
     // End of variables declaration//GEN-END:variables
 }

@@ -378,8 +378,8 @@ public class SettingsWindow extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSaveSettingsActionPerformed
     
     private void btnCancelSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelSettingsActionPerformed
-        // TODO add your handling code here:
-        dispose();
+        Window w = SwingUtilities.getWindowAncestor(this);
+        w.dispose();
     }//GEN-LAST:event_btnCancelSettingsActionPerformed
 
     private void resetButtonExistingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonExistingActionPerformed

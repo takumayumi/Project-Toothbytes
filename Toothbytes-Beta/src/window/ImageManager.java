@@ -174,7 +174,7 @@ public class ImageManager extends javax.swing.JPanel {
             try{
                 image = ImageIO.read(selectedFile);
                 int type = image.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : image.getType();
-                resizedImg = resizeImage(image, type, 450, 450);
+                resizedImg = resizeImage(image, type, 570, 400);
                 ImageIO.write(resizedImg, "jpg", new File(patientPicDatabase));
             }catch(IOException error){
                                             

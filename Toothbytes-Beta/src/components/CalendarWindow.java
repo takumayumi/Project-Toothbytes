@@ -357,7 +357,7 @@ public class CalendarWindow extends ModuleWindow {
             if(values.length > 1){
                 ArrayList<Appointment> appointmentDate = getAppointment(formatDate(mode));
                 for(int i = 0; i < appointmentDate.size(); i++){
-                    JMenuItem editAppointment = new JMenuItem("Edit Appointment: " + appointmentDate.get(i).getAppointmentTime() + " " + appointmentDate.get(i).getAppointmentID());
+                    JMenuItem editAppointment = new JMenuItem(appointmentDate.get(i).getAppointmentTime());
                     int spec = i;
                     editAppointment.addActionListener(new ActionListener(){
                         public void actionPerformed(ActionEvent evt){
