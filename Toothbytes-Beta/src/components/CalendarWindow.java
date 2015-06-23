@@ -9,9 +9,12 @@ import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -39,6 +42,7 @@ public class CalendarWindow extends ModuleWindow {
     private Calendar now = Calendar.getInstance();
     private int monthMod = now.get(Calendar.MONTH);
     private int yearMod = now.get(Calendar.YEAR);
+    private String mode;
     private ArrayList<Appointment> appointmentList = DBAccess.getAppointmentData("");
     private ImageIcon teeth = new ImageIcon("res/images/logo_smaller.png");
     private String BUTTON_DIR = "res/buttons/";
@@ -90,8 +94,12 @@ public class CalendarWindow extends ModuleWindow {
                     }
                 }
                 
-                if(appNo > 0){
-                    cdwCalendar.getModel().setValueAt(i + "," +appNo, weekNo, currDay-1);
+                if(appNo == 1){
+                    String formatted = "<html>"+i+"<br><b>Patient: "+appNo+"</b></html>";
+                    cdwCalendar.getModel().setValueAt(formatted, weekNo, currDay-1);
+                } else if(appNo > 1){
+                    String formatted = "<html>"+i+"<br><b>Patients: "+appNo+"</b></html>";
+                    cdwCalendar.getModel().setValueAt(formatted, weekNo, currDay-1);
                 } else {
                     cdwCalendar.getModel().setValueAt(i, weekNo, currDay-1);
                 }
@@ -186,6 +194,7 @@ public class CalendarWindow extends ModuleWindow {
         cdwYear = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         cdwCalendar = new javax.swing.JTable();
+        dayButton = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(686, 546));
 
@@ -227,7 +236,7 @@ public class CalendarWindow extends ModuleWindow {
                 .addComponent(cdwMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(cdwYear, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 296, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addComponent(cdwNext, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
@@ -282,6 +291,13 @@ public class CalendarWindow extends ModuleWindow {
         });
         jScrollPane1.setViewportView(cdwCalendar);
 
+        dayButton.setText("View by Day");
+        dayButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dayButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -290,7 +306,8 @@ public class CalendarWindow extends ModuleWindow {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dayButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -299,8 +316,10 @@ public class CalendarWindow extends ModuleWindow {
                 .addGap(6, 6, 6)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(dayButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -328,8 +347,12 @@ public class CalendarWindow extends ModuleWindow {
         
         try{
             String value = cdwCalendar.getModel().getValueAt(x, y).toString();
-            String[] values = value.split(",");
-            String mode = yearMod + "-" + monthMod + "-" + values[0];
+            
+            if(value.length() > 2){
+                value = "" +value.charAt(6) + value.charAt(7);
+            }
+            
+            mode = yearMod + "-" + monthMod + "-" + value;
             System.out.println(mode);
             check = true;
             
@@ -354,7 +377,7 @@ public class CalendarWindow extends ModuleWindow {
 
             calendarPopup.add(addAppointment);
             
-            if(values.length > 1){
+            if(value.length() > 1){
                 ArrayList<Appointment> appointmentDate = getAppointment(formatDate(mode));
                 for(int i = 0; i < appointmentDate.size(); i++){
                     JMenuItem editAppointment = new JMenuItem(appointmentDate.get(i).getAppointmentTime());
@@ -391,6 +414,26 @@ public class CalendarWindow extends ModuleWindow {
         }
         
     }//GEN-LAST:event_cdwCalendarMouseReleased
+
+    private void dayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayButtonActionPerformed
+        java.awt.EventQueue.invokeLater(new Runnable(){
+            public void run(){
+                Calendar setMode = Calendar.getInstance();
+                try {
+                    System.out.println(mode);
+                    setMode.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(mode));
+                    
+                } catch (ParseException ex) {}
+                
+                JDialog cd = new JDialog();
+                cd.add(new CalendarDay(setMode));
+                cd.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                cd.pack();
+                cd.setVisible(true);
+                cd.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            }
+        });
+    }//GEN-LAST:event_dayButtonActionPerformed
     
     private String formatDate(String date){
         String[] dateArr = date.split("-");
@@ -432,6 +475,7 @@ public class CalendarWindow extends ModuleWindow {
     private javax.swing.JButton cdwNext;
     private javax.swing.JButton cdwPrevious;
     private javax.swing.JLabel cdwYear;
+    private javax.swing.JButton dayButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
