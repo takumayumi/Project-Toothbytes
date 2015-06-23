@@ -489,7 +489,7 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
     
     private void updatePersonalInfo(){
         pi.UpdatePersonalInfo(patientID);
-        
+        JOptionPane.showMessageDialog(null,"Update Successful");
         Window w = SwingUtilities.getWindowAncestor(this);
         w.dispose();
     }

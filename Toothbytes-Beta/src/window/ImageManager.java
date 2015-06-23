@@ -16,6 +16,7 @@ import java.util.Calendar;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import models.Patient;
@@ -206,6 +207,7 @@ public class ImageManager extends javax.swing.JPanel {
     
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         try {
+            JOptionPane.showMessageDialog(null,"Update Success");
             Window w = SwingUtilities.getWindowAncestor(this);
             w.dispose();
         } catch (Exception ex) {

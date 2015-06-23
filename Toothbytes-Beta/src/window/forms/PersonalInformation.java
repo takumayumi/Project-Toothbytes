@@ -393,7 +393,8 @@ public class PersonalInformation extends javax.swing.JPanel {
             pi = new PersonalInfo(surname, givenName, mi, gender, birthdate, civilStatus, nickname, occupation, homeAddress,
             telephoneNo, officeNo, emailAdd, cellphoneNo, faxNo, null);
             
-            updatePersonalInfo();            
+            updatePersonalInfo();  
+            
         }else{
             int year = Integer.parseInt(yearTF.getText());
             
@@ -420,7 +421,7 @@ public class PersonalInformation extends javax.swing.JPanel {
     
     private void updatePersonalInfo(){
         pi.NewPersonalInfo();
-        
+        JOptionPane.showMessageDialog(null,"Registration Successful");
         Window w = SwingUtilities.getWindowAncestor(this);
         w.dispose();
     }

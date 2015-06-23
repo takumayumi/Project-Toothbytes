@@ -431,6 +431,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
                                                 lastDentalVisit, nameOfPhysician, officeAddress, specialization, officeNumber);
             
             updateAdditionalInfo();
+            
         } else {
             if(reasonTF.getText().isEmpty()){reasonTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(hasLetters(officeNumberTF.getText())){officeNumberTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
@@ -444,7 +445,7 @@ public class AdditionalInformation extends javax.swing.JPanel {
         } else {
             ai.EditAdditionalInfo(additionalInfoID);
         }
-        
+        JOptionPane.showMessageDialog(null,"Additional Information Updated");
         Window w = SwingUtilities.getWindowAncestor(this);
         w.dispose();
     }

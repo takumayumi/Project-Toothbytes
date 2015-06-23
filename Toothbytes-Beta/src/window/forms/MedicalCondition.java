@@ -828,7 +828,7 @@ public class MedicalCondition extends javax.swing.JPanel {
             
             
             updateDatabase();
-            
+            JOptionPane.showMessageDialog(null,"Medical Condition Updated");
             Window w = SwingUtilities.getWindowAncestor(this);
             w.dispose();
         }else{
