@@ -92,7 +92,7 @@ public class TreatmentWindow extends JDialog implements ChartListener {
         this.dc = new DentalChart(true);
         dc.addChartListener(this);
         for (int i = 0; i < dcPassed.getTable().getRowCount(); i++) {
-            this.dc.updateTooth((Integer) dcPassed.getTable().getValueAt(i, 0), (String) dcPassed.getTable().getValueAt(i, 1), false);
+            this.dc.updateTooth((Integer) dcPassed.getTable().getValueAt(i, 0), (String) dcPassed.getTable().getValueAt(i, 1), false, true);
         }
         initComponents(p);
     }
@@ -562,24 +562,4 @@ public class TreatmentWindow extends JDialog implements ChartListener {
             }
         }
     }
-
-//    class ButtonRenderer extends JButton implements TableCellRenderer {
-//
-//        public ButtonRenderer() {
-//            setOpaque(true);
-//        }
-//
-//        public Component getTableCellRendererComponent(JTable table, Object value,
-//                boolean isSelected, boolean hasFocus, int row, int column) {
-//            if (isSelected) {
-//                setForeground(table.getSelectionForeground());
-//                setBackground(table.getSelectionBackground());
-//            } else {
-//                setForeground(table.getForeground());
-//                setBackground(UIManager.getColor("Button.background"));
-//            }
-//            setText((value == null) ? "" : value.toString());
-//            return this;
-//        }
-//    }
 }

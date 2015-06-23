@@ -24,6 +24,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.border.LineBorder;
 
@@ -39,6 +40,7 @@ public class Tooth extends JComponent {
     private Area markings = new Area();
     private ToothListener tl;
     private boolean modified;
+    private boolean stored;
 
     private final Image NORMAL_STATE, UNERUPTED_STATE, MISSING_STATE,
             LASER_STATE, CROWN_STATE, BRIDGE_STATE, MISSING_BRIDGED_STATE,
@@ -50,7 +52,7 @@ public class Tooth extends JComponent {
     private JPopupMenu pop;
     private JMenuItem popNormal, popUnerupted, popMissing;
 
-    public Tooth(int number, String state, boolean modified) throws IOException {
+    public Tooth(int number, String state, boolean modified, boolean stored) throws IOException {
         this.number = number;
         this.state = state;
         this.secondState = null;
@@ -59,6 +61,7 @@ public class Tooth extends JComponent {
         this.setToolTipText(state);
         this.modified = modified;
         this.otherTreatment = null;
+        this.stored = stored;
 
         NORMAL_STATE = ImageIO.read(new File("res/teeth/normal.png"));
         UNERUPTED_STATE = ImageIO.read(new File("res/teeth/unerupted.png"));
@@ -99,13 +102,21 @@ public class Tooth extends JComponent {
         DEFAULT_STATE = ImageIO.read(new File("res/teeth/bridged.png"));
         EXTRACTED_STATE = ImageIO.read(new File("res/teeth/extract.png"));
         FILL_STATE = ImageIO.read(new File("res/teeth/fill.png"));
-        
+
         MouseHandler mh = new MouseHandler();
         MouseMotionHandler mmh = new MouseMotionHandler();
         this.addMouseListener(mh);
         this.addMouseMotionListener(mmh);
 
         pop = new JPopupMenu("Tooth Popup");
+    }
+
+    public boolean isStored() {
+        return stored;
+    }
+
+    public void setStored(boolean stored) {
+        this.stored = stored;
     }
 
     public Area getMarkings() {
@@ -238,13 +249,30 @@ public class Tooth extends JComponent {
         this.setBorder(null);
     }
 
+    public Tooth getTooth() {
+        return this;
+    }
+
     public class MouseMotionHandler implements MouseMotionListener {
 
         @Override
         public void mouseDragged(MouseEvent e) {
             pointerX = e.getX();
             pointerY = e.getY();
-            updateState();
+            if (getTooth().isStored()) {
+                boolean change = false;
+                int i = JOptionPane.showConfirmDialog(null, "Are you sure you want to edit this tooth?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                if (i == 0) {
+                    change = true;
+                }
+                if (change) {
+                    getTooth().setStored(false);
+                    updateState();
+                }
+            } else {
+                updateState();
+            }
+
         }
 
         @Override
@@ -264,7 +292,19 @@ public class Tooth extends JComponent {
         public void mouseReleased(java.awt.event.MouseEvent e) {
             pointerX = e.getX();
             pointerY = e.getY();
-            updateState();
+            if (getTooth().isStored()) {
+                boolean change = false;
+                int i = JOptionPane.showConfirmDialog(null, "Are you sure you want to edit this tooth?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                if (i == 0) {
+                    change = true;
+                }
+                if (change) {
+                    getTooth().setStored(false);
+                    updateState();
+                }
+            } else {
+                updateState();
+            }
         }
 
         @Override
@@ -381,7 +421,7 @@ public class Tooth extends JComponent {
                     g2d.drawString(this.state.substring(0, 4), X_TOOTH + 7, Y_TOOTH + 20);
                     g2d.drawString(this.state.substring(5, 6) + "...", X_TOOTH + 5, Y_TOOTH + 30);
                 } else {
-                    g2d.drawString(this.state, X_TOOTH+ 5, Y_TOOTH + 30);
+                    g2d.drawString(this.state, X_TOOTH + 5, Y_TOOTH + 30);
                 }
 //                g2d.drawString(this.state.substring(0, 4) + "...", X_TOOTH + 5, Y_TOOTH + 30);
                 this.setForeground(new Color(55, 100, 200));

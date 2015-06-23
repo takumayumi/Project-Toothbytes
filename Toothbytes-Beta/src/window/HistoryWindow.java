@@ -48,7 +48,7 @@ public class HistoryWindow extends JDialog {
                     
                     for (int i = 1; i < 53; i++) {
                         if (otList.get(j).getHm().containsKey(i)) {
-                            dc.updateTooth(i, otList.get(j).getHm().get(i).toLowerCase(), false);
+                            dc.updateTooth(i, otList.get(j).getHm().get(i).toLowerCase(), false, true);
                             dc.updateUI();
                         }
                     }

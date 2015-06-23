@@ -8,6 +8,7 @@ package models;
 import components.listener.ChartListener;
 import components.listener.ToothListener;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -154,7 +155,7 @@ public class DentalChart extends JPanel implements ToothListener {
             try {
                 //premanent teeth
                 if (i <= 32) {
-                    Tooth temp = new Tooth(tens + max, "normal", false);
+                    Tooth temp = new Tooth(tens + max, "normal", false, false);
                     temp.addToothListener(this);
                     allTeeth.add(temp);
                     max++;
@@ -166,7 +167,7 @@ public class DentalChart extends JPanel implements ToothListener {
 
                     //prime teeth
                 } else {
-                    Tooth temp = new Tooth(tens + max, "normal", false);
+                    Tooth temp = new Tooth(tens + max, "normal", false, false);
 
                     temp.addToothListener(this);
                     allTeeth.add(temp);
@@ -212,13 +213,14 @@ public class DentalChart extends JPanel implements ToothListener {
         }
     }
 
-    public void updateTooth(int n, String state, boolean delete) {
+    public void updateTooth(int n, String state, boolean delete, boolean stored) {
         for (int i = 0; i < 52; i++) {
             if (allTeeth.get(i).getNumber() == n) {
                 allTeeth.get(i).setState(state);
                 allTeeth.get(i).setModified(true);
+                allTeeth.get(i).setStored(stored);
                 if (!delete) {
-                    updateTable(n, state);
+                    updateTable(n, state, stored);
                 }
             }
         }
@@ -226,7 +228,7 @@ public class DentalChart extends JPanel implements ToothListener {
 
     public void deleteRow(int i) {
         feeList.remove(table.getValueAt(i, 1));
-        updateTooth((Integer) table.getValueAt(i, 0), "normal", true);
+        updateTooth((Integer) table.getValueAt(i, 0), "normal", true, false);
         tableModel.removeRow(i);
         this.updateUI();
     }
@@ -263,10 +265,10 @@ public class DentalChart extends JPanel implements ToothListener {
     public void setTableEnabled(boolean b) {
         this.tableEnabled = b;
     }
-    
+
     public Tooth getTooth(int num) {
-        for(int i=0; i<allTeeth.size(); i++) {
-            if(allTeeth.get(i).getNumber()==num) {
+        for (int i = 0; i < allTeeth.size(); i++) {
+            if (allTeeth.get(i).getNumber() == num) {
                 return allTeeth.get(i);
             }
         }
@@ -317,19 +319,20 @@ public class DentalChart extends JPanel implements ToothListener {
         table.getTableHeader().setReorderingAllowed(false);
     }
 
-    public void updateTable(int n, String s) {
+    public void updateTable(int n, String s, boolean stored) {
 
         if (tableModel.getRowCount() != 0) {
             boolean trigger = true;
             for (int i = 0; i < tableModel.getRowCount(); i++) {
-                boolean check = table.getValueAt(i, 0).toString().equals(n);
+
                 if (Integer.parseInt(table.getValueAt(i, 0).toString()) == n) {
 
                     table.setValueAt(n, i, 0);
                     table.setValueAt(s, i, 1);
                     table.setValueAt("", i, 2);
-                    if (tableEnabled) {
+                    if (tableEnabled && !stored) {
                         table.setValueAt("Delete Entry", i, 3);
+                        updateFeeList(s);
                     }
                     trigger = false;
                     break;
@@ -340,8 +343,9 @@ public class DentalChart extends JPanel implements ToothListener {
                 table.setValueAt(n, tableModel.getRowCount() - 1, 0);
                 table.setValueAt(s, tableModel.getRowCount() - 1, 1);
                 table.setValueAt("", tableModel.getRowCount() - 1, 2);
-                if (tableEnabled) {
+                if (tableEnabled && !stored) {
                     table.setValueAt("Delete Entry", tableModel.getRowCount() - 1, 3);
+                    updateFeeList(s);
                 }
             }
         } else {
@@ -349,11 +353,14 @@ public class DentalChart extends JPanel implements ToothListener {
             table.setValueAt(n, tableModel.getRowCount() - 1, 0);
             table.setValueAt(s, tableModel.getRowCount() - 1, 1);
             table.setValueAt("", tableModel.getRowCount() - 1, 2);
-            if (tableEnabled) {
+            if (tableEnabled && !stored) {
                 table.setValueAt("Delete Entry", tableModel.getRowCount() - 1, 3);
+                updateFeeList(s);
             }
         }
-        updateFeeList(s);
+        if (tableEnabled) {
+            System.out.println(table.getValueAt(table.getRowCount() - 1, 3));
+        }
     }
 
     public void updateFeeList(String s) {
@@ -372,19 +379,31 @@ public class DentalChart extends JPanel implements ToothListener {
     public ArrayList<SaveFile> getSaveList() {
         saveList = new ArrayList<SaveFile>();
         for (int i = 0; i < table.getRowCount(); i++) {
-            int num = (Integer) table.getValueAt(i, 0);
-            String s = (String) table.getValueAt(i, 1);
-            String r = (String) table.getValueAt(i, 2);
-            Area m = getTooth(num).getMarkings();
-            Double d = DBAccess.getServiceFee(s);
-            saveList.add(new SaveFile(num, s, r, m, d));
-            System.out.println("Saving tooth:"+num+" state:"+s+" fee:"+d);
+            if (table.getValueAt(i, 3).equals("Delete Entry")) {
+                int num = (Integer) table.getValueAt(i, 0);
+                String s = (String) table.getValueAt(i, 1);
+                String r = (String) table.getValueAt(i, 2);
+
+                Area m = getTooth(num).getMarkings();
+                Double d = DBAccess.getServiceFee(s);
+                saveList.add(new SaveFile(num, s, r, m, d));
+                System.out.println("Entry Matched");
+            } else {
+                int num = (Integer) table.getValueAt(i, 0);
+                String s = (String) table.getValueAt(i, 1);
+                String r = (String) table.getValueAt(i, 2);
+
+                Area m = getTooth(num).getMarkings();
+                Double d = 0.0;
+                saveList.add(new SaveFile(num, s, r, m, d));
+                System.out.println("Entry Matched");
+            }
         }
         return saveList;
     }
 
     public void notify(int number, String state) {
-        updateTable(number, state);
+        updateTable(number, state, false);
         if (cl != null) {
             notifyChartListener(true);
         }
@@ -458,6 +477,12 @@ public class DentalChart extends JPanel implements ToothListener {
             button.setText(label);
             delRow = row;
             isPushed = true;
+
+            if (button.getText().matches("")) {
+                button.setEnabled(false);
+            } else {
+                button.setEnabled(true);
+            }
             return button;
         }
 

@@ -12,12 +12,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import models.Appointment;
+import utilities.Configuration;
 import utilities.DBAccess;
 
 /**
@@ -48,7 +50,8 @@ public class SidePanel extends JPanel{
         // APPOINTMENTS
         sideAppointment = new JPanel();
         sideAppointment.setLayout(new BorderLayout());
-        sideTabsPane.add("Appointments for today", sideAppointment);
+        sideTabsPane.setFont(Configuration.TB_FONT_HEADER);
+        sideTabsPane.addTab("Appointments for today", new ImageIcon("res/buttons/AppointmentsForToday.png"),sideAppointment);
         
         sideAppList = new JList();
         sideAppScroll = new JScrollPane(sideAppList);
@@ -76,7 +79,7 @@ public class SidePanel extends JPanel{
         
         // PAYMENTS
         sidePayment = new JPanel();
-        sideTabsPane.add("Payments Tracker", sidePayment);
+        sideTabsPane.addTab("Payments Tracker", sidePayment);
         sidePayment.setLayout(new BoxLayout(sidePayment,BoxLayout.Y_AXIS));
         sidePayment.setBackground(WHITE);
         

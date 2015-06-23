@@ -188,7 +188,7 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
             
             for (int i = 1; i < 53; i++) {
                 if (otList.get(0).getHm().containsKey(i)) {
-                    dc.updateTooth(i , otList.get(0).getHm().get(i).toLowerCase(), false);
+                    dc.updateTooth(i , otList.get(0).getHm().get(i).toLowerCase(), false, true);
                     dc.updateUI();
                 }
             }
