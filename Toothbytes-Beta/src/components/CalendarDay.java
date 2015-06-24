@@ -89,7 +89,7 @@ public class CalendarDay extends javax.swing.JPanel {
         dayTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         
         for(int i = 0; i < appointmentList.size(); i++){
-            editModel.addRow(new Object[]{appointmentList.get(i).getAppointmentID(), appointmentList.get(i).getAppointmentDate(), appointmentList.get(i).getAppointmentTime(), appointmentList.get(i).getAppointmentEndTime(), appointmentList.get(i).getAppointmentRemarks(), patientList.get(appointmentList.get(i).getPatientID()).getFullName()});
+            editModel.addRow(new Object[]{appointmentList.get(i).getAppointmentID(), appointmentList.get(i).getAppointmentDate(), appointmentList.get(i).getAppointmentTime(), appointmentList.get(i).getAppointmentEndTime(), appointmentList.get(i).getAppointmentRemarks(), patientList.get(appointmentList.get(i).getPatientID()-1).getFullName()});
         }
         
         dayTable.removeColumn(dayTable.getColumnModel().getColumn(0));
@@ -117,7 +117,7 @@ public class CalendarDay extends javax.swing.JPanel {
         patientBox.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent evt){
                 try{
-                    int patientID = patientBox.getSelectedIndex()-1;
+                    int patientID = patientBox.getSelectedIndex();
                     ArrayList<Appointment> appointmentList = DBAccess.getAppointmentData(" WHERE PATIENTID = "+patientID+";");
                     setTable(appointmentList);
                 }catch(Exception e){}

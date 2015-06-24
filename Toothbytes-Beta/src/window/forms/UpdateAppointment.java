@@ -521,6 +521,54 @@ initComponents();
 
     private void sptSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sptSaveActionPerformed
         appointment = getAppointmentValues();
+        Boolean notApp = false;
+        ArrayList<Appointment> appointmentList = DBAccess.getAppointmentData(" WHERE APPOINTMENTDATE LIKE '"+appointment.getAppointmentDate()+"';");
+                
+        String at = appointment.getAppointmentTime();
+        String et = appointment.getAppointmentEndTime();
+        
+        for(int i = 0; i < appointmentList.size(); i++){        
+            String[] iat = appointmentList.get(i).getAppointmentTime().split(":");
+            String[] iet = appointmentList.get(i).getAppointmentEndTime().split(":");
+            
+            int timeStartHour = Integer.parseInt(iat[0]);
+            int timeEndHour = Integer.parseInt(iet[0]);
+            
+            int timeStart = Integer.parseInt(iat[1]);
+            int timeEnd = Integer.parseInt(iet[1]);
+            
+            if(timeStart >= timeEnd){
+                timeStart = timeStart - (60 * (timeEndHour - timeStartHour));
+            }
+            
+            if (appointmentList.get(i).getAppointmentID() != appointment.getAppointmentID()) {
+                for (int time = timeStart; time <= timeEnd; time++) {
+                    String sat;
+                    if (Math.abs(time) < 10) {
+                        sat = timeStartHour + ":0" + Math.abs(time) + ":" + iat[2];
+                    } else {
+                        sat = timeStartHour + ":" + Math.abs(time) + ":" + iat[2];
+                    }
+
+                    String[] set = et.split(":");
+                    
+                    if (Integer.parseInt(set[1]) > Math.abs(time) && Integer.parseInt(set[0]) == timeStartHour) {
+                        PatientX x = DBAccess.getData(appointmentList.get(i).getPatientID());
+                        JOptionPane.showMessageDialog(null, "Appointment Time is already booked.\n" + x.getFullName() + " at " + appointmentList.get(i).getAppointmentTime() + " to " + appointmentList.get(i).getAppointmentEndTime() + ".");
+                        notApp = true;
+                        break;
+                    }
+
+                    if (at.equals(sat) || et.equals(sat)) {
+
+                        PatientX x = DBAccess.getData(appointmentList.get(i).getPatientID());
+                        notApp = true;
+                        JOptionPane.showMessageDialog(null, "Appointment Time is already booked.\n" + x.getFullName() + " at " + appointmentList.get(i).getAppointmentTime() + " to " + appointmentList.get(i).getAppointmentEndTime() + ".");
+                    }
+                }
+            }
+        }
+        
         if("Hour".equals(sptStartHour.getSelectedItem())) {
             sptStartHour.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0 ,51)));
            JOptionPane.showMessageDialog(null, "Time of Appointment input incorrect.");
@@ -560,20 +608,19 @@ initComponents();
         } else if (!hasNumbers((String) sptDurMin.getSelectedItem())){
             sptDurMin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0 ,51)));
             JOptionPane.showMessageDialog(null, "No patient selected");
-        } else {
+        } else if(notApp){
             
-                    try{
-                        
-                        DBAccess.updateAppointmentData(appointment);
-                        JOptionPane.showMessageDialog(null,"Appointment Updated");
-                        
-                    }catch(Exception e){
-                        
-                        System.out.println("UpdateAppointment - sptSaveActionPerformed Error: " + e);
-                    }
                     
-                    Window w = SwingUtilities.getWindowAncestor(this);
-                    w.dispose();
+        } else {
+            try {
+                DBAccess.updateAppointmentData(appointment);
+                JOptionPane.showMessageDialog(null, "Appointment Updated");
+            } catch (Exception e) {
+                System.out.println("UpdateAppointment - sptSaveActionPerformed Error: " + e);
+            }
+
+            Window w = SwingUtilities.getWindowAncestor(this);
+            w.dispose();
         }
     }//GEN-LAST:event_sptSaveActionPerformed
 
