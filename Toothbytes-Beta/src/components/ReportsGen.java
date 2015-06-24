@@ -317,7 +317,7 @@ public class ReportsGen extends javax.swing.JPanel {
             stmt = (JDBCStatement) conn.createStatement();
             rs = (JDBCResultSet) stmt.executeQuery("SELECT patientID, CONCAT(patient_LastName, ',', patient_FirstName, ' ', patient_MiddleInitial, '.') AS \"PATIENT NAME\",\n" +
                 "gender, cellNo, homeAddress, emailAddress FROM patient\n" +
-                "ORDER BY patientID ASC;");
+                "ORDER BY patient_LastName ASC;");
             resultSetTable.setModel(DbUtils.resultSetToTableModel(rs));
         }catch(ClassNotFoundException | SQLException error){
             JOptionPane.showMessageDialog(null, error);
@@ -342,7 +342,7 @@ public class ReportsGen extends javax.swing.JPanel {
                 "JOIN patient ON dental_records.patientID = patient.patientID\n" +
                 "JOIN payments ON dental_records.dentalRecordID = payments.dentalRecordID\n" +
                 "WHERE balance > 0\n" +
-                "ORDER BY patient.patientID ASC, patient.patient_LastName DESC;");            
+                "ORDER BY patient.patient_LastName ASC;");            
             resultSetTable.setModel(DbUtils.resultSetToTableModel(rs));
         }catch(ClassNotFoundException | SQLException error){
             JOptionPane.showMessageDialog(null, error);

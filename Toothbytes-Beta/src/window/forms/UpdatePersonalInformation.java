@@ -439,7 +439,7 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
             if(miTF.getText().isEmpty() || hasNumbers(miTF.getText()) || miTF.getText().length() < -1 || miTF.getText().length() > 2){miTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(bdayYearTF.getText().isEmpty() || hasLetters(bdayYearTF.getText()) || hasSpecialCharacters(bdayYearTF.getText())){bdayYearTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(civilStatusCB.getSelectedItem().toString().isEmpty()){civilStatusCB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
-            if(occupationTF.getText().isEmpty() || hasNumbers(occupationTF.getText())){occupationTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
+            if(hasNumbers(occupationTF.getText())){occupationTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(surnameTF.getText().isEmpty()){surnameTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(givenNameTF.getText().isEmpty()){givenNameTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
             if(homeAddressTF.getText().isEmpty()){homeAddressTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)));}
@@ -489,7 +489,7 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
     
     private void updatePersonalInfo(){
         pi.UpdatePersonalInfo(patientID);
-        JOptionPane.showMessageDialog(null,"Update Successful");
+        JOptionPane.showMessageDialog(this,"Update Successful");
         Window w = SwingUtilities.getWindowAncestor(this);
         w.dispose();
     }
@@ -504,7 +504,7 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
         String occupation = occupationTF.getText();         //no numbers 
         String homeAddress = homeAddressTF.getText();       //no filter *
         
-        if(!entriesNull(surname, givenName, mi, birthYear, occupation, homeAddress) &&
+        if(!entriesNull(surname, givenName, mi, birthYear, homeAddress) &&
            !hasNumbers(mi) && mi.length() > -1 && mi.length() <= 2 &&
            !hasLetters(birthYear) &&
            genderCB.getSelectedIndex() != 0 && 
@@ -520,8 +520,8 @@ public class UpdatePersonalInformation extends javax.swing.JPanel {
         
     }
     
-    public boolean entriesNull(String surname, String givenName, String mi, String birthYear, String occupation, String homeAddress){
-        if(surname.isEmpty() || givenName.isEmpty() || mi.isEmpty() || birthYear.isEmpty() || occupation.isEmpty() || homeAddress.isEmpty()){
+    public boolean entriesNull(String surname, String givenName, String mi, String birthYear, String homeAddress){
+        if(surname.isEmpty() || givenName.isEmpty() || mi.isEmpty() || birthYear.isEmpty() || homeAddress.isEmpty()){
             // One or more strings are null
             return true;
         }else{

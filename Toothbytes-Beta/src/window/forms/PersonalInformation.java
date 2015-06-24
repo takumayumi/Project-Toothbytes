@@ -421,7 +421,7 @@ public class PersonalInformation extends javax.swing.JPanel {
     
     private void updatePersonalInfo(){
         pi.NewPersonalInfo();
-        JOptionPane.showMessageDialog(null,"Registration Successful");
+        JOptionPane.showMessageDialog(this,"Registration Successful");
         Window w = SwingUtilities.getWindowAncestor(this);
         w.dispose();
     }
@@ -450,7 +450,7 @@ public class PersonalInformation extends javax.swing.JPanel {
         String occupation = occupationTF.getText();         //no numbers 
         String homeAddress = homeAddressTF.getText();       //no filter *
         
-        if(!entriesNull(surname, givenName, mi, birthYear, occupation, homeAddress) &&
+        if(!entriesNull(surname, givenName, mi, birthYear, homeAddress) &&
            !hasNumbers(mi) && mi.length() > -1 && mi.length() <= 2 &&
            !hasLetters(birthYear) &&
            !hasNumbers(nationality) && !hasSpecialCharacters(nationality) && 
@@ -465,8 +465,8 @@ public class PersonalInformation extends javax.swing.JPanel {
         
     }
     
-    public boolean entriesNull(String surname, String givenName, String mi, String birthYear, String occupation, String homeAddress){
-        if(surname.isEmpty() || givenName.isEmpty() || mi.isEmpty() || birthYear.isEmpty() || occupation.isEmpty() || homeAddress.isEmpty()){
+    public boolean entriesNull(String surname, String givenName, String mi, String birthYear, String homeAddress){
+        if(surname.isEmpty() || givenName.isEmpty() || mi.isEmpty() || birthYear.isEmpty() || homeAddress.isEmpty()){
             // One or more strings are null
             return true;
         }else{

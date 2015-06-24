@@ -111,6 +111,9 @@ public class SettingsWindow extends javax.swing.JDialog {
         accountNewPassword = new javax.swing.JPasswordField();
         btnSaveSettings = new javax.swing.JButton();
         btnCancelSettings = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        backUp = new javax.swing.JButton();
+        restoreDB = new javax.swing.JButton();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -118,8 +121,8 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         setTitle("Settings");
         setBackground(new java.awt.Color(250, 255, 250));
-        setMaximumSize(new java.awt.Dimension(300, 410));
-        setMinimumSize(new java.awt.Dimension(300, 410));
+        setMaximumSize(new java.awt.Dimension(300, 530));
+        setMinimumSize(new java.awt.Dimension(300, 530));
 
         servicesPanel.setBackground(new java.awt.Color(250, 255, 250));
         servicesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("SERVICES"));
@@ -314,21 +317,59 @@ public class SettingsWindow extends javax.swing.JDialog {
             }
         });
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("MAINTENANCE"));
+
+        backUp.setText("Back Up Database");
+        backUp.setEnabled(false);
+        backUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backUpActionPerformed(evt);
+            }
+        });
+
+        restoreDB.setText("Restore Database");
+        restoreDB.setEnabled(false);
+        restoreDB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                restoreDBActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(backUp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(restoreDB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(backUp)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(restoreDB)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 280, Short.MAX_VALUE)
-                    .addComponent(servicesPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCancelSettings)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSaveSettings)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 280, Short.MAX_VALUE)
+                            .addComponent(servicesPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnCancelSettings)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSaveSettings)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -342,6 +383,8 @@ public class SettingsWindow extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelSettings)
                     .addComponent(btnSaveSettings))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -484,6 +527,22 @@ public class SettingsWindow extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_serviceOfferedActionPerformed
 
+    private void backUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backUpActionPerformed
+        try{
+            Runtime.getRuntime().exec("cmd /c start C:/Toothbytes/backupToothbytes.bat");
+        }catch(Exception batchFileException){
+            System.out.println("cmd exception:  " + batchFileException);
+        }
+    }//GEN-LAST:event_backUpActionPerformed
+
+    private void restoreDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreDBActionPerformed
+        try{
+            Runtime.getRuntime().exec("cmd /c start C:/Toothbytes/restoreToothbytes.bat");
+        }catch(Exception batchFileException){
+            System.out.println("cmd exception:  " + batchFileException);
+        }
+    }//GEN-LAST:event_restoreDBActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -505,6 +564,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JPasswordField accountNewPassword;
     private javax.swing.JPasswordField accountPassword;
     private javax.swing.JTextField accountUsername;
+    private javax.swing.JButton backUp;
     private javax.swing.JButton btnCancelSettings;
     private javax.swing.JButton btnSaveSettings;
     private javax.swing.ButtonGroup enableDisable;
@@ -519,10 +579,12 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton resetButtonExisting;
+    private javax.swing.JButton restoreDB;
     private javax.swing.JButton saveButtonExisting;
     private javax.swing.JComboBox serviceOffered;
     private javax.swing.JPanel servicesPanel;
