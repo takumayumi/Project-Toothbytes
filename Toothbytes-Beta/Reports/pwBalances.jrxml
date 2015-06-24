@@ -18,7 +18,7 @@
 JOIN patient ON dental_records.patientID = patient.patientID
 JOIN payments ON dental_records.dentalRecordID = payments.dentalRecordID
 WHERE balance > 0
-ORDER BY patient.patientID ASC, patient.patient_LastName DESC;]]>
+ORDER BY patient.patient_LastName ASC;]]>
 	</queryString>
 	<field name="PATIENTID" class="java.lang.Integer"/>
 	<field name="PATIENT NAME" class="java.lang.String"/>
@@ -57,35 +57,28 @@ ORDER BY patient.patientID ASC, patient.patient_LastName DESC;]]>
 	<columnHeader>
 		<band height="18" splitType="Stretch">
 			<staticText>
-				<reportElement style="Column header" x="48" y="0" width="91" height="18" forecolor="#000000" uuid="7900eebb-e767-45c2-8c0e-17e58461b8a7"/>
-				<textElement>
-					<font fontName="SansSerif" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Patient ID]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" x="139" y="0" width="207" height="18" forecolor="#000000" uuid="ba1c0207-39ea-4e88-838c-4788742bf15f"/>
+				<reportElement style="Column header" x="93" y="0" width="207" height="18" forecolor="#000000" uuid="ba1c0207-39ea-4e88-838c-4788742bf15f"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Patient Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="346" y="0" width="130" height="18" forecolor="#000000" uuid="d0875d57-aeef-4eaa-88ff-f3d4d1ec2356"/>
+				<reportElement style="Column header" x="300" y="0" width="130" height="18" forecolor="#000000" uuid="d0875d57-aeef-4eaa-88ff-f3d4d1ec2356"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Treatment Date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="489" y="0" width="159" height="18" forecolor="#000000" uuid="ef8489cc-7757-4369-98ce-be59746ea05f"/>
+				<reportElement style="Column header" x="443" y="0" width="159" height="18" forecolor="#000000" uuid="ef8489cc-7757-4369-98ce-be59746ea05f"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Procedure]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="648" y="0" width="106" height="18" forecolor="#000000" uuid="7afe9ed3-79de-45b1-8b57-54f2f2bd331a"/>
+				<reportElement style="Column header" x="602" y="0" width="106" height="18" forecolor="#000000" uuid="7afe9ed3-79de-45b1-8b57-54f2f2bd331a"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
@@ -98,35 +91,28 @@ ORDER BY patient.patientID ASC, patient.patient_LastName DESC;]]>
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="797" height="18" uuid="ba65ae95-18e2-4e45-b973-b9f1e0fef159"/>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="48" y="0" width="91" height="18" uuid="8d21b230-3f98-4425-bc54-50e5ae2d2eed"/>
-					<textElement>
-						<font fontName="SansSerif" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{PATIENTID}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="139" y="0" width="207" height="18" uuid="12a9937b-4025-4e05-8b3d-ddc6fc461833"/>
+					<reportElement style="Detail" positionType="Float" x="93" y="0" width="207" height="18" uuid="12a9937b-4025-4e05-8b3d-ddc6fc461833"/>
 					<textElement>
 						<font fontName="SansSerif" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{PATIENT NAME}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="MMMMM dd, yyyy">
-					<reportElement style="Detail" positionType="Float" x="346" y="0" width="130" height="18" uuid="7b672d69-2489-4c2b-825b-956ca94a10cd"/>
+					<reportElement style="Detail" positionType="Float" x="300" y="0" width="130" height="18" uuid="7b672d69-2489-4c2b-825b-956ca94a10cd"/>
 					<textElement>
 						<font fontName="SansSerif" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{TREATMENTDATE}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="489" y="0" width="159" height="18" uuid="6f6af83b-c437-401a-9f39-89d0fe9babc7"/>
+					<reportElement style="Detail" positionType="Float" x="443" y="0" width="159" height="18" uuid="6f6af83b-c437-401a-9f39-89d0fe9babc7"/>
 					<textElement>
 						<font fontName="SansSerif" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{PROCEDURE}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,###.00">
-					<reportElement style="Detail" positionType="Float" x="648" y="0" width="106" height="18" uuid="a6a12af6-9ff7-4303-8d92-936f7d463739"/>
+					<reportElement style="Detail" positionType="Float" x="602" y="0" width="106" height="18" uuid="a6a12af6-9ff7-4303-8d92-936f7d463739"/>
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="12"/>
 					</textElement>
