@@ -33,12 +33,14 @@ import utilities.DBAccess;
  * Toothbytes.
  */
 public class LoginDialog extends JDialog {
+    private int authority;
     private JLabel logo, usrLabel, pwdLabel;
     private JPanel form, buttons;
     private JTextField usr;
     private JPasswordField pwd;
     private JButton login, exit;
     private boolean granted;
+    private boolean isValid;
     
     /**
      * This constructor creates the login window and layouts it's components.
@@ -86,9 +88,10 @@ public class LoginDialog extends JDialog {
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean isValid = DBAccess.validate(usr.getText(), pwd.getPassword());
+                isValid = DBAccess.validate(usr.getText(), pwd.getPassword());
                 
                 if(isValid) {
+                    authority = DBAccess.getAccountsData(" WHERE USERNAME LIKE '"+usr.getText()+"';").get(0).getAuthority();
                     unlock();
                 } else {
                     lock();
@@ -124,8 +127,13 @@ public class LoginDialog extends JDialog {
         JFrame f = (JFrame)super.getOwner();
         f.getGlassPane().setVisible(false);
         System.out.println("Login Successful");
+        
     }
     public void lock() {
         JOptionPane.showMessageDialog(rootPane, "Your username/password is incorrect", "Login Failed", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    public int getAuth(){
+        return authority;
     }
 }

@@ -34,7 +34,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         
         initComponents();
         accountX = new ArrayList<>();
-        accountX = DBAccess.getAccountsData();
+        accountX = DBAccess.getAccountsData("");
         servicesX = new ArrayList<>();
         getComboBox();
         service = new Services();  

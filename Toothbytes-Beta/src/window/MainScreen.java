@@ -106,16 +106,7 @@ public class MainScreen extends JFrame {
         menuBar.setBackground(Color.white);
         this.setJMenuBar(menuBar);
         menuBar.bindListenerToMenu(new MenuBarHandler(), 1);
-        JMenu tools = new JMenu("Tools");
-        menuBar.add(tools);
-        JMenuItem backup = new JMenuItem("Backup & Restore");
         
-        backup.addActionListener(e -> {
-            BackupDialog bd = new BackupDialog(this, true);            
-//            mw.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        });
-        
-        tools.add(backup);
 
         // Layout configurations.
         framework = new MigLayout(
@@ -230,38 +221,7 @@ public class MainScreen extends JFrame {
         repgenBut.setToolTipText("Generate Reports");
         repgenBut.setBackground(WHITE);
 
-        navButtons.add(homeBut);
-        navButtons.add(recBut);
-        navButtons.add(appBut);
-        navButtons.add(payBut);
-        navButtons.add(repgenBut);
-
-        navBar.add(homeBut);
-        navBar.add(recBut);
-        navBar.add(appBut);
-        navBar.add(payBut);
-        navBar.add(repgenBut);
-        navBar.setBackground(WHITE);
-
-        NavigationHandler nh = new NavigationHandler();
-        homeBut.addActionListener(nh);
-        recBut.addActionListener(nh);
-        appBut.addActionListener(nh);
-        payBut.addActionListener(nh);
-        repgenBut.addActionListener(nh);
-
-        navBar.setOrientation(JToolBar.VERTICAL);
-        navBar.setFloatable(false);
-        navBar.setBorder(BorderFactory.createLineBorder(Color.gray));
-        mainPanel.add(navBar, "west");
-
-        // Module window (left).
-        modulePanel = new JPanel();
-        modulePanel.setLayout(new MigLayout("fill"));
-        modulePanel.setBackground(Color.white);
-        mainPanel.add(modulePanel, "span 12 2");
-        c = new Cover();
-        modulePanel.add(c, "grow");
+       
 
         // Side panel (right).
         sp = new SidePanel();
@@ -296,7 +256,7 @@ public class MainScreen extends JFrame {
                 ld.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                 ld.setVisible(true);
                 ld.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
+                setButts(ld.getAuth());
             }
 
             public void windowClosing(WindowEvent e) {
@@ -306,6 +266,62 @@ public class MainScreen extends JFrame {
                 ed.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             }
         });
+    }
+    
+    public void setButts(int x){
+        navButtons.add(homeBut);
+        navBar.add(homeBut);
+        System.out.println(x);
+        if(x == 2){
+            menuBar.setVisible(false);
+            navButtons.add(appBut);
+            navBar.add(appBut);
+        } else {
+            navButtons.add(recBut);
+            navButtons.add(appBut);
+            navButtons.add(payBut);
+            navButtons.add(repgenBut);
+            
+            navBar.add(recBut);
+            navBar.add(appBut);
+            navBar.add(payBut);
+            navBar.add(repgenBut);
+        }
+        
+        navBar.setBackground(WHITE);
+
+        NavigationHandler nh = new NavigationHandler();
+        homeBut.addActionListener(nh);
+        recBut.addActionListener(nh);
+        appBut.addActionListener(nh);
+        payBut.addActionListener(nh);
+        repgenBut.addActionListener(nh);
+
+        navBar.setOrientation(JToolBar.VERTICAL);
+        navBar.setFloatable(false);
+        navBar.setBorder(BorderFactory.createLineBorder(Color.gray));
+        mainPanel.add(navBar, "west");
+
+        // Module window (left).
+        modulePanel = new JPanel();
+        modulePanel.setLayout(new MigLayout("fill"));
+        modulePanel.setBackground(Color.white);
+        mainPanel.add(modulePanel, "span 12 2");
+        c = new Cover();
+        modulePanel.add(c, "grow");
+        
+        if(x == 0){
+            JMenu tools = new JMenu("Tools");
+        menuBar.add(tools);
+        JMenuItem backup = new JMenuItem("Backup & Restore");
+        
+        backup.addActionListener(e -> {
+            BackupDialog bd = new BackupDialog(this, true);            
+//            mw.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        });
+        
+        tools.add(backup);
+        }
     }
 
     /**

@@ -6,15 +6,20 @@
 package models;
 
 public class Accounts {
-    private int accountID;
+    private int accountID, authority;
     private String username, password;
     
     public Accounts(){}
     
-    public Accounts(int accountID, String username, String password){
+    public Accounts(int accountID, String username, String password, int authority){
         this.accountID = accountID;
+        this.authority = authority;
         this.username = username;
         this.password = password;
+    }
+    
+    public int getAuthority(){
+        return authority;
     }
     
     public void setAccountID(int accountID){

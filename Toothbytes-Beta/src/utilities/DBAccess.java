@@ -218,15 +218,15 @@ public class DBAccess {
         }
     }
 
-    public static ArrayList<Accounts> getAccountsData() {
+    public static ArrayList<Accounts> getAccountsData(String adtl) {
         try {
             ArrayList<Accounts> accountsX = new ArrayList<>();
-            String getAccounts = "SELECT * FROM ACCOUNTS";
+            String getAccounts = "SELECT * FROM ACCOUNTS" + adtl;
 
             rs = (JDBCResultSet) stmt.executeQuery(getAccounts);
 
             while (rs.next()) {
-                Accounts account = new Accounts(rs.getInt(1), rs.getString(2), rs.getString(3));
+                Accounts account = new Accounts(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
                 accountsX.add(account);
             }
 
