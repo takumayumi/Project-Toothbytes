@@ -5,6 +5,7 @@
  */
 package window;
 
+import components.BackupDialog;
 import components.CalendarWindow;
 import components.Cover;
 import components.ExitDialog;
@@ -34,6 +35,8 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -103,6 +106,16 @@ public class MainScreen extends JFrame {
         menuBar.setBackground(Color.white);
         this.setJMenuBar(menuBar);
         menuBar.bindListenerToMenu(new MenuBarHandler(), 1);
+        JMenu tools = new JMenu("Tools");
+        menuBar.add(tools);
+        JMenuItem backup = new JMenuItem("Backup & Restore");
+        
+        backup.addActionListener(e -> {
+            BackupDialog bd = new BackupDialog(this, true);            
+//            mw.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        });
+        
+        tools.add(backup);
 
         // Layout configurations.
         framework = new MigLayout(
