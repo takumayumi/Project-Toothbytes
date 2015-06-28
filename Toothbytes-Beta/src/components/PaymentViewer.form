@@ -105,7 +105,7 @@
                                               <Group type="102" attributes="0">
                                                   <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="balanceLabel" min="-2" pref="99" max="-2" attributes="0"/>
+                                                  <Component id="balanceLabel" min="-2" pref="120" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
@@ -631,11 +631,6 @@
         </Component>
         <Component class="javax.swing.JLabel" name="treatmentLabel">
         </Component>
-        <Component class="javax.swing.JLabel" name="balanceLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value=" "/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JTextField" name="amountReceived">
         </Component>
         <Component class="javax.swing.JButton" name="payButton">
@@ -653,6 +648,11 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="receiptNumberActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="balanceLabel">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

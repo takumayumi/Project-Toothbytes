@@ -330,6 +330,7 @@ public class DBAccess {
     }
 
     public static ArrayList<Appointment> getAppointmentData(String condition) {
+        System.out.flush();
         String getAppointmentData = "SELECT * FROM APPOINTMENT" + condition;
         ArrayList<Appointment> appointmentX = new ArrayList<>();
 

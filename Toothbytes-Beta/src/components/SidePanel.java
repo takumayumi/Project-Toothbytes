@@ -7,10 +7,15 @@ package components;
 
 import java.awt.BorderLayout;
 import static java.awt.Color.WHITE;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import models.Appointment;
+import models.Patient;
 import utilities.Configuration;
 import utilities.DBAccess;
 
@@ -34,7 +40,7 @@ public class SidePanel extends JPanel{
     private JPanel sideAppointment, sidePayment;
     private JList sideAppList, sidePayList;
     private JScrollPane sideAppScroll, sidePayScroll;
-    private JButton viewSched;
+    private JButton refreshButton;
     
     private ArrayList<Appointment> appointmentToday, appointmentX;
     
@@ -46,6 +52,20 @@ public class SidePanel extends JPanel{
         
         sideTabsPane = new JTabbedPane();
         this.add(sideTabsPane);
+        
+        refreshButton = new JButton("Refresh");
+        this.add(refreshButton, BorderLayout.SOUTH);
+        refreshButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    updateList();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PatientListViewer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         
         // APPOINTMENTS
         sideAppointment = new JPanel();
@@ -148,6 +168,29 @@ public class SidePanel extends JPanel{
             }
         }catch(ParseException e){
             return false;
+        }
+    }
+    
+    private void updateList() throws SQLException{
+       appointmentX = new ArrayList<>();
+       appointmentX = DBAccess.getAppointmentData("");
+       int x = 0;
+        
+        for(int i = 0; i < appointmentX.size(); i++){
+            try{
+                if(checker(appointmentX.get(i))){
+                    sidePayment.add(new PaymentSchedule(appointmentX.get(i)));
+                    sidePayment.repaint();
+                    System.out.println(appointmentX.get(i));
+                    if(x < 10){
+                        x++;
+                    } else {
+                        break;
+                    }
+                }
+            }catch(Exception e){
+                
+            }
         }
     }
 }

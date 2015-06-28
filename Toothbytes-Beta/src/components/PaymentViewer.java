@@ -221,7 +221,7 @@ public class PaymentViewer extends JPanel{
             transactionsTable.getModel().setValueAt(rx.getToothNo(), x, 3);
             transactionsTable.getModel().setValueAt(df.format(rx.getAmountCharged()), x, 4);
             transactionsTable.getModel().setValueAt(df.format(totalAmountPaid), x, 5);
-            transactionsTable.getModel().setValueAt(df.format(rx.getBalance()), x, 6);
+            transactionsTable.getModel().setValueAt(rx.getBalance(), x, 6);
             
             if(rx.getBalance() != 0){
             } else {
@@ -234,20 +234,21 @@ public class PaymentViewer extends JPanel{
         
          Calendar now = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-        
+        paymentX.setDentalRecordID(dentalRecordID);
+            paymentX.setPaymentDate(sdf.format(now.getTime()));
         try {
             //String rcptNumber = receiptNumber.getText();
         //paymentX.setPaymentID(Integer.parseInt(rcptNumber));
         //paymentX.setDentalRecordID(dentalRecordID);
-            paymentX.setDentalRecordID(Integer.parseInt(treatmentLabel.getText()));
-            paymentX.setPaymentDate(sdf.format(now.getTime()));
+            
             paymentX.setAmountPaid(Double.parseDouble(amountReceived.getText()));
-            double balance = Double.parseDouble(balanceLabel.getText()) - Double.parseDouble (amountReceived.getText());
+            double balance = Double.parseDouble(balanceLabel.getText()) - Double.parseDouble(amountReceived.getText());
             System.out.println(balance);
             DBAccess.billingUpdate(paymentX, balance);
             System.out.println(paymentX.getDentalRecordID());
              JOptionPane.showMessageDialog(this, "Payment Updated.");
         } catch (Exception e) {
+            System.out.println(e);
             JOptionPane.showMessageDialog(this, "Incorrect amount entered.","Error", JOptionPane.ERROR_MESSAGE);
         }
      }
@@ -294,10 +295,10 @@ public class PaymentViewer extends JPanel{
         recordIDLabel = new javax.swing.JLabel();
         receivedFrom = new javax.swing.JLabel();
         treatmentLabel = new javax.swing.JLabel();
-        balanceLabel = new javax.swing.JLabel();
         amountReceived = new javax.swing.JTextField();
         payButton = new javax.swing.JButton();
         receiptNumber = new javax.swing.JTextField();
+        balanceLabel = new javax.swing.JTextField();
 
         BillingPanel.setBackground(new java.awt.Color(250, 255, 250));
 
@@ -508,8 +509,6 @@ public class PaymentViewer extends JPanel{
 
         receivedFrom.setText(" ");
 
-        balanceLabel.setText(" ");
-
         payButton.setText("Pay");
         payButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -523,6 +522,8 @@ public class PaymentViewer extends JPanel{
                 receiptNumberActionPerformed(evt);
             }
         });
+
+        balanceLabel.setEditable(false);
 
         javax.swing.GroupLayout BillingPanelLayout = new javax.swing.GroupLayout(BillingPanel);
         BillingPanel.setLayout(BillingPanelLayout);
@@ -581,7 +582,7 @@ public class PaymentViewer extends JPanel{
                                             .addGroup(BillingPanelLayout.createSequentialGroup()
                                                 .addComponent(jLabel14)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(BillingPanelLayout.createSequentialGroup()
                                                 .addComponent(jLabel9)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -660,7 +661,7 @@ public class PaymentViewer extends JPanel{
                 .addGap(2, 2, 2)
                 .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(balanceLabel))
+                    .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
                 .addGroup(BillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
@@ -701,6 +702,9 @@ public class PaymentViewer extends JPanel{
         // TODO add your handling code here:
         setTransactionsTable();
         transactionsTable.clearSelection();
+        totalAmountChargedLabel.setText(String.valueOf(getTotalAmountCharged()));
+        totalAmountPaidLabel.setText(String.valueOf(getTotalAmountPaid()));
+        totalBalance.setText(String.valueOf(getTotalBalance()));
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void transactionsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionsTableMouseClicked
@@ -784,7 +788,7 @@ public class PaymentViewer extends JPanel{
     private javax.swing.JLabel addressLabel;
     private javax.swing.JLabel ageLabel;
     private javax.swing.JTextField amountReceived;
-    private javax.swing.JLabel balanceLabel;
+    private javax.swing.JTextField balanceLabel;
     private javax.swing.JLabel cellphoneNo;
     private javax.swing.JLabel dateToday;
     private javax.swing.JLabel emailAddressLabel;
