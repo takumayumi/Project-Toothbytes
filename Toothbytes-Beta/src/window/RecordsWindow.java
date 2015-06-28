@@ -253,7 +253,7 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
     
     final String BUTTON_DIR = "res/buttons/";
     final String PATIENTS_DIR = "res/patients/";
-    final String GALLERY_DIR = "res/gallery/";
+    final String GALLERY_DIR = "data/gallery/";
     /**
      * This method shows the information about the Patient from the database.
      *

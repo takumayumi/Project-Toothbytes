@@ -21,8 +21,8 @@ import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import utilities.DBAccess;
 
 /**
  *
@@ -32,6 +32,7 @@ public class BackupDialog extends javax.swing.JDialog {
 
     private File conf = new File("conf.tbf");
     private File backupDir;
+    private File dataFolder = new File("data");
     JFileChooser fc;
     Frame f;
     String today = LocalDateTime.now().getDayOfMonth() + "-" + LocalDateTime.now().getMonthValue() + "-" + LocalDateTime.now().getYear();
@@ -40,7 +41,6 @@ public class BackupDialog extends javax.swing.JDialog {
         super(parent, modal);
         this.f = parent;
         checkConfFile();
-        this.setLocationRelativeTo(null);
     }
 
     public void backup() {
@@ -58,6 +58,20 @@ public class BackupDialog extends javax.swing.JDialog {
             Logger.getLogger(BackupDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void restore() {
+        deleteFolder(dataFolder);
+
+        File dest = new File("data");
+        dest.mkdir();
+
+        File old = new File(backupDir.getAbsoluteFile() + "/" + comb.getSelectedItem());
+
+        try {
+            copyFolder(old, dest);
+        } catch (IOException ex) {
+            Logger.getLogger(BackupDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void deleteFolder(File f) {
         if (f.isDirectory()) {
@@ -71,9 +85,11 @@ public class BackupDialog extends javax.swing.JDialog {
                 //recursive copy
                 deleteFolder(srcFile);
             }
+            System.out.println("Deleting "+f.getAbsolutePath());
             f.delete();
 
         } else {
+            System.out.println("Deleting "+f.getAbsolutePath());
             f.delete();
         }
     }
@@ -149,6 +165,7 @@ public class BackupDialog extends javax.swing.JDialog {
                 conf.createNewFile();
                 if (changeBackupDir()) {
                     initComponents();
+                    this.setLocationRelativeTo(null);
                     this.setVisible(true);
                 }
             } catch (IOException ex) {
@@ -162,15 +179,19 @@ public class BackupDialog extends javax.swing.JDialog {
                 if (s == null) {
                     if (changeBackupDir()) {
                         initComponents();
+                        this.setLocationRelativeTo(null);
                         this.setVisible(true);
                     }
                 } else {
                     backupDir = new File(s);
+
 //                    backupDir = new File(s + "/TB Backup");
                     if (!backupDir.exists()) {
                         backupDir.mkdir();
                     }
                     initComponents();
+                    loadRestorePoints();
+                    this.setLocationRelativeTo(null);
                     this.setVisible(true);
                 }
                 br.close();
@@ -179,6 +200,17 @@ public class BackupDialog extends javax.swing.JDialog {
             } catch (IOException ex) {
                 Logger.getLogger(BackupDialog.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+    String[] restorePoints;
+
+    public void loadRestorePoints() {
+        restBut.setEnabled(true);
+        restorePoints = backupDir.list();
+        comb.removeAllItems();
+        comb.setEnabled(true);
+        for (int i = 0; i < restorePoints.length; i++) {
+            comb.addItem(restorePoints[i]);
         }
     }
 
@@ -283,6 +315,7 @@ public class BackupDialog extends javax.swing.JDialog {
 
         restBut.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         restBut.setText("Restore");
+        restBut.setEnabled(false);
         restBut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 restButActionPerformed(evt);
@@ -290,7 +323,8 @@ public class BackupDialog extends javax.swing.JDialog {
         });
 
         comb.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        comb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Latest" }));
+        comb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<no backups>" }));
+        comb.setEnabled(false);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Choose Restore Point");
@@ -386,6 +420,7 @@ public class BackupDialog extends javax.swing.JDialog {
         backup();
         unlockButtons();
         JOptionPane.showMessageDialog(null, "Backup Successful", "Success", JOptionPane.PLAIN_MESSAGE);
+        dispose();
     }//GEN-LAST:event_backButActionPerformed
     private void lockButtons() {
         closeBut.setEnabled(false);
@@ -403,54 +438,21 @@ public class BackupDialog extends javax.swing.JDialog {
         check.setEnabled(true);
     }
     private void restButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restButActionPerformed
-        // TODO add your handling code here:
+        int i = JOptionPane.showConfirmDialog(
+                null, "WARNING: you will lose the changes you have made after this Restore Point.\n"
+                + "Are you sure you want to restore your old data?",
+                "Confirmation", JOptionPane.YES_NO_OPTION);
+        if (i == JOptionPane.YES_OPTION) {
+            DBAccess.closeDB();
+            restore();
+            JOptionPane.showMessageDialog(null, "Please Restart Toothbytes to complete Restoration", "Restore", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
     }//GEN-LAST:event_restButActionPerformed
 
     private void closeButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButActionPerformed
         dispose();
     }//GEN-LAST:event_closeButActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BackupDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BackupDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BackupDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BackupDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                BackupDialog dialog = new BackupDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backBut;
