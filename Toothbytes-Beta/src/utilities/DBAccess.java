@@ -568,7 +568,7 @@ public class DBAccess {
         return 0;
     }
 
-    public static void saveTreatment(int patient, String date,  ArrayList<SaveFile> sList) {
+    public static void saveTreatment(int patient, String date, ArrayList<SaveFile> sList) {
         String query = "INSERT INTO DENTAL_RECORDS"
                 + "(DENTALRECORDID, PATIENTID, TREATMENTDATE, TOOTHNO, PROCEDURE, DENTIST, AMOUNTCHARGED, BALANCE) VALUES"
                 + "(DEFAULT, ?, TO_DATE(?, 'MM/DD/YYYY'), ?, ?, ?, ?, ?)";
@@ -587,7 +587,7 @@ public class DBAccess {
                 saveTreats.setDouble(6, sList.get(i).getPrice());
                 saveTreats.setDouble(7, sList.get(i).getPrice());
                 saveTreats.executeUpdate();
-                System.out.println("Saving tooth:"+sList.get(i).getNum()+" state:"+sList.get(i).getState()+" fee:"+sList.get(i).getPrice());
+                System.out.println("Saving tooth:" + sList.get(i).getNum() + " state:" + sList.get(i).getState() + " fee:" + sList.get(i).getPrice());
             }
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
@@ -622,11 +622,40 @@ public class DBAccess {
         } catch (ParseException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        for(int i=0; i<tList.size(); i++) {
-            System.out.println("tList CREATION "+new SimpleDateFormat("yyyy-MM-dd").format(tList.get(i).getDate().getTime()));
+
+        for (int i = 0; i < tList.size(); i++) {
+            System.out.println("tList CREATION " + new SimpleDateFormat("yyyy-MM-dd").format(tList.get(i).getDate().getTime()));
         }
         return tList;
+    }
+
+    public static double[] countResults() {
+        double[] result = new double[3];
+        PreparedStatement appStmt = null;
+        Calendar cal = Calendar.getInstance();
+
+        String patientNo = "SELECT COUNT(PATIENTID) FROM PATIENT";
+        String paymentNo = "SELECT SUM(BALANCE) FROM DENTAL_RECORDS";
+        String appNo = "SELECT COUNT(APPOINTMENTID) FROM APPOINTMENT WHERE APPOINTMENTDATE = ?";
+
+        try {
+            rs = (JDBCResultSet) stmt.executeQuery(patientNo);
+            rs.next();
+            result[0] = rs.getInt(1);
+            rs = (JDBCResultSet) stmt.executeQuery(paymentNo);
+            rs.next();
+            result[1] = rs.getDouble(1);
+
+            appStmt = conn.prepareStatement(appNo);
+            appStmt.setDate(1, new java.sql.Date(cal.getTime().getTime()));
+            rs = (JDBCResultSet) appStmt.executeQuery();
+            rs.next();
+            result[2] = rs.getInt(1);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
     }
 
     public static void closeDB() {
