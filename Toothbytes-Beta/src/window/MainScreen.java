@@ -228,25 +228,7 @@ public class MainScreen extends JFrame {
         sp.setBackground(WHITE);
         mainPanel.add(sp, "width 100:200:200 ,east");
 
-        // Quick bar.
-        quickBar = new JToolBar("QuickBar");
-        quickBar.setBackground(WHITE);
-
-        qAddPatientBut = new JButton(new ImageIcon(BUTTON_DIR + "AddNewPatient.png"));
-        qAddPatientBut.setBackground(WHITE);
-        qAddPatientBut.setToolTipText("Add Patient");
-        qSetAppointmentBut = new JButton(new ImageIcon(BUTTON_DIR + "AddNewAppointment.png"));
-        qSetAppointmentBut.setBackground(WHITE);
-        qSetAppointmentBut.setToolTipText("Set Appointment");
-
-        QuickBarHandler qh = new QuickBarHandler();
-        qAddPatientBut.addActionListener(qh);
-        qSetAppointmentBut.addActionListener(qh);
-
-        quickBar.add(qAddPatientBut);
-        quickBar.add(qSetAppointmentBut);
-
-        mainPanel.add(quickBar, "north");
+        
 
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
@@ -269,6 +251,19 @@ public class MainScreen extends JFrame {
     }
     
     public void setButts(int x){
+        final String BUTTON_DIR = "res/buttons/";
+        if(x == 0){
+            JMenu tools = new JMenu("Tools");
+        menuBar.add(tools);
+        JMenuItem backup = new JMenuItem("Backup & Restore");
+        
+        backup.addActionListener(e -> {
+            BackupDialog bd = new BackupDialog(this, true);            
+//            mw.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        });
+        
+        tools.add(backup);
+        }
         navButtons.add(homeBut);
         navBar.add(homeBut);
         System.out.println(x);
@@ -310,18 +305,25 @@ public class MainScreen extends JFrame {
         c = new Cover();
         modulePanel.add(c, "grow");
         
-        if(x == 0){
-            JMenu tools = new JMenu("Tools");
-        menuBar.add(tools);
-        JMenuItem backup = new JMenuItem("Backup & Restore");
-        
-        backup.addActionListener(e -> {
-            BackupDialog bd = new BackupDialog(this, true);            
-//            mw.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        });
-        
-        tools.add(backup);
-        }
+        // Quick bar.
+        quickBar = new JToolBar("QuickBar");
+        quickBar.setBackground(WHITE);
+
+        qAddPatientBut = new JButton(new ImageIcon(BUTTON_DIR + "AddNewPatient.png"));
+        qAddPatientBut.setBackground(WHITE);
+        qAddPatientBut.setToolTipText("Add Patient");
+        qSetAppointmentBut = new JButton(new ImageIcon(BUTTON_DIR + "AddNewAppointment.png"));
+        qSetAppointmentBut.setBackground(WHITE);
+        qSetAppointmentBut.setToolTipText("Set Appointment");
+
+        QuickBarHandler qh = new QuickBarHandler();
+        qAddPatientBut.addActionListener(qh);
+        qSetAppointmentBut.addActionListener(qh);
+
+        quickBar.add(qAddPatientBut);
+        quickBar.add(qSetAppointmentBut);
+
+        mainPanel.add(quickBar, "north");
     }
 
     /**
