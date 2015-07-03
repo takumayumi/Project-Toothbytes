@@ -81,7 +81,9 @@ public class ReportsGen extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(970, 520));
+        setMaximumSize(new java.awt.Dimension(1060, 520));
+        setMinimumSize(new java.awt.Dimension(1060, 520));
+        setPreferredSize(new java.awt.Dimension(1060, 520));
 
         patientList.setBackground(new java.awt.Color(255, 255, 255));
         selectRB.add(patientList);
@@ -246,7 +248,7 @@ public class ReportsGen extends javax.swing.JPanel {
                                                 .addComponent(showPatientPerMonth)
                                                 .addComponent(patientPerMonthY, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 789, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(saveButton)))

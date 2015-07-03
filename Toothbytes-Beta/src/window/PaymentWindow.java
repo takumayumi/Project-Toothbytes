@@ -9,6 +9,7 @@ import components.ModuleWindow;
 import components.PatientListViewer;
 import components.PaymentViewer;
 import java.util.ArrayList;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -20,6 +21,7 @@ public class PaymentWindow extends ModuleWindow{
     private PaymentViewer pv;
     private int currentId;
     private MigLayout layout;
+    private JScrollPane pay;
     
     public PaymentWindow(ArrayList<Patient> pList) {
         layout = new MigLayout(
@@ -30,7 +32,7 @@ public class PaymentWindow extends ModuleWindow{
         );
         
         super.setMainPaneLayout(layout);
-        
+        pay = new JScrollPane(pv);
         plv = new PatientListViewer(pList);
         
         PatientListListener pll = new PatientListListener();
@@ -40,14 +42,15 @@ public class PaymentWindow extends ModuleWindow{
         pv = new PaymentViewer(currentId);
         
         super.addToMainPane(plv, "span 2, grow");
-        super.addToMainPane(pv, "span 10, grow");
+        super.addToMainPane(pay, "span 10, grow");
     }
     
     public void ChangePaymentViewer(){
         
         this.removeMainComponent(1);
         pv = new PaymentViewer(currentId);
-        super.addToMainPane(pv, "span 10, grow");
+        pay = new JScrollPane(pv);
+        super.addToMainPane(pay, "span 10, grow");
         SwingUtilities.updateComponentTreeUI(this);
     }
     
