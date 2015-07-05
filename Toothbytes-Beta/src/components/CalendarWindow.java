@@ -7,6 +7,7 @@ package components;
 
 import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.stage.Stage;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -342,10 +344,11 @@ public class CalendarWindow extends ModuleWindow {
         int y = cdwCalendar.getSelectedColumn();
         
         
+        
         JPopupMenu calendarPopup = new JPopupMenu("Calendar");
         boolean check = false;
         
-        try{
+        try{            
             String value = cdwCalendar.getModel().getValueAt(x, y).toString();
             
             if(value.length() > 2){
@@ -403,6 +406,23 @@ public class CalendarWindow extends ModuleWindow {
                 }
                 
             }
+            
+            JMenuItem viewDetailed = new JMenuItem("Detailed View");
+            viewDetailed.addActionListener(e -> {
+                java.awt.EventQueue.invokeLater(new Runnable(){
+                    public void run(){
+                        JDialog calWin = new JDialog();
+                        calWin.add(new CalendarWin(mode));
+                        calWin.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                        calWin.setMinimumSize(new Dimension(500, 700));
+                        calWin.pack();
+                        calWin.setVisible(true);
+                        calWin.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    }
+                });                
+            });
+            
+            calendarPopup.add(viewDetailed);
             
         }catch(Exception e){
             System.out.println(e);
