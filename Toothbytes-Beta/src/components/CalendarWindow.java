@@ -411,13 +411,17 @@ public class CalendarWindow extends ModuleWindow {
             viewDetailed.addActionListener(e -> {
                 java.awt.EventQueue.invokeLater(new Runnable(){
                     public void run(){
-                        JDialog calWin = new JDialog();
-                        calWin.add(new CalendarWin(mode));
-                        calWin.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                        calWin.setMinimumSize(new Dimension(500, 700));
-                        calWin.pack();
-                        calWin.setVisible(true);
-                        calWin.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                        try{
+                            JDialog calWin = new JDialog();
+                            calWin.add(new CalendarWin(mode));
+                            calWin.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                            calWin.setMinimumSize(new Dimension(500, 700));
+                            calWin.pack();
+                            calWin.setVisible(true);
+                            calWin.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                        }catch(Exception e){
+                            
+                        }
                     }
                 });                
             });

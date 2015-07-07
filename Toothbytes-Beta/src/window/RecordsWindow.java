@@ -136,8 +136,7 @@ public class RecordsWindow extends ModuleWindow implements TreatmentListener {
         
         scrollDental = new JScrollPane(dentalViewer);
         scrollInfo = new JScrollPane(infoViewer);
-        scrollGallery = new JScrollPane(gallery, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-                        JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollGallery = new JScrollPane(gallery);
 
         tabsPane.addTab("Personal Info", new ImageIcon(ICON_DIR + "PersonalInfo.png"), scrollInfo);
         tabsPane.addTab("Dental Info", new ImageIcon(ICON_DIR + "DentalRecords.png"), scrollDental);

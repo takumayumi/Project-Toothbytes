@@ -40,7 +40,6 @@ public class SidePanel extends JPanel{
     private JPanel sideAppointment, sidePayment;
     private JList sideAppList, sidePayList;
     private JScrollPane sideAppScroll, sidePayScroll;
-    private JButton refreshButton;
     
     private ArrayList<Appointment> appointmentToday, appointmentX;
     
@@ -52,20 +51,6 @@ public class SidePanel extends JPanel{
         
         sideTabsPane = new JTabbedPane();
         this.add(sideTabsPane);
-        
-        refreshButton = new JButton("Refresh");
-        this.add(refreshButton, BorderLayout.SOUTH);
-        refreshButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    updateList();
-                } catch (SQLException ex) {
-                    Logger.getLogger(PatientListViewer.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
         
         // APPOINTMENTS
         sideAppointment = new JPanel();
