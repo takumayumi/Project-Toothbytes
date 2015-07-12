@@ -85,8 +85,10 @@
                       </Group>
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="sptPatient" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="sptPatient" min="-2" pref="414" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="tempPatient" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="appointmentNumber" min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
@@ -100,7 +102,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="appointmentNumber" min="-2" max="-2" attributes="0"/>
-                  <Component id="sptPatient" min="-2" pref="31" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="sptPatient" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                      <Component id="tempPatient" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -404,6 +409,14 @@
           </StringArray>
         </Property>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="tempPatient">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Temporary Patient"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tempPatientActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
