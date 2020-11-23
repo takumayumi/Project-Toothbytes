@@ -1,4 +1,4 @@
-# toothbytes
+# Project Toothbytes
 
 Project Toothbytes is a Java application software to help dental offices to manage their patients' personal information and other data collected by the dentist.
 
