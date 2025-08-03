@@ -19,7 +19,3 @@ This was a group project completed for academic purposes.
 ## Project Status
 
 This project is not actively maintained. It was completed as part of a group assignment.
-
-## License
-
-This project is shared for educational purposes. No official license.
