@@ -1,7 +1,25 @@
 # Project Toothbytes
 
-Project Toothbytes is a Java application software to help dental offices to manage their patients' personal information and other data collected by the dentist.
+**Project Toothbytes** is a Java application built to help dental clinics manage their patients' personal information and other data collected by dentists.
 
-This is a group project and was submitted for completion.
+This was a group project completed for academic purposes.
 
-This was also originally from Bitbucket and copied here in GitHub.
+> **Note:** This project was originally hosted on Bitbucket and has been copied here to GitHub for reference.
+
+## Features
+
+- Store and manage patient records
+- Organize data collected by dentists
+- Simple user interface for clinic staff
+
+## Technologies Used
+
+- Java (Desktop Application)
+
+## Project Status
+
+This project is not actively maintained. It was completed as part of a group assignment.
+
+## License
+
+This project is shared for educational purposes. No official license.
